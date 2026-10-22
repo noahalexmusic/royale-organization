@@ -1,45 +1,151 @@
-// GET /api/cards -> full card list from the official Clash Royale API (via RoyaleAPI proxy)
+// GET /api/cards
+// The Royale Organization — Clash Royale Card API
+
 const BASE = "https://proxy.royaleapi.dev/v1";
 
-const json = (body, status = 200, ttl = 0) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json", "Cache-Control": ttl ? `public, max-age=${ttl}` : "no-store" },
-  });
+// Increase this number whenever the card data structure changes.
+const CACHE_VERSION = 2;
 
+// Cache card information for 6 hours.
+const CACHE_DURATION = 21600;
+
+// Cards whose current type differs from their original API ID category.
+const TROOP_OVERRIDES = new Set([
+  "Furnace",
+  "Spirit Empress",
+  "Heal Spirit",
+]);
+
+// Create a JSON response.
+function json(body, status = 200, ttl = 0) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": ttl
+        ? `public, max-age=${ttl}`
+        : "no-store",
+    },
+  });
+}
+
+// Determine a card's type.
+// T = Troop
+// B = Building
+// S = Spell
+function getCardType(card) {
+  if (TROOP_OVERRIDES.has(card.name)) {
+    return "T";
+  }
+
+  const id = String(card.id);
+
+  if (id.startsWith("27")) {
+    return "B";
+  }
+
+  if (id.startsWith("28")) {
+    return "S";
+  }
+
+  return "T";
+}
+
+// Convert official API card data into the format
+// expected by The Royale Organization Deck Builder.
+function formatCard(card) {
+  return {
+    id: card.id,
+    n: card.name,
+    e: card.elixirCost,
+    t: getCardType(card),
+    i: card.iconUrls?.medium || "",
+  };
+}
+
+// Handle GET /api/cards
 export async function onRequestGet({ request, env, waitUntil }) {
-  if (!env.CR_TOKEN) return json({ error: "Server is missing CR_TOKEN" }, 500);
+  // Verify that the Clash Royale API token exists.
+  if (!env.CR_TOKEN) {
+    return json(
+      { error: "Server is missing CR_TOKEN" },
+      500
+    );
+  }
 
-  const cache = caches.default;
-  const cacheKey = new Request(new URL(request.url).origin + "/api/cards");
-  const hit = await cache.match(cacheKey);
-  if (hit) return hit;
+  const cache = caches.default;
 
-  let r;
-  try {
-    r = await fetch(`${BASE}/cards`, { headers: { Authorization: `Bearer ${env.CR_TOKEN}` } });
-  } catch (e) {
-    return json({ error: "Could not reach Clash Royale" }, 502);
-  }
-  if (!r.ok) return json({ error: "Clash Royale API error", status: r.status }, 502);
+  // Versioned cache key prevents old card classifications
+  // from being reused after this update.
+  const cacheKey = new Request(
+    `${new URL(request.url).origin}/api/cards?v=${CACHE_VERSION}`
+  );
 
-  const d = await r.json();
-  const list = (d.items || [])
-    .filter((c) => /^2[678]/.test(String(c.id)) && c.elixirCost != null)
-    .map((c) => ({
-      id: c.id,
-      n: c.name,
-      e: c.elixirCost,
-      t: ["Furnace", "Spirit Empress", "Heal Spirit"].includes(c.name)
-  ? "T"
-  : String(c.id).startsWith("27")
-    ? "B"
-    : String(c.id).startsWith("28")
-      ? "S"
-      : "T",
-      i: c.iconUrls && c.iconUrls.medium,
-    }));
-  const out = json(list, 200, 21600);
-  if (waitUntil) waitUntil(cache.put(cacheKey, out.clone()));
-  return out;
+  // Return cached data if available.
+  const cachedResponse = await cache.match(cacheKey);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  // Request the latest card data.
+  let response;
+
+  try {
+    response = await fetch(`${BASE}/cards`, {
+      headers: {
+        Authorization: `Bearer ${env.CR_TOKEN}`,
+      },
+    });
+  } catch (error) {
+    return json(
+      { error: "Could not reach Clash Royale" },
+      502
+    );
+  }
+
+  // Handle unsuccessful API responses.
+  if (!response.ok) {
+    return json(
+      {
+        error: "Clash Royale API error",
+        status: response.status,
+      },
+      502
+    );
+  }
+
+  // Read the API response.
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (error) {
+    return json(
+      { error: "Invalid Clash Royale API response" },
+      502
+    );
+  }
+
+  // Keep valid troops, buildings, and spells.
+  const cards = (data.items || [])
+    .filter((card) => {
+      const id = String(card.id);
+
+      return (
+        /^2[678]/.test(id) &&
+        card.elixirCost != null
+      );
+    })
+    .map(formatCard);
+
+  // Prepare the successful response.
+  const output = json(cards, 200, CACHE_DURATION);
+
+  // Store the response in Cloudflare's cache.
+  if (waitUntil) {
+    waitUntil(cache.put(cacheKey, output.clone()));
+  }
+
+  return output;
 }
