@@ -611,6 +611,154 @@
       }
     }
 
+
+    /* SMART DECK GENERATOR */
+    .generator {
+      width: min(100%, 1100px);
+      margin: 0 auto 24px;
+      padding: 24px;
+      box-sizing: border-box;
+      background: linear-gradient(145deg, #17130b, #111);
+      border: 1px solid var(--deck-gold);
+      border-radius: 16px;
+      box-shadow: 0 0 28px rgba(212, 175, 55, .08);
+      text-align: left;
+    }
+
+    .generator-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .generator h2 {
+      margin: 0;
+      color: var(--deck-gold-light);
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .generator-head p {
+      max-width: 700px;
+      margin: 7px 0 0;
+      color: #cfc6b3;
+      line-height: 1.5;
+    }
+
+    .generator-badge {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border: 1px solid var(--deck-gold);
+      border-radius: 999px;
+      color: var(--deck-gold-light);
+      background: rgba(212, 175, 55, .08);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .generator-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      align-items: end;
+    }
+
+    .generator-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .generator-field label {
+      color: #eee0b5;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .generator-field input,
+    .generator-field select {
+      width: 100%;
+      min-width: 0;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid var(--deck-border);
+      border-radius: 9px;
+      background: #191919;
+      color: white;
+      font: inherit;
+    }
+
+    .generator-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .generator-actions .btn {
+      min-height: 48px;
+    }
+
+    #generatorStatus {
+      min-height: 20px;
+      margin: 12px 0 0;
+      color: var(--deck-gold-light);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .generator-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .generator {
+        padding: 16px 12px;
+        border-radius: 13px;
+      }
+
+      .generator-head {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .generator h2 {
+        font-size: 25px;
+      }
+
+      .generator-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .generator-field input,
+      .generator-field select {
+        min-height: 48px;
+        font-size: 16px;
+      }
+
+      .generator-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .generator-actions .btn {
+        width: 100%;
+        max-width: none;
+      }
+    }
+
   </style>
 </head>
 
@@ -654,6 +802,78 @@
   </section>
 
   <section class="section">
+
+
+    <div class="generator" aria-labelledby="generatorTitle">
+      <div class="generator-head">
+        <div>
+          <h2 id="generatorTitle">Smart Deck Generator</h2>
+          <p>
+            Pick a style and optional favorite card. The generator will build
+            a complete eight-card deck using the cards currently loaded on the site.
+          </p>
+        </div>
+        <span class="generator-badge">Automatic</span>
+      </div>
+
+      <div class="generator-grid">
+        <div class="generator-field">
+          <label for="genArchetype">Deck style</label>
+          <select id="genArchetype">
+            <option value="BALANCED">Balanced</option>
+            <option value="CYCLE">Cycle</option>
+            <option value="BEATDOWN">Beatdown</option>
+            <option value="CONTROL">Control</option>
+            <option value="BRIDGE">Bridge Spam</option>
+            <option value="BAIT">Bait</option>
+            <option value="AIR">Air</option>
+          </select>
+        </div>
+
+        <div class="generator-field">
+          <label for="genFavorite">Favorite card (optional)</label>
+          <input
+            id="genFavorite"
+            type="text"
+            list="generatorCards"
+            autocomplete="off"
+            placeholder="Example: Hog Rider">
+          <datalist id="generatorCards"></datalist>
+        </div>
+
+        <div class="generator-field">
+          <label for="genEvos">Evolutions</label>
+          <select id="genEvos">
+            <option value="AUTO">Auto</option>
+            <option value="0">No Evolutions</option>
+            <option value="1">Use 1 Evolution</option>
+            <option value="2">Use 2 Evolutions</option>
+          </select>
+        </div>
+
+        <div class="generator-field">
+          <label for="genHero">Hero</label>
+          <select id="genHero">
+            <option value="AUTO">Auto</option>
+            <option value="0">No Hero</option>
+            <option value="1">Include 1 Hero</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="generator-actions">
+        <button id="generateBtn" class="btn btn-primary" type="button">
+          Generate Deck
+        </button>
+        <button id="regenerateBtn" class="btn btn-outline" type="button">
+          Generate Another
+        </button>
+      </div>
+
+      <p id="generatorStatus" role="status" aria-live="polite">
+        Choose your options, then generate a deck.
+      </p>
+    </div>
 
     <div class="builder">
 
