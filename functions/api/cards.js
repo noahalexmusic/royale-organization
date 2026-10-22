@@ -102,8 +102,24 @@ export async function onRequestGet({
   waitUntil
 }) {
   if (!env.CR_TOKEN) {
+    // Cloudflare preview deployments may not receive production-only secrets.
+    // Use the production endpoint so PR previews can still verify the Deck Builder.
+    try {
+      const production = await fetch(
+        "https://royale-organization.pages.dev/api/cards?v=2",
+        { headers: { Accept: "application/json" } }
+      );
+
+      if (production.ok) {
+        const previewCards = await production.json();
+        return json(previewCards, 200, 300);
+      }
+    } catch (error) {
+      // Fall through to the explicit configuration error below.
+    }
+
     return json({
-      error: "Server is missing CR_TOKEN"
+      error: "Server is missing CR_TOKEN and production fallback failed"
     }, 500);
   }
 
