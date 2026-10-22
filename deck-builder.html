@@ -405,6 +405,212 @@
         flex-direction: column;
       }
     }
+  
+
+    /* PHASE 2: DECK BUILDER PHONE + TABLET POLISH */
+    @media (max-width: 900px) {
+      .builder,
+      .picker-wrap {
+        width: 100%;
+        max-width: 760px;
+      }
+
+      #picker.picker-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media (max-width: 650px) {
+      main .section {
+        padding: 30px 10px 48px;
+      }
+
+      .builder,
+      .picker-wrap {
+        margin-bottom: 18px;
+        padding: 14px 12px;
+        border-radius: 13px;
+      }
+
+      .builder-heading,
+      .picker-wrap h2 {
+        font-size: 25px;
+      }
+
+      #slots.deck-slots {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 9px !important;
+        margin-bottom: 16px;
+      }
+
+      #slots .slot {
+        min-height: 150px;
+        padding: 8px 4px;
+        font-size: 11px;
+        touch-action: manipulation;
+      }
+
+      #slots .slot img {
+        height: 105px !important;
+        max-height: 105px !important;
+        max-width: 92% !important;
+      }
+
+      .builder-stats {
+        gap: 7px;
+        margin: 14px 0;
+      }
+
+      .builder-stats > div {
+        min-width: 0;
+        padding: 12px 4px;
+      }
+
+      .builder-stats strong {
+        font-size: 20px;
+      }
+
+      .builder-stats span {
+        font-size: 10px;
+        line-height: 1.25;
+      }
+
+      .builder .btn-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        margin: 16px 0;
+      }
+
+      .builder .btn-row .btn {
+        width: 100%;
+        min-width: 0;
+        min-height: 48px;
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+
+      .builder .btn-row #openBtn {
+        grid-column: 1 / -1;
+        max-width: none;
+      }
+
+      .builder .import {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      #imp,
+      #search,
+      .builder-filters select {
+        min-height: 48px;
+        font-size: 16px;
+      }
+
+      .builder .import .btn {
+        width: 100%;
+        min-height: 48px;
+      }
+
+      .builder-filters {
+        display: grid;
+        width: 100%;
+        gap: 8px;
+        margin: 10px 0;
+      }
+
+      .builder-filters[aria-label="Card types"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .builder-filters[aria-label="Special cards"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .builder-filters button,
+      .builder-filters select {
+        width: 100%;
+        min-width: 0;
+        min-height: 46px;
+        padding: 9px 6px;
+        font-size: 12px;
+        touch-action: manipulation;
+      }
+
+      .builder-filters:not([aria-label]) {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        text-align: left;
+      }
+
+      .builder-filters:not([aria-label]) label {
+        padding-left: 2px;
+        font-size: 12px;
+      }
+
+      #picker.picker-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-top: 16px;
+      }
+
+      #picker .tile {
+        min-height: 148px;
+        padding: 8px 3px;
+        border-radius: 9px;
+        font-size: 10px;
+        touch-action: manipulation;
+      }
+
+      #picker .tile img {
+        width: 76px !important;
+        height: 96px !important;
+        max-height: 96px !important;
+      }
+
+      #picker .tile span {
+        line-height: 1.2;
+      }
+
+      .builder-status {
+        margin: 14px 0 8px;
+        font-size: 12px;
+      }
+
+      #cardnote {
+        margin-top: 14px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #picker.picker-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .builder-filters[aria-label="Special cards"] {
+        grid-template-columns: 1fr;
+      }
+
+      #slots .slot {
+        min-height: 140px;
+      }
+    }
+
+    @media (min-width: 651px) and (max-width: 900px) {
+      #slots.deck-slots {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      }
+
+      #picker.picker-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      }
+
+      .builder-filters button,
+      .builder-filters select {
+        min-height: 44px;
+      }
+    }
+
   </style>
 </head>
 
@@ -622,5 +828,6 @@
 
 <script src="cards-fallback.js"></script>
 <script src="deck-builder.js"></script>
-<script src="site.js"></script>\n</body>
+<script src="site.js"></script>
+</body>
 </html>
