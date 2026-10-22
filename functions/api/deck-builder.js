@@ -539,7 +539,7 @@
   }
 
   // Always request the live card list.
-  fetch("/api/cards", { cache: "no-store" })
+ fetch("/api/cards?v=2", { cache: "no-store" })
     .then(function (response) {
       if (!response.ok) {
         throw new Error("HTTP " + response.status);
