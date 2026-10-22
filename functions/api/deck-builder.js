@@ -3,7 +3,6 @@
 
   var MAX = 8;
   var LINK = "https://link.clashroyale.com/deck/en?deck=";
-
   var cards = [];
   var byId = {};
   var deck = [];
@@ -11,100 +10,98 @@
   var type = "ALL";
   var special = "";
   var rarity = "ALL";
-  var q = "";
+  var elixir = "ALL";
+  var query = "";
 
   var $ = function (id) {
     return document.getElementById(id);
   };
 
-  var champions = [
-    "Mighty Miner",
-    "Skeleton King",
-    "Archer Queen",
-    "Golden Knight",
-    "Monk",
-    "Little Prince",
-    "Goblinstein",
-    "Boss Bandit"
+  var championNames = [
+    "Mighty Miner", "Skeleton King", "Archer Queen",
+    "Golden Knight", "Monk", "Little Prince",
+    "Goblinstein", "Boss Bandit"
   ];
 
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, function (ch) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[ch];
-    });
+  function safe(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
-  function normalize(c) {
-    var id = Number(c.id);
-    var name = c.n || c.name || "";
-    var icons = c.iconUrls || {};
+  function normalize(raw) {
+    var id = Number(raw.id);
+    var name = String(raw.n || raw.name || "");
+    var icons = raw.iconUrls || {};
 
-    var cardType = c.t || (
-      String(id).indexOf("27") === 0 ? "B" :
-      String(id).indexOf("28") === 0 ? "S" : "T"
+    var cardType = raw.t || (
+      id >= 28000000 ? "S" :
+      id >= 27000000 ? "B" : "T"
     );
 
+    // Overrides for cards whose current classification differs
+    // from the API ID prefix.
+    if (name === "Furnace" || name === "Spirit Empress" ||
+        name === "Heal Spirit") {
+      cardType = "T";
+    }
+
+    var evoImage = raw.evoImage ||
+      raw.evolutionImage ||
+      icons.evolutionMedium || "";
+
+    var heroImage = raw.heroImage ||
+      icons.heroMedium || "";
+
     var cardRarity = String(
-      c.r ||
-      c.rarity ||
-      (champions.indexOf(name) >= 0 ? "champion" : "")
+      raw.r || raw.rarity ||
+      (championNames.indexOf(name) !== -1 ? "champion" : "")
     ).toLowerCase();
-
-    var evoImage =
-      c.evoImage ||
-      c.evolutionImage ||
-      c.ei ||
-      icons.evolutionMedium ||
-      "";
-
-    var heroImage =
-      c.heroImage ||
-      c.hi ||
-      icons.heroMedium ||
-      "";
 
     return {
       id: id,
       n: name,
-      e: Number(c.e != null ? c.e : c.elixirCost || 0),
+      e: Number(raw.e != null ? raw.e : raw.elixirCost),
       t: cardType,
-      i: c.i || icons.medium || "",
+      i: raw.i || icons.medium || "",
       r: cardRarity,
       evoImage: evoImage,
       heroImage: heroImage,
-      evo: Boolean(
-        c.evo ||
-        evoImage ||
-        Number(c.maxEvolutionLevel) > 0
-      ),
-      hero: Boolean(c.hero || heroImage),
-      u: Boolean(c.u)
+      evo: Boolean(raw.evo || evoImage ||
+        Number(raw.maxEvolutionLevel) > 0),
+      hero: Boolean(raw.hero || heroImage),
+      u: Boolean(raw.u)
     };
   }
 
-  function loadCards(list) {
+  function mergeCards(list) {
     if (!Array.isArray(list)) return;
 
     var merged = {};
 
-    cards.forEach(function (c) {
-      merged[c.id] = c;
+    cards.forEach(function (card) {
+      merged[card.id] = card;
     });
 
     list.forEach(function (raw) {
       var id = Number(raw.id);
+      if (!Number.isFinite(id)) return;
+
       var previous = merged[id] || {};
       var combined = Object.assign({}, previous, raw);
-      var c = normalize(combined);
 
-      if (Number.isFinite(c.id) && c.n) {
-        merged[c.id] = c;
+      // Preserve optional metadata if the live API omits it.
+      if (!raw.r && !raw.rarity && previous.r) {
+        combined.r = previous.r;
+      }
+
+      var card = normalize(combined);
+
+      if (card.n && Number.isFinite(card.e)) {
+        merged[id] = card;
       }
     });
 
@@ -113,81 +110,70 @@
     });
 
     byId = {};
-
-    cards.forEach(function (c) {
-      byId[c.id] = c;
+    cards.forEach(function (card) {
+      byId[card.id] = card;
     });
 
     render();
   }
 
-  function parse(s) {
+  function parseDeck(text) {
+    var raw = String(text || "");
+
     try {
-      s = decodeURIComponent(s);
-    } catch (e) {}
+      var url = new URL(raw);
+      raw = url.searchParams.get("deck") || raw;
+    } catch (error) {
+      var match = raw.match(/[?&]deck=([^&#]+)/);
+      if (match) raw = match[1];
+    }
 
-    var m = s.match(/deck=([0-9;,]+)/);
-    var raw = m ? m[1] : s;
-    var out = [];
+    try {
+      raw = decodeURIComponent(raw);
+    } catch (error) {}
 
-    raw.split(/[;,\s]+/).forEach(function (x) {
-      var n = Number(x);
+    var ids = [];
+
+    raw.split(/[;,\s]+/).forEach(function (part) {
+      var id = Number(part);
 
       if (
-        n >= 26000000 &&
-        n < 29000000 &&
-        out.indexOf(n) < 0
+        id >= 26000000 &&
+        id < 29000000 &&
+        ids.indexOf(id) === -1
       ) {
-        out.push(n);
+        ids.push(id);
       }
     });
 
-    return out.slice(0, MAX);
+    return ids.slice(0, MAX);
   }
 
-  var initialDeck = new URLSearchParams(
-    location.search
-  ).get("deck");
-
-  if (initialDeck) {
-    deck = parse(initialDeck).map(function (id) {
-      return {
-        id: id,
-        variant: ""
-      };
-    });
-  }
-
-  function link() {
-    return LINK + deck.map(function (item) {
-      return item.id;
-    }).join(";");
-  }
-
-  function say(text) {
-    if ($("msg")) {
-      $("msg").textContent = text;
-    }
+  function say(message) {
+    if ($("msg")) $("msg").textContent = message;
   }
 
   function imageFor(card, variant) {
     if (variant === "EVO") {
       return card.evoImage || card.i;
     }
-
     if (variant === "HERO") {
       return card.heroImage || card.i;
     }
-
     return card.i;
   }
 
-  function imageHTML(src) {
-    if (!src) return "";
+  function imageHTML(url) {
+    if (!url) return "";
 
-    return '<img src="' +
-      escapeHTML(src) +
-      '" alt="" loading="lazy" width="56">';
+    return '<img src="' + safe(url) +
+      '" alt="" loading="lazy">';
+  }
+
+  function deckLink() {
+    return LINK + deck.map(function (item) {
+      return item.id;
+    }).join(";");
   }
 
   function renderSlots() {
@@ -197,32 +183,23 @@
       var item = deck[i];
 
       if (!item) {
-        html +=
-          '<div class="slot" aria-label="Empty slot">+</div>';
+        html += '<div class="slot" aria-label="Empty slot">+</div>';
         continue;
       }
 
-      var c = byId[item.id];
-      var name = c ? c.n : "Card #" + item.id;
+      var card = byId[item.id];
+      var name = card ? card.n : "Card #" + item.id;
 
       if (item.variant) {
         name = item.variant + " " + name;
       }
 
-      html +=
-        '<button class="slot filled" type="button" ' +
+      html += '<button class="slot filled" type="button" ' +
         'data-remove="' + i + '" ' +
-        'aria-label="Remove ' + escapeHTML(name) + '">' +
-
-        (c
-          ? '<span class="elixir">' + c.e + '</span>'
-          : '') +
-
-        (c
-          ? imageHTML(imageFor(c, item.variant))
-          : '') +
-
-        '<span>' + escapeHTML(name) + '</span>' +
+        'aria-label="Remove ' + safe(name) + '">' +
+        (card ? '<span class="elixir">' + card.e + '</span>' : '') +
+        (card ? imageHTML(imageFor(card, item.variant)) : '') +
+        '<span>' + safe(name) + '</span>' +
         '</button>';
     }
 
@@ -230,165 +207,131 @@
   }
 
   function renderStats() {
-    var sum = 0;
-    var known = 0;
     var costs = [];
-    var unsure = false;
+    var missing = false;
 
     deck.forEach(function (item) {
-      var c = byId[item.id];
+      var card = byId[item.id];
 
-      if (c) {
-        sum += c.e;
-        known++;
-        costs.push(c.e);
-
-        if (c.u) unsure = true;
+      if (card) {
+        costs.push(card.e);
+      } else {
+        missing = true;
       }
     });
 
     var full = deck.length === MAX;
+    var valid = full && !missing;
+    var sum = costs.reduce(function (a, b) {
+      return a + b;
+    }, 0);
 
     $("count").textContent = deck.length + " / " + MAX;
 
-    $("avg").textContent = known
-      ? (sum / known).toFixed(1)
+    $("avg").textContent = costs.length
+      ? (sum / costs.length).toFixed(1)
       : "–";
 
     costs.sort(function (a, b) {
       return a - b;
     });
 
-    $("cycle").textContent =
-      full && known === MAX
-        ? costs.slice(0, 4).reduce(function (a, b) {
-            return a + b;
-          }, 0)
-        : "–";
+    $("cycle").textContent = valid
+      ? costs.slice(0, 4).reduce(function (a, b) {
+          return a + b;
+        }, 0)
+      : "–";
 
-    var open = $("openBtn");
+    $("openBtn").href = valid ? deckLink() : "#";
+    $("openBtn").classList.toggle("is-disabled", !valid);
+    $("openBtn").setAttribute("aria-disabled", String(!valid));
+    $("copyBtn").disabled = !valid;
 
-    open.href = full ? link() : "#";
-    open.setAttribute(
-      "aria-disabled",
-      full ? "false" : "true"
-    );
-
-    open.classList.toggle("is-disabled", !full);
-
-    $("copyBtn").disabled = !full;
-
-    if (unsure) {
-      say("Some card IDs may need verification.");
+    if (missing) {
+      say("Some deck cards are not in the loaded card list.");
     } else if (!full) {
-      var remaining = MAX - deck.length;
-
-      say(
-        "Pick " + remaining + " more card" +
-        (remaining === 1 ? "" : "s") +
-        " to finish your deck."
-      );
+      say("Choose " + (MAX - deck.length) + " more cards.");
     } else {
       say("");
     }
   }
 
-  function availableCards() {
+  function variants() {
     if (special === "EVO") {
-      return cards
-        .filter(function (c) {
-          return c.evo && c.evoImage;
-        })
-        .map(function (c) {
-          return { card: c, variant: "EVO" };
-        });
+      return cards.filter(function (card) {
+        return card.evo;
+      }).map(function (card) {
+        return { card: card, variant: "EVO" };
+      });
     }
 
     if (special === "HERO") {
-      return cards
-        .filter(function (c) {
-          return c.hero && c.heroImage;
-        })
-        .map(function (c) {
-          return { card: c, variant: "HERO" };
-        });
+      return cards.filter(function (card) {
+        return card.hero;
+      }).map(function (card) {
+        return { card: card, variant: "HERO" };
+      });
     }
 
     if (special === "CHAMPION") {
-      return cards
-        .filter(function (c) {
-          return c.r === "champion";
-        })
-        .map(function (c) {
-          return { card: c, variant: "" };
-        });
+      return cards.filter(function (card) {
+        return card.r === "champion";
+      }).map(function (card) {
+        return { card: card, variant: "" };
+      });
     }
 
-    return cards.map(function (c) {
-      return {
-        card: c,
-        variant: ""
-      };
+    return cards.map(function (card) {
+      return { card: card, variant: "" };
     });
   }
 
   function renderPicker() {
-    var full = deck.length === MAX;
+    var full = deck.length >= MAX;
 
-    var list = availableCards().filter(function (item) {
-      var c = item.card;
+    var list = variants().filter(function (item) {
+      var card = item.card;
 
       return (
-        (type === "ALL" || c.t === type) &&
-        (rarity === "ALL" || c.r === rarity) &&
-        c.n.toLowerCase().indexOf(q) >= 0
+        (type === "ALL" || card.t === type) &&
+        (rarity === "ALL" || card.r === rarity) &&
+        (elixir === "ALL" || card.e === Number(elixir)) &&
+        card.n.toLowerCase().includes(query)
       );
     });
 
     list.sort(function (a, b) {
-      return (
-        a.card.e - b.card.e ||
-        a.card.n.localeCompare(b.card.n)
-      );
+      return a.card.e - b.card.e ||
+        a.card.n.localeCompare(b.card.n);
     });
 
-    var html = list.map(function (item) {
-      var c = item.card;
-
-      var inDeck = deck.some(function (d) {
-        return d.id === c.id;
+    $("picker").innerHTML = list.map(function (item) {
+      var card = item.card;
+      var selected = deck.some(function (entry) {
+        return entry.id === card.id;
       });
 
-      var name = item.variant
-        ? item.variant + " " + c.n
-        : c.n;
+      var label = item.variant
+        ? item.variant + " " + card.n
+        : card.n;
 
-      var image = imageFor(c, item.variant);
+      return '<button class="tile" type="button" ' +
+        'data-add="' + card.id + '" ' +
+        'data-variant="' + safe(item.variant) + '" ' +
+        'data-type="' + safe(card.t) + '" ' +
+        ((selected || full) ? 'disabled ' : '') +
+        'aria-label="Add ' + safe(label) + '">' +
+        '<span class="elixir">' + card.e + ' elixir</span>' +
+        imageHTML(imageFor(card, item.variant)) +
+        '<span>' + safe(label) + '</span>' +
+        '</button>';
+    }).join("") || '<p class="note">No cards match this filter.</p>';
 
-      return (
-        '<button class="tile" type="button" ' +
-        'data-add="' + c.id + '" ' +
-        'data-variant="' + item.variant + '" ' +
-        'data-type="' + c.t + '" ' +
-
-        ((inDeck || full) ? "disabled " : "") +
-
-        'aria-label="Add ' + escapeHTML(name) + '">' +
-
-        '<span class="elixir">' + c.e + '</span>' +
-
-        imageHTML(image) +
-
-        '<span>' + escapeHTML(name) + '</span>' +
-
-        (c.u ? " *" : "") +
-
-        '</button>'
-      );
-    }).join("");
-
-    $("picker").innerHTML =
-      html || '<p class="note">No cards match this filter.</p>';
+    var status = $("loadStatus");
+    if (status && cards.length) {
+      status.textContent = cards.length +
+        " cards loaded. Choose your cards below.";
+    }
   }
 
   function render() {
@@ -396,22 +339,21 @@
     renderStats();
     renderPicker();
 
-    var ids = deck.map(function (item) {
-      return item.id;
-    });
-
     var url = new URL(location.href);
 
-    if (ids.length) {
-      url.searchParams.set("deck", ids.join(";"));
+    if (deck.length) {
+      url.searchParams.set(
+        "deck",
+        deck.map(function (item) {
+          return item.id;
+        }).join(";")
+      );
     } else {
       url.searchParams.delete("deck");
     }
 
     history.replaceState(
-      null,
-      "",
-      url.pathname + url.search + url.hash
+      null, "", url.pathname + url.search + url.hash
     );
   }
 
@@ -419,23 +361,11 @@
     id = Number(id);
     variant = variant || "";
 
-    var c = byId[id];
+    if (!byId[id] || deck.length >= MAX) return;
 
-    if (!c) return;
-
-    if (deck.length >= MAX) {
-      say("Your deck is already full.");
-      return;
-    }
-
-    var exists = deck.some(function (item) {
+    if (deck.some(function (item) {
       return item.id === id;
-    });
-
-    if (exists) {
-      say("That card is already in your deck.");
-      return;
-    }
+    })) return;
 
     if (variant === "EVO") {
       var evoCount = deck.filter(function (item) {
@@ -443,219 +373,198 @@
       }).length;
 
       if (evoCount >= 2) {
-        say("You can select up to two Evolutions.");
+        say("Maximum of two Evolutions.");
         return;
       }
     }
 
-    if (variant === "HERO") {
-      var hasHero = deck.some(function (item) {
-        return item.variant === "HERO";
-      });
-
-      if (hasHero) {
-        say("Only one Hero can be selected.");
-        return;
-      }
-    }
-
-    deck.push({
-      id: id,
-      variant: variant
-    });
-
-    render();
-  }
-
-  document.addEventListener("click", function (e) {
-    var t = e.target.closest(
-      "[data-add],[data-remove],[data-type-btn],[data-special-btn]"
-    );
-
-    if (!t) return;
-
-    if (t.hasAttribute("data-add")) {
-      addCard(
-        t.dataset.add,
-        t.dataset.variant || ""
-      );
-
+    if (variant === "HERO" && deck.some(function (item) {
+      return item.variant === "HERO";
+    })) {
+      say("Only one Hero can be selected.");
       return;
     }
 
-    if (t.hasAttribute("data-remove")) {
-      deck.splice(Number(t.dataset.remove), 1);
+    deck.push({ id: id, variant: variant });
+    render();
+  }
+
+  document.addEventListener("click", function (event) {
+    var button = event.target.closest(
+      "[data-add],[data-remove],[data-type-btn],[data-special-btn]"
+    );
+
+    if (!button) return;
+
+    if (button.hasAttribute("data-add")) {
+      addCard(button.dataset.add, button.dataset.variant);
+      return;
+    }
+
+    if (button.hasAttribute("data-remove")) {
+      deck.splice(Number(button.dataset.remove), 1);
       render();
       return;
     }
 
-    if (t.hasAttribute("data-type-btn")) {
-      type = t.dataset.typeBtn;
+    if (button.hasAttribute("data-type-btn")) {
+      type = button.dataset.typeBtn;
       special = "";
 
-      document.querySelectorAll(
-        "[data-type-btn]"
-      ).forEach(function (b) {
-        b.setAttribute(
-          "aria-pressed",
-          String(b === t)
-        );
-      });
+      document.querySelectorAll("[data-type-btn]")
+        .forEach(function (b) {
+          b.setAttribute("aria-pressed", String(b === button));
+        });
 
-      document.querySelectorAll(
-        "[data-special-btn]"
-      ).forEach(function (b) {
-        b.setAttribute("aria-pressed", "false");
-      });
+      document.querySelectorAll("[data-special-btn]")
+        .forEach(function (b) {
+          b.setAttribute("aria-pressed", "false");
+        });
 
       renderPicker();
       return;
     }
 
-    if (t.hasAttribute("data-special-btn")) {
-      var chosen = t.dataset.specialBtn;
-
-      special = special === chosen ? "" : chosen;
+    if (button.hasAttribute("data-special-btn")) {
+      var next = button.dataset.specialBtn;
+      special = special === next ? "" : next;
       type = "ALL";
 
-      document.querySelectorAll(
-        "[data-type-btn]"
-      ).forEach(function (b) {
-        b.setAttribute(
-          "aria-pressed",
-          String(!special && b.dataset.typeBtn === "ALL")
-        );
-      });
+      document.querySelectorAll("[data-type-btn]")
+        .forEach(function (b) {
+          b.setAttribute(
+            "aria-pressed",
+            String(!special && b.dataset.typeBtn === "ALL")
+          );
+        });
 
-      document.querySelectorAll(
-        "[data-special-btn]"
-      ).forEach(function (b) {
-        b.setAttribute(
-          "aria-pressed",
-          String(b.dataset.specialBtn === special)
-        );
-      });
+      document.querySelectorAll("[data-special-btn]")
+        .forEach(function (b) {
+          b.setAttribute(
+            "aria-pressed",
+            String(b.dataset.specialBtn === special)
+          );
+        });
 
       renderPicker();
     }
   });
 
-  if ($("search")) {
-    $("search").addEventListener("input", function (e) {
-      q = e.target.value.trim().toLowerCase();
-      renderPicker();
-    });
-  }
+  $("search").addEventListener("input", function (event) {
+    query = event.target.value.trim().toLowerCase();
+    renderPicker();
+  });
 
-  if ($("rarity")) {
-    $("rarity").addEventListener("change", function (e) {
-      rarity = String(e.target.value).toLowerCase();
+  $("rarity").addEventListener("change", function (event) {
+    rarity = event.target.value;
+    renderPicker();
+  });
 
-      if (rarity === "all" || !rarity) {
-        rarity = "ALL";
-      }
-
-      renderPicker();
-    });
-  }
+  $("elixirFilter").addEventListener("change", function (event) {
+    elixir = event.target.value;
+    renderPicker();
+  });
 
   $("clearBtn").addEventListener("click", function () {
     deck = [];
     render();
-    say("Deck cleared.");
   });
 
-  $("openBtn").addEventListener("click", function (e) {
-    if (deck.length !== MAX) {
-      e.preventDefault();
+  $("openBtn").addEventListener("click", function (event) {
+    if (deck.length !== MAX ||
+        deck.some(function (item) { return !byId[item.id]; })) {
+      event.preventDefault();
     }
   });
 
   $("copyBtn").addEventListener("click", function () {
     if (deck.length !== MAX) return;
 
-    var url = link();
+    var url = deckLink();
 
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(
-        function () {
-          say("Deck link copied!");
-        },
-        function () {
-          prompt("Copy this link:", url);
-        }
-      );
+      navigator.clipboard.writeText(url).then(function () {
+        say("Deck link copied!");
+      }).catch(function () {
+        prompt("Copy your deck link:", url);
+      });
     } else {
-      prompt("Copy this link:", url);
+      prompt("Copy your deck link:", url);
     }
   });
 
   $("impBtn").addEventListener("click", function () {
-    var imported = parse($("imp").value);
+    var ids = parseDeck($("imp").value);
 
-    if (!imported.length) {
-      say(
-        "No deck found. Paste a Clash Royale deck link."
-      );
+    if (!ids.length) {
+      say("Please paste a valid deck link.");
       return;
     }
 
-    deck = imported.map(function (id) {
-      return {
-        id: id,
-        variant: ""
-      };
+    deck = ids.map(function (id) {
+      return { id: id, variant: "" };
     });
 
     $("imp").value = "";
-
     render();
-    say("Deck imported successfully.");
+    say("Deck imported.");
   });
 
-  // Load built-in cards first.
-  if (
-    typeof CARDS !== "undefined" &&
-    Array.isArray(CARDS)
-  ) {
-    loadCards(CARDS);
+  // Read deck links from the URL.
+  var initial = new URLSearchParams(location.search).get("deck");
+
+  if (initial) {
+    deck = parseDeck(initial).map(function (id) {
+      return { id: id, variant: "" };
+    });
+  }
+
+  // Load fallback data without assuming CARDS exists.
+  var fallback = [];
+
+  try {
+    if (typeof CARDS !== "undefined" && Array.isArray(CARDS)) {
+      fallback = CARDS;
+    }
+  } catch (error) {}
+
+  if (Array.isArray(window.CARDS) && window.CARDS.length) {
+    fallback = window.CARDS;
+  }
+
+  if (fallback.length) {
+    mergeCards(fallback);
   } else {
     render();
   }
 
-  // Load the latest cards from the website API.
-  fetch("/api/cards")
+  // Always request the live card list.
+  fetch("/api/cards", { cache: "no-store" })
     .then(function (response) {
       if (!response.ok) {
-        throw new Error("Card API unavailable");
+        throw new Error("HTTP " + response.status);
       }
-
       return response.json();
     })
     .then(function (data) {
       var list = Array.isArray(data)
         ? data
-        : (data && Array.isArray(data.items)
-            ? data.items
-            : []);
+        : (data && Array.isArray(data.items) ? data.items : []);
 
-      if (!list.length) return;
-
-      loadCards(list);
-
-      var note = $("cardnote");
-
-      if (note) {
-        note.textContent =
-          "Card list loaded. Special artwork appears when available in the card data.";
+      if (!list.length) {
+        throw new Error("Card list is empty");
       }
+
+      mergeCards(list);
+
+      $("loadStatus").textContent =
+        "Loaded " + cards.length + " Clash Royale cards.";
     })
-    .catch(function () {
-      var note = $("cardnote");
+    .catch(function (error) {
+      $("loadStatus").textContent = cards.length
+        ? "Using saved card data. Live updates are unavailable."
+        : "Cards could not load. Check /api/cards and your Cloudflare deployment.";
 
-      if (note) {
-        note.textContent =
-          "Live card data is unavailable. Using built-in cards.";
-      }
+      console.error("Deck Builder card loading error:", error);
     });
 })();
