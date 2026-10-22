@@ -259,7 +259,7 @@
   function variants() {
     if (special === "EVO") {
       return cards.filter(function (card) {
-        return card.evo;
+return Boolean(card.evoImage && card.evoImage.includes("/cardevolutions/"));
       }).map(function (card) {
         return { card: card, variant: "EVO" };
       });
