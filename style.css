@@ -6,31 +6,27 @@
 
 /* ===== DESIGN SYSTEM ===== */
 
+
 :root {
-  --gold: #D4AF37;
-  --gold-light: #E6C65B;
-  --gold-bright: #FFD700;
-
-  --bg: #090B12;
-  --panel: #10131C;
-  --card-a: #171A24;
-  --card-b: #0B0D14;
-
-  --text: #FFFFFF;
-  --muted: #B9BECA;
-  --line: rgba(212, 175, 55, 0.35);
-
-  --accent: var(--gold);
-  --accent-soft: rgba(212, 175, 55, 0.4);
-  --hero-tint: #2A210D;
-
-  --font-display: "Barlow Condensed", "Arial Narrow",
-    Impact, sans-serif;
-  --font-body: "Barlow", Arial, Helvetica, sans-serif;
-
-  --radius: 14px;
-  --transition: 0.2s ease;
+--gold: #D4AF37;
+--gold-light: #E6C65B;
+--gold-bright: #FFD700;
+--bg: #090B12;
+--panel: #10131C;
+--card-a: #171A24;
+--card-b: #0B0D14;
+--text: #FFFFFF;
+--muted: #B9BECA;
+--line: rgba(212, 175, 55, 0.35);
+--accent: var(--gold);
+--accent-soft: rgba(212, 175, 55, 0.4);
+--hero-tint: #2A210D;
+--font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+--font-body: "Barlow", Arial, Helvetica, sans-serif;
+--radius: 14px;
+--transition: 0.2s ease;
 }
+
 
 /* ===== RESET ===== */
 
