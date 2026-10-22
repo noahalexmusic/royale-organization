@@ -30,7 +30,13 @@ export async function onRequestGet({ request, env, waitUntil }) {
       id: c.id,
       n: c.name,
       e: c.elixirCost,
-      t: String(c.id).startsWith("27") ? "B" : String(c.id).startsWith("28") ? "S" : "T",
+      t: ["Furnace", "Spirit Empress", "Heal Spirit"].includes(c.name)
+  ? "T"
+  : String(c.id).startsWith("27")
+    ? "B"
+    : String(c.id).startsWith("28")
+      ? "S"
+      : "T",
       i: c.iconUrls && c.iconUrls.medium,
     }));
   const out = json(list, 200, 21600);
