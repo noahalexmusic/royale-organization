@@ -1,119 +1,170 @@
-// Cloudflare Pages Function: GET /api/cards
-// Fetches current Clash Royale cards through the RoyaleAPI proxy.
+
 const BASE = "https://proxy.royaleapi.dev/v1";
 
-const json = (body, status = 200, ttl = 0) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": ttl ? `public, max-age=${ttl}` : "no-store",
-    },
-  });
+function json(body, status = 200, ttl = 0) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": ttl
+        ? `public, max-age=${ttl}`
+        : "no-store"
+    }
+  });
+}
 
-// Correct known card-type exceptions.
 const TYPE_OVERRIDES = {
-  27000010: "T", // Furnace (reworked troop)
-  28000025: "T", // Spirit Empress
+  27000010: "T", // Furnace
+  28000025: "T", // Spirit Empress
+  28000016: "T"  // Heal Spirit
 };
 
 const CHAMPION_NAMES = new Set([
-  "Skeleton King",
-  "Archer Queen",
-  "Golden Knight",
-  "Mighty Miner",
-  "Monk",
-  "Little Prince",
-  "Goblinstein",
-  "Boss Bandit",
+  "Skeleton King",
+  "Archer Queen",
+  "Golden Knight",
+  "Mighty Miner",
+  "Monk",
+  "Little Prince",
+  "Goblinstein",
+  "Boss Bandit"
 ]);
 
 function cardType(card) {
-  if (TYPE_OVERRIDES[card.id]) {
-    return TYPE_OVERRIDES[card.id];
-  }
+  if (TYPE_OVERRIDES[card.id]) {
+    return TYPE_OVERRIDES[card.id];
+  }
 
-  const id = String(card.id);
+  const id = String(card.id);
 
-  if (id.startsWith("27")) return "B";
-  if (id.startsWith("28")) return "S";
+  if (id.startsWith("27")) return "B";
+  if (id.startsWith("28")) return "S";
 
-  return "T";
+  return "T";
 }
 
-export async function onRequestGet({ request, env, waitUntil }) {
-  if (!env.CR_TOKEN) {
-    return json({ error: "Server is missing CR_TOKEN" }, 500);
-  }
+function artwork(value) {
+  return typeof value === "string" ? value : "";
+}
 
-  const cache = caches.default;
-  const cacheKey = new Request(
-    new URL(request.url).origin + "/api/cards"
-  );
+function normalizeCard(card) {
+  const icons = card.iconUrls || {};
+  const rarity = String(card.rarity || "").toLowerCase();
 
-  const cached = await cache.match(cacheKey);
-  if (cached) return cached;
+  const evoImage = artwork(
+    icons.evolutionMedium ||
+    icons.evoMedium ||
+    card.evolutionImage ||
+    card.evoImage
+  );
 
-  let response;
+  const heroImage = artwork(
+    icons.heroMedium ||
+    card.heroImage
+  );
 
-  try {
-    response = await fetch(`${BASE}/cards`, {
-      headers: {
-        Authorization: `Bearer ${env.CR_TOKEN}`,
-      },
-    });
-  } catch (error) {
-    return json({ error: "Could not reach Clash Royale" }, 502);
-  }
+  const isChampion =
+    CHAMPION_NAMES.has(card.name) ||
+    rarity === "champion";
 
-  if (!response.ok) {
-    return json({
-      error: "Clash Royale API error",
-      status: response.status,
-    }, 502);
-  }
+  return {
+    id: card.id,
+    n: card.name,
+    e: card.elixirCost,
+    t: cardType(card),
 
-  let data;
+    i: artwork(icons.medium),
 
-  try {
-    data = await response.json();
-  } catch (error) {
-    return json({
-      error: "Invalid response from Clash Royale",
-    }, 502);
-  }
+    r: rarity || (isChampion ? "champion" : ""),
+    rarity: rarity || (isChampion ? "champion" : ""),
 
-  const cards = (
-    Array.isArray(data.items) ? data.items : []
-  )
-    .filter((card) =>
-      /^2[678]/.test(String(card.id)) &&
-      card.elixirCost != null
-    )
-    .map((card) => ({
-      id: card.id,
-      n: card.name,
-      e: card.elixirCost,
-      t: cardType(card),
-      i: card.iconUrls?.medium || "",
-      rarity:
-        typeof card.rarity === "string"
-          ? card.rarity.toLowerCase()
-          : null,
-      champion:
-        CHAMPION_NAMES.has(card.name) ||
-        String(card.rarity).toLowerCase() === "champion",
+    champion: isChampion,
 
-      // Evo and Hero artwork will be added separately.
-      evo: false,
-      hero: false,
-    }));
+    evo: Boolean(
+      evoImage ||
+      Number(card.maxEvolutionLevel) > 0
+    ),
 
-  const result = json(cards, 200, 21600);
+    hero: Boolean(
+      heroImage ||
+      card.hero === true ||
+      card.isHero === true
+    ),
 
-  if (waitUntil) {
-    waitUntil(cache.put(cacheKey, result.clone()));
-  }
+    evoImage: evoImage,
+    heroImage: heroImage
+  };
+}
 
-  return result;
+export async function onRequestGet({
+  request,
+  env,
+  waitUntil
+}) {
+  if (!env.CR_TOKEN) {
+    return json({
+      error: "Server is missing CR_TOKEN"
+    }, 500);
+  }
+
+  const cache = caches.default;
+
+  // New cache key so the old card list is not reused.
+  const cacheKey = new Request(
+    new URL(request.url).origin + "/api/cards-data-v2"
+  );
+
+  const cached = await cache.match(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  let response;
+
+  try {
+    response = await fetch(`${BASE}/cards`, {
+      headers: {
+        Authorization: `Bearer ${env.CR_TOKEN}`
+      }
+    });
+  } catch (error) {
+    return json({
+      error: "Could not reach Clash Royale"
+    }, 502);
+  }
+
+  if (!response.ok) {
+    return json({
+      error: "Clash Royale API error",
+      status: response.status
+    }, 502);
+  }
+
+  let data;
+
+  try {
+    data = await response.json();
+  } catch (error) {
+    return json({
+      error: "Invalid card data"
+    }, 502);
+  }
+
+  const cards = (
+    Array.isArray(data.items) ? data.items : []
+  )
+    .filter(card =>
+      /^2[678]/.test(String(card.id)) &&
+      card.elixirCost != null
+    )
+    .map(normalizeCard);
+
+  const result = json(cards, 200, 21600);
+
+  if (waitUntil) {
+    waitUntil(cache.put(cacheKey, result.clone()));
+  }
+
+  return result;
 }
