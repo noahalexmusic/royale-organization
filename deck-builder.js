@@ -267,7 +267,7 @@ return Boolean(card.evoImage && card.evoImage.includes("/cardevolutions/"));
 
     if (special === "HERO") {
       return cards.filter(function (card) {
-        return card.hero;
+return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
       }).map(function (card) {
         return { card: card, variant: "HERO" };
       });
