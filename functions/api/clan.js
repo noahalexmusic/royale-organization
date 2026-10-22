@@ -11,7 +11,23 @@ const json = (body, status = 200, ttl = 0) =>
 export async function onRequestGet({ request, env, waitUntil }) {
   const tag = (new URL(request.url).searchParams.get("tag") || "").replace("#", "").toUpperCase();
   if (!ALLOWED.includes(tag)) return json({ error: "Unknown clan" }, 404);
-  if (!env.CR_TOKEN) return json({ error: "Server is missing CR_TOKEN" }, 500);
+
+  if (!env.CR_TOKEN) {
+    const current = new URL(request.url);
+    if (current.hostname !== "royale-organization.pages.dev") {
+      try {
+        const production = await fetch(
+          "https://royale-organization.pages.dev/api/clan?tag=" + encodeURIComponent(tag),
+          { headers: { Accept: "application/json" } }
+        );
+        if (production.ok) {
+          const previewClan = await production.json();
+          return json(previewClan, 200, 120);
+        }
+      } catch (error) {}
+    }
+    return json({ error: "Server is missing CR_TOKEN and production fallback failed" }, 500);
+  }
 
   const cache = caches.default;
   const cacheKey = new Request(new URL(request.url).origin + "/api/clan?tag=" + tag);
@@ -33,6 +49,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
     members: d.members,
     clanScore: d.clanScore,
     clanWarTrophies: d.clanWarTrophies,
+    requiredTrophies: d.requiredTrophies,
+    type: d.type,
+    description: d.description,
+    location: d.location ? d.location.name : "",
     memberList: (d.memberList || []).map((m) => ({ name: m.name, tag: m.tag, role: m.role, trophies: m.trophies })),
   }, 200, 120);
   if (waitUntil) waitUntil(cache.put(cacheKey, out.clone()));

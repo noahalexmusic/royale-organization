@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mojo's Dojo | The Royale Organization</title>
-<meta name="description" content="Mojo's Dojo: a Clash Royale clan in The Royale Organization.">
+<meta name="description" content="Mojo's Dojo: a partner Clash Royale clan in The Royale Organization.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,78 +19,84 @@
     <span class="brand-name">THE ROYALE ORGANIZATION</span>
     <span class="brand-tagline">COMPETE • UNITE • CONQUER</span>
   </div>
-  <nav class="site-nav" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="clans.html" aria-current="page">Our Clans</a>
-      <a href="tournaments.html">Tournaments</a>
-      <a href="decks.html">Pro Decks</a>
-      <a href="deck-builder.html">Deck Builder</a>
-      <a href="streams.html">Streams</a>
-      <a href="team.html">Team</a>
-      <a href="join.html">Join Us</a>
-      <a class="btn btn-discord btn-sm" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </nav>
+  <nav class="site-nav" aria-label="Main"></nav>
 </header>
 
 <main id="main">
-<section class="page-hero theme-mojo">
+<section class="page-hero clan-profile-hero theme-mojo">
   <span class="eyebrow">Partner clan</span>
-  <div class="page-hero-icon" aria-hidden="true">⚔</div>
+  <div class="page-hero-icon float" aria-hidden="true">⚔</div>
   <h1>Mojo's Dojo</h1>
   <p>Train together. Battle hard. Rise as one.</p>
-  <div class="btn-row"><a href="#roster" class="btn btn-primary">Meet our players</a></div>
+  <div class="clan-profile-tag">#J82QJ2QY</div>
+  <div class="btn-row">
+    <a href="#roster" class="btn btn-primary">View Live Roster</a>
+    <a href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23J82QJ2QY" class="btn btn-outline">Open in Clash Royale</a>
+  </div>
 </section>
 
 <section class="section">
-  <span class="label">About our clan</span>
+  <span class="label">About the clan</span>
   <h2>Welcome to Mojo's Dojo</h2>
   <p class="lead">Mojo's Dojo is a partner clan of The Royale Organization, bringing players together through teamwork, competition, and a shared love for Clash Royale.</p>
-  <p class="lead">Our community is built around teamwork, loyalty, competitive improvement, and helping players achieve their goals.</p>
+  <div class="clan-profile-meta">
+    <div><span>Leader</span><strong>Sensei Mojo</strong></div>
+    <div><span>Clan tag</span><strong>#J82QJ2QY</strong></div>
+    <div><span>Location</span><strong id="clan-location">—</strong></div>
+    <div><span>Join type</span><strong id="clan-type">—</strong></div>
+  </div>
 </section>
 
 <section class="section section-dark">
-  <span class="label">Clan overview</span>
+  <span class="label">Live clan overview</span>
   <h2>Clan statistics</h2>
-  <div class="stats-grid">
+  <p class="lead">Pulled from Clash Royale and refreshed automatically.</p>
+  <div class="clan-stats-grid">
     <div class="stat-card"><span class="stat-value" id="member-count">—</span><span class="stat-label">Members</span></div>
     <div class="stat-card"><span class="stat-value" id="clan-score">—</span><span class="stat-label">Clan score</span></div>
-    <div class="stat-card"><span class="stat-value" id="clan-trophies">—</span><span class="stat-label">Clan war trophies</span></div>
+    <div class="stat-card"><span class="stat-value" id="clan-trophies">—</span><span class="stat-label">War trophies</span></div>
+    <div class="stat-card"><span class="stat-value" id="required-trophies">—</span><span class="stat-label">Required trophies</span></div>
   </div>
-  <p class="note">Clan tag: <strong>#J82QJ2QY</strong></p>
   <div class="btn-row">
     <a class="btn btn-outline btn-sm" href="https://royaleapi.com/clan/J82QJ2QY" target="_blank" rel="noopener noreferrer">View on RoyaleAPI</a>
-    <a class="btn btn-outline btn-sm" href="clashroyale://clanInfo?id=J82QJ2QY">Open in Clash Royale</a>
+    <a class="btn btn-outline btn-sm" href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23J82QJ2QY">Open in Clash Royale</a>
   </div>
-  <p class="note" data-live-note>Stats update every few minutes from Clash Royale.</p>
+  <p class="note" data-live-note>Connecting to live clan data...</p>
 </section>
 
-<section class="section">
-  <span class="label">Clan leader</span>
-  <h2>Meet your leader</h2>
-  <div class="grid" style="max-width:420px"><article class="card card-center"><h3>Sensei Mojo</h3><p>Mojo's Dojo leader</p><div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@mojosvibin" target="_blank" rel="noopener noreferrer">TikTok</a></div></article></div>
+<section class="section clan-leader-section">
+  <span class="label">Clan leadership</span>
+  <h2>Meet the leader</h2>
+  <article class="clan-leader-card">
+    <div class="clan-leader-icon" aria-hidden="true">⚔</div>
+    <div>
+      <h3>Sensei Mojo</h3>
+      <p>Mojo's Dojo leader</p>
+      <div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@mojosvibin" target="_blank" rel="noopener noreferrer">TikTok</a></div>
+    </div>
+  </article>
 </section>
 
 <section class="section section-dark" id="roster">
-  <span class="label">Our players</span>
-  <h2>Meet the Mojo's Dojo roster</h2>
-  <p class="lead">The roster updates automatically from Clash Royale.</p>
-  <div class="roster">
-    <div class="roster-header"><span>PLAYER</span><span>ROLE</span><span>TROPHIES</span><span>PROFILE</span></div>
+  <span class="label">Live roster</span>
+  <h2>Mojo's Dojo players</h2>
+  <p class="lead">In-game names, clan roles, and trophy counts update automatically from Clash Royale.</p>
+  <div class="roster clan-roster">
+    <div class="roster-header"><span>Player</span><span>Role</span><span>Trophies</span><span>Profile</span></div>
     <div class="roster-empty">Loading roster…</div>
   </div>
-  <p class="note">Showing in-game names, clan roles, and trophies only.</p>
+  <p class="note">Player profile buttons open RoyaleAPI in a new tab.</p>
 </section>
 
 <section class="cta-section theme-mojo">
-  <span class="label">Become part of Mojo's Dojo</span>
+  <span class="label">Join Mojo's Dojo</span>
   <h2>Ready to enter the dojo?</h2>
-  <p>Join a community of Clash Royale players committed to teamwork, competition, and growing together.</p>
+  <p>Explore the live clan profile in Clash Royale or see how players and clans join The Royale Organization.</p>
   <div class="btn-row">
-    <a href="join.html" class="btn btn-primary">How to join</a>
-    <a href="clans.html" class="btn btn-outline">Explore other clans</a>
+    <a href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23J82QJ2QY" class="btn btn-primary">View Clan in Game</a>
+    <a href="join.html" class="btn btn-outline">How to Join</a>
+    <a href="clans.html" class="btn btn-outline">All Clans</a>
   </div>
-  <p class="note">A direct Clash Royale clan invitation link will be added soon.</p>
 </section>
 </main>
 
@@ -101,5 +109,6 @@
 </footer>
 <script>window.CLAN_TAG="J82QJ2QY";</script>
 <script src="clan-live.js"></script>
-<script src="site.js"></script>\n</body>
+<script src="site.js"></script>
+</body>
 </html>
