@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tournaments | The Royale Organization</title>
-<meta name="description" content="Official Royale Organization Clash Royale tournaments, rules, and results.">
+<meta name="description" content="Official Royale Organization Clash Royale tournaments, registration, rules, schedules, brackets, and results.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,81 +19,131 @@
     <span class="brand-name">THE ROYALE ORGANIZATION</span>
     <span class="brand-tagline">COMPETE • UNITE • CONQUER</span>
   </div>
-  <nav class="site-nav" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="clans.html">Our Clans</a>
-      <a href="tournaments.html" aria-current="page">Tournaments</a>
-      <a href="decks.html">Pro Decks</a>
-      <a href="deck-builder.html">Deck Builder</a>
-      <a href="streams.html">Streams</a>
-      <a href="team.html">Team</a>
-      <a href="join.html">Join Us</a>
-      <a class="btn btn-discord btn-sm" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </nav>
+  <nav class="site-nav" aria-label="Main"></nav>
 </header>
 
 <main id="main">
-<section class="page-hero">
-  <span class="eyebrow">The Royale Organization esports</span>
+<section class="page-hero tournament-hero">
+  <span class="eyebrow">Royale Organization esports</span>
   <div class="page-hero-icon float" aria-hidden="true">🏆</div>
-  <h1>The arena awaits</h1>
-  <p>Where champions rise, rivalries are born, and every battle matters.</p>
-  <p>Compete in official Royale Organization tournaments, challenge skilled players, and fight for glory and prizes.</p>
-  <div class="btn-row"><a href="#upcoming-tournaments" class="btn btn-primary">Explore tournaments</a></div>
+  <h1>Enter the Arena</h1>
+  <p>Official Clash Royale competition for our players, clans, and community — from registration to the final crown.</p>
+  <div class="btn-row">
+    <a href="#next-event" class="btn btn-primary">Next Tournament</a>
+    <a href="#rules" class="btn btn-outline">Competition Rules</a>
+  </div>
 </section>
 
-<section class="section" id="upcoming-tournaments">
-  <span class="label">Official competitions</span>
-  <h2>Upcoming tournaments</h2>
-  <p class="lead">Step into the arena and compete against players from across The Royale Organization. New tournaments and events will be announced here.</p>
-  <div class="card panel-wide" style="text-align:left">
-    <span class="label">Coming soon</span>
-    <h3>Next Royale Championship</h3>
-    <p>Our next official tournament is being planned. Dates, registration details, rules, and prizes will be announced once confirmed.</p>
-    <div class="details">
-      <p><strong>Date:</strong> To be announced</p>
-      <p><strong>Entry:</strong> To be announced</p>
-      <p><strong>Prize pool:</strong> To be announced</p>
-      <p><strong>Status:</strong> Awaiting announcement</p>
+<section class="section" id="next-event">
+  <span class="label">Next official event</span>
+  <h2 id="event-name">Next Royale Championship</h2>
+  <p class="lead">The next tournament is being planned. This page is now the official home for confirmed dates, registration, format, schedules, brackets, and results.</p>
+
+  <article class="tournament-feature">
+    <div class="tournament-feature-main">
+      <div class="tournament-badge"><span></span><strong id="event-status">Awaiting announcement</strong></div>
+      <h3>The next battle starts here.</h3>
+      <p>Once the event is confirmed, the countdown and registration status below will update from one tournament control file.</p>
+
+      <div class="tournament-countdown" id="tournament-countdown" aria-live="polite">
+        <div class="countdown-tba"><strong>Next event loading...</strong><span>Date and registration details will appear here once they are confirmed.</span></div>
+      </div>
+
+      <div class="btn-row">
+        <a id="tournament-register-btn" class="btn btn-primary is-disabled" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer" aria-disabled="true">Registration Not Open Yet</a>
+        <a class="btn btn-outline" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Tournament Discord</a>
+      </div>
     </div>
+
+    <div class="tournament-facts">
+      <div><span>Date</span><strong id="event-date">To be announced</strong></div>
+      <div><span>Entry</span><strong id="event-entry">To be announced</strong></div>
+      <div><span>Prize pool</span><strong id="event-prize">To be announced</strong></div>
+      <div><span>Format</span><strong id="event-format">To be announced</strong></div>
+    </div>
+  </article>
+</section>
+
+<section class="section section-dark">
+  <span class="label">Tournament hub</span>
+  <h2>Everything in one place.</h2>
+  <p class="lead">No hunting through messages. Each official event can move through the same clear competition flow.</p>
+  <div class="tournament-hub-grid">
+    <a class="tournament-hub-card" href="#registration"><span class="hub-number">01</span><span class="hub-icon">📋</span><h3>Registration</h3><p>Entry status, requirements, and signup instructions.</p></a>
+    <a class="tournament-hub-card" href="#rules"><span class="hub-number">02</span><span class="hub-icon">⚖</span><h3>Rules</h3><p>Format, conduct, match settings, and disputes.</p></a>
+    <a class="tournament-hub-card" href="#schedule"><span class="hub-number">03</span><span class="hub-icon">🗓</span><h3>Schedule</h3><p>Match times and round information once published.</p></a>
+    <a class="tournament-hub-card" href="#bracket"><span class="hub-number">04</span><span class="hub-icon">⚔</span><h3>Bracket</h3><p>Competition progress from opening round to final.</p></a>
+    <a class="tournament-hub-card" href="#results"><span class="hub-number">05</span><span class="hub-icon">🏆</span><h3>Results</h3><p>Verified placements, champions, and achievements.</p></a>
   </div>
 </section>
 
-<section class="section section-dark" id="tournament-rules">
+<section class="section" id="registration">
+  <span class="label">How to enter</span>
+  <h2>Registration flow</h2>
+  <div class="tournament-steps">
+    <article><span>1</span><div><h3>Watch for the announcement</h3><p>Confirmed tournament details will appear here and in the Royale Organization Discord.</p></div></article>
+    <article><span>2</span><div><h3>Register before the deadline</h3><p>Follow the official signup instructions published for that event. Registration is not open until the event is confirmed.</p></div></article>
+    <article><span>3</span><div><h3>Check in and compete</h3><p>Registered players follow the event schedule, match instructions, and administrator directions.</p></div></article>
+    <article><span>4</span><div><h3>Results are verified</h3><p>Final placements and prizes are published after tournament staff verify the event results.</p></div></article>
+  </div>
+</section>
+
+<section class="section section-dark" id="rules">
   <span class="label">Compete with honor</span>
-  <h2>Tournament rules and format</h2>
-  <p class="lead">Our tournaments are built around fair play, competition, and respect for every player.</p>
-  <div class="grid grid-2">
-    <div class="card"><h3><span aria-hidden="true">⚔️</span> Competition format</h3><p>Tournament formats, match settings, and scoring systems will be announced before each event.</p></div>
-    <div class="card"><h3><span aria-hidden="true">📋</span> Registration</h3><p>Players must register through the official tournament signup process before the registration deadline.</p></div>
-    <div class="card"><h3><span aria-hidden="true">🤝</span> Fair play</h3><p>Cheating, exploiting, harassment, and unsportsmanlike conduct are prohibited during competitions.</p></div>
-    <div class="card"><h3><span aria-hidden="true">🏆</span> Prizes and results</h3><p>Prizes and eligibility requirements will be announced for each tournament. Official results will be published after verification.</p></div>
+  <h2>Core competition rules</h2>
+  <p class="lead">Event-specific settings may change, but every Royale Organization tournament is built around fair play, clear administration, and respect.</p>
+  <div class="grid grid-2 tournament-rule-grid">
+    <article class="card"><span class="card-icon">⚔</span><h3>Match format</h3><p>Format, scoring, deck restrictions, match settings, and advancement rules are announced before each event.</p></article>
+    <article class="card"><span class="card-icon">📋</span><h3>Eligibility</h3><p>Players must complete the official registration process and meet any event-specific eligibility requirements before the deadline.</p></article>
+    <article class="card"><span class="card-icon">🤝</span><h3>Fair play</h3><p>Cheating, exploiting, harassment, intentional disruption, and unsportsmanlike conduct are prohibited.</p></article>
+    <article class="card"><span class="card-icon">🛡</span><h3>Admin decisions</h3><p>Tournament staff review disputes and verify results. Event-specific procedures will be posted with the official rules.</p></article>
+    <article class="card"><span class="card-icon">⏱</span><h3>Check-in</h3><p>Players are responsible for following announced check-in times and being ready when their match is called.</p></article>
+    <article class="card"><span class="card-icon">🏆</span><h3>Prizes</h3><p>Prize amounts, eligibility, and distribution details are announced for each tournament before registration closes.</p></article>
   </div>
 </section>
 
-<section class="section" id="hall-of-champions">
-  <span class="label">Legends of the arena</span>
-  <h2>Hall of Champions</h2>
-  <p class="lead">Here we celebrate the players who rise above the competition and earn their place in Royale Organization history.</p>
-  <div class="card panel-wide">
-    <div class="page-hero-icon float" aria-hidden="true">🏆</div>
-    <h3>Champions will rise</h3>
-    <p>Our Hall of Champions is awaiting its first published tournament results. Future winners, records, and achievements will be featured here.</p>
-    <span class="label">Results coming soon</span>
+<section class="section" id="schedule">
+  <span class="label">Event timeline</span>
+  <h2>Schedule</h2>
+  <div class="tournament-empty-state">
+    <div class="empty-state-icon">🗓</div>
+    <h3>Schedule awaiting announcement</h3>
+    <p>Round times, check-in, and match windows will appear here when the next tournament is officially scheduled.</p>
   </div>
 </section>
 
-<section class="section section-dark" id="tournament-registration">
-  <span class="label">Your journey starts here</span>
-  <h2>Ready to compete?</h2>
-  <p class="lead">Join our competitive community, take part in official tournaments, and prove yourself in the arena.</p>
-  <div class="card panel-wide">
-    <div class="page-hero-icon" aria-hidden="true">⚔️</div>
-    <h3>Enter the competition</h3>
-    <p>Tournament announcements, registration instructions, match schedules, and official results will be shared through The Royale Organization community.</p>
-    <p>Registration will open when our next tournament is officially announced.</p>
-    <a href="join.html" class="btn btn-primary">Join our community</a>
+<section class="section section-dark" id="bracket">
+  <span class="label">Road to the crown</span>
+  <h2>Bracket</h2>
+  <div class="bracket-preview" aria-label="Tournament bracket placeholder">
+    <div class="bracket-round"><span>Opening round</span><div>TBA</div><div>TBA</div><div>TBA</div><div>TBA</div></div>
+    <div class="bracket-arrow" aria-hidden="true">›</div>
+    <div class="bracket-round"><span>Semifinals</span><div>TBA</div><div>TBA</div></div>
+    <div class="bracket-arrow" aria-hidden="true">›</div>
+    <div class="bracket-round bracket-final"><span>Final</span><div>🏆 Champion TBA</div></div>
+  </div>
+  <p class="note">The official bracket will be published after registration and seeding are complete.</p>
+</section>
+
+<section class="section" id="results">
+  <span class="label">Hall of Champions</span>
+  <h2>Results & champions</h2>
+  <p class="lead">Verified tournament winners, placements, records, and achievements will live here permanently.</p>
+  <div class="champion-podium">
+    <div class="podium-place second"><span>2</span><strong>Runner-up</strong><small>Awaiting results</small></div>
+    <div class="podium-place first"><span>1</span><strong>Champion</strong><small>Awaiting results</small></div>
+    <div class="podium-place third"><span>3</span><strong>Third place</strong><small>Awaiting results</small></div>
+  </div>
+  <p class="note">No official tournament results have been published here yet.</p>
+</section>
+
+<section class="cta-section">
+  <span class="label">Stay tournament ready</span>
+  <h2>Don't miss the next announcement.</h2>
+  <p>Join The Royale Organization Discord for tournament announcements, registration instructions, match updates, and community events.</p>
+  <div class="btn-row">
+    <a href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Join Tournament Discord</a>
+    <a href="join.html" class="btn btn-outline">Join the Organization</a>
   </div>
 </section>
 </main>
@@ -103,5 +155,7 @@
   <p class="copyright">© 2026 The Royale Organization. All rights reserved.</p>
   <p class="disclaimer">This site is unofficial. The Royale Organization is not affiliated with, endorsed, or sponsored by Supercell, and Supercell is not responsible for it. Clash Royale is a trademark of Supercell. See Supercell's Fan Content Policy.</p>
 </footer>
-<script src="site.js"></script>\n</body>
+<script src="site.js"></script>
+<script src="tournaments.js"></script>
+</body>
 </html>
