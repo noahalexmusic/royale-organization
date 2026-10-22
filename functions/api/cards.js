@@ -3,13 +3,13 @@
 
 const BASE = "https://proxy.royaleapi.dev/v1";
 
-// Increase this number whenever the card data structure changes.
-const CACHE_VERSION = 2;
+// Increase whenever the card data structure changes.
+const CACHE_VERSION = 3;
 
 // Cache card information for 6 hours.
 const CACHE_DURATION = 21600;
 
-// Cards whose current type differs from their original API ID category.
+// Cards whose current type differs from their original API ID.
 const TROOP_OVERRIDES = new Set([
   "Furnace",
   "Spirit Empress",
@@ -29,7 +29,7 @@ function json(body, status = 200, ttl = 0) {
   });
 }
 
-// Determine a card's type.
+// Determine card type.
 // T = Troop
 // B = Building
 // S = Spell
@@ -51,21 +51,69 @@ function getCardType(card) {
   return "T";
 }
 
-// Convert official API card data into the format
-// expected by The Royale Organization Deck Builder.
+// Normalize card rarity.
+function getRarity(card) {
+  return String(card.rarity || "")
+    .trim()
+    .toLowerCase();
+}
+
+// Check whether a card supports Evolution.
+function hasEvolution(card) {
+  return Number(card.maxEvolutionLevel || 0) > 0;
+}
+
+// Check whether a card supports a Hero upgrade.
+// Only mark cards when the API supplies this information.
+function hasHero(card) {
+  return Number(card.maxHeroLevel || 0) > 0;
+}
+
+// Convert Clash Royale API data into
+// The Royale Organization's card format.
 function formatCard(card) {
+  const rarity = getRarity(card);
+
   return {
+    // Existing properties
     id: card.id,
     n: card.name,
     e: card.elixirCost,
     t: getCardType(card),
     i: card.iconUrls?.medium || "",
+
+    // New properties
+    r: rarity,
+
+    // Champion rarity
+    champion: rarity === "champion",
+
+    // Evolution availability
+    evolution: hasEvolution(card),
+
+    // Hero availability
+    hero: hasHero(card),
+
+    // Evolution artwork, if supplied
+    evolutionImage:
+      card.iconUrls?.evolutionMedium || "",
+
+    // API level information
+    maxEvolutionLevel:
+      card.maxEvolutionLevel || 0,
+
+    maxHeroLevel:
+      card.maxHeroLevel || 0,
   };
 }
 
 // Handle GET /api/cards
-export async function onRequestGet({ request, env, waitUntil }) {
-  // Verify that the Clash Royale API token exists.
+export async function onRequestGet({
+  request,
+  env,
+  waitUntil,
+}) {
+  // Verify API token.
   if (!env.CR_TOKEN) {
     return json(
       { error: "Server is missing CR_TOKEN" },
@@ -75,8 +123,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
 
   const cache = caches.default;
 
-  // Versioned cache key prevents old card classifications
-  // from being reused after this update.
+  // Versioned cache prevents outdated data.
   const cacheKey = new Request(
     `${new URL(request.url).origin}/api/cards?v=${CACHE_VERSION}`
   );
@@ -88,7 +135,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     return cachedResponse;
   }
 
-  // Request the latest card data.
+  // Request current card information.
   let response;
 
   try {
@@ -104,7 +151,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     );
   }
 
-  // Handle unsuccessful API responses.
+  // Handle API errors.
   if (!response.ok) {
     return json(
       {
@@ -115,7 +162,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     );
   }
 
-  // Read the API response.
+  // Read API response.
   let data;
 
   try {
@@ -139,13 +186,4 @@ export async function onRequestGet({ request, env, waitUntil }) {
     })
     .map(formatCard);
 
-  // Prepare the successful response.
-  const output = json(cards, 200, CACHE_DURATION);
-
-  // Store the response in Cloudflare's cache.
-  if (waitUntil) {
-    waitUntil(cache.put(cacheKey, output.clone()));
-  }
-
-  return output;
-}
+  //
