@@ -33,6 +33,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
     members: d.members,
     clanScore: d.clanScore,
     clanWarTrophies: d.clanWarTrophies,
+    requiredTrophies: d.requiredTrophies,
+    type: d.type,
+    description: d.description,
+    location: d.location ? d.location.name : "",
     memberList: (d.memberList || []).map((m) => ({ name: m.name, tag: m.tag, role: m.role, trophies: m.trophies })),
   }, 200, 120);
   if (waitUntil) waitUntil(cache.put(cacheKey, out.clone()));
