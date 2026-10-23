@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Streams | The Royale Organization</title>
-<meta name="description" content="Watch The Royale Organization's leaders on TikTok, Twitch, and YouTube.">
+<title>Streams & Creators | The Royale Organization</title>
+<meta name="description" content="Watch The Royale Organization's Clash Royale creators and clan leaders across TikTok, Twitch, and YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,36 +19,137 @@
     <span class="brand-name">THE ROYALE ORGANIZATION</span>
     <span class="brand-tagline">COMPETE • UNITE • CONQUER</span>
   </div>
-  <nav class="site-nav" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="clans.html">Our Clans</a>
-      <a href="tournaments.html">Tournaments</a>
-      <a href="decks.html">Pro Decks</a>
-      <a href="deck-builder.html">Deck Builder</a>
-      <a href="streams.html" aria-current="page">Streams</a>
-      <a href="team.html">Team</a>
-      <a href="join.html">Join Us</a>
-      <a class="btn btn-discord btn-sm" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </nav>
+  <nav class="site-nav" aria-label="Main"></nav>
 </header>
 
 <main id="main">
-<section class="page-hero">
-  <span class="eyebrow">Watch live</span>
-  <h1>Streams</h1>
-  <p>Catch our clan leaders playing Clash Royale on TikTok, Twitch, and YouTube.</p>
+<section class="page-hero streams-hero">
+  <span class="eyebrow">Watch • Learn • Connect</span>
+  <div class="page-hero-icon float" aria-hidden="true">▶</div>
+  <h1>Streams & Creators</h1>
+  <p>Follow the people representing The Royale Organization across Clash Royale streams, videos, and community content.</p>
+  <div class="btn-row">
+    <a href="#creator-roster" class="btn btn-primary">Meet the Creators</a>
+    <a href="https://discord.gg/nFxd48maEg" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Stream Announcements</a>
+  </div>
 </section>
+
+<section class="section" id="creator-roster">
+  <span class="label">Creator roster</span>
+  <h2>Choose who you want to watch.</h2>
+  <p class="lead">Use the platform filters to find creators. Live status is not guessed — use Check Live to open the creator's platform and see their current status directly.</p>
+
+  <div class="creator-toolbar" aria-label="Creator platform filters">
+    <button class="creator-filter active" type="button" data-creator-filter="all" aria-pressed="true">All Creators</button>
+    <button class="creator-filter" type="button" data-creator-filter="tiktok" aria-pressed="false">TikTok</button>
+    <button class="creator-filter" type="button" data-creator-filter="twitch" aria-pressed="false">Twitch</button>
+    <button class="creator-filter" type="button" data-creator-filter="youtube" aria-pressed="false">YouTube</button>
+  </div>
+
+  <div class="creator-grid" id="creatorGrid">
+    <article class="creator-card creator-featured" data-platforms="tiktok twitch youtube">
+      <div class="creator-card-head">
+        <div class="creator-avatar" aria-hidden="true">NA</div>
+        <div>
+          <span class="creator-kicker">Founder • Featured creator</span>
+          <h3>Noah Alex CR</h3>
+          <p>Crownbound leader</p>
+        </div>
+      </div>
+      <p class="creator-bio">Clash Royale gameplay, ranked pushes, organization updates, community events, and competitive content.</p>
+      <div class="creator-status-row">
+        <div><span>Stream status</span><strong>Check platform</strong></div>
+        <div><span>Schedule</span><strong>Not published</strong></div>
+      </div>
+      <div class="creator-platforms">
+        <a class="creator-platform" data-platform="tiktok" href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer"><span>TikTok</span><strong>Watch ↗</strong></a>
+        <a class="creator-platform" data-platform="twitch" href="https://www.twitch.tv/noahalexcr" target="_blank" rel="noopener noreferrer"><span>Twitch</span><strong>Watch ↗</strong></a>
+        <a class="creator-platform" data-platform="youtube" href="https://www.youtube.com/@noahalexcr" target="_blank" rel="noopener noreferrer"><span>YouTube</span><strong>Watch ↗</strong></a>
+      </div>
+      <div class="creator-actions">
+        <a href="crownbound.html" class="btn btn-outline btn-sm">Crownbound Profile</a>
+        <a href="https://www.tiktok.com/@noahalexcr" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">Check Live</a>
+      </div>
+    </article>
+
+    <article class="creator-card" data-platforms="tiktok">
+      <div class="creator-card-head">
+        <div class="creator-avatar creator-avatar-mk" aria-hidden="true">T</div>
+        <div>
+          <span class="creator-kicker">Clan leader • Creator</span>
+          <h3>Tayla</h3>
+          <p>MK Best Win Con leader</p>
+        </div>
+      </div>
+      <p class="creator-bio">Clash Royale content representing MK Best Win Con and The Royale Organization community.</p>
+      <div class="creator-status-row">
+        <div><span>Stream status</span><strong>Check platform</strong></div>
+        <div><span>Schedule</span><strong>Not published</strong></div>
+      </div>
+      <div class="creator-platforms">
+        <a class="creator-platform" data-platform="tiktok" href="https://www.tiktok.com/@taylaaaaaa67777" target="_blank" rel="noopener noreferrer"><span>TikTok</span><strong>Watch ↗</strong></a>
+      </div>
+      <div class="creator-actions">
+        <a href="mk-best-win-con.html" class="btn btn-outline btn-sm">MK Best Win Con</a>
+        <a href="https://www.tiktok.com/@taylaaaaaa67777" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">Check Live</a>
+      </div>
+    </article>
+
+    <article class="creator-card" data-platforms="tiktok">
+      <div class="creator-card-head">
+        <div class="creator-avatar creator-avatar-mojo" aria-hidden="true">SM</div>
+        <div>
+          <span class="creator-kicker">Clan leader • Creator</span>
+          <h3>Sensei Mojo</h3>
+          <p>Mojo's Dojo leader</p>
+        </div>
+      </div>
+      <p class="creator-bio">Clash Royale content, community play, and creator activity representing Mojo's Dojo.</p>
+      <div class="creator-status-row">
+        <div><span>Stream status</span><strong>Check platform</strong></div>
+        <div><span>Schedule</span><strong>Not published</strong></div>
+      </div>
+      <div class="creator-platforms">
+        <a class="creator-platform" data-platform="tiktok" href="https://www.tiktok.com/@mojosvibin" target="_blank" rel="noopener noreferrer"><span>TikTok</span><strong>Watch ↗</strong></a>
+      </div>
+      <div class="creator-actions">
+        <a href="mojos-dojo.html" class="btn btn-outline btn-sm">Mojo's Dojo</a>
+        <a href="https://www.tiktok.com/@mojosvibin" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">Check Live</a>
+      </div>
+    </article>
+  </div>
+  <p class="creator-empty" id="creatorEmpty" hidden>No creators currently match that platform.</p>
+</section>
+
+<section class="section section-dark">
+  <span class="label">Creator network</span>
+  <h2>More than going live.</h2>
+  <div class="grid grid-3 creator-benefits">
+    <article class="card card-center"><span class="card-icon" aria-hidden="true">📣</span><h3>Promotion</h3><p>Organization channels can spotlight official creators, streams, clips, events, and milestones.</p></article>
+    <article class="card card-center"><span class="card-icon" aria-hidden="true">🤝</span><h3>Collaboration</h3><p>Creators can connect with clan leaders, players, tournament staff, and other community creators.</p></article>
+    <article class="card card-center"><span class="card-icon" aria-hidden="true">🏆</span><h3>Competition</h3><p>Tournament coverage, ranked gameplay, challenges, and community events give creators more to build around.</p></article>
+  </div>
+</section>
+
 <section class="section">
-  <span class="label">Our streamers</span>
-  <h2>Where to watch</h2>
-  <div class="grid grid-3"><article class="card card-center"><h3>Noah Alex CR</h3><p>Founder and Crownbound leader</p><p><a class="text-link" href="crownbound.html">Crownbound page</a></p><div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer">TikTok</a><a class="btn btn-outline btn-sm" href="https://www.twitch.tv/noahalexcr" target="_blank" rel="noopener noreferrer">Twitch</a><a class="btn btn-outline btn-sm" href="https://www.youtube.com/@noahalexcr" target="_blank" rel="noopener noreferrer">YouTube</a></div></article><article class="card card-center"><h3>Tayla</h3><p>MK Best Win Con leader</p><p><a class="text-link" href="mk-best-win-con.html">MK Best Win Con page</a></p><div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@taylaaaaaa67777" target="_blank" rel="noopener noreferrer">TikTok</a></div></article><article class="card card-center"><h3>Sensei Mojo</h3><p>Mojo's Dojo leader</p><p><a class="text-link" href="mojos-dojo.html">Mojo's Dojo page</a></p><div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@mojosvibin" target="_blank" rel="noopener noreferrer">TikTok</a></div></article></div>
-  <p class="note">Live badges are coming soon. For now, tap a platform to see if a streamer is on.</p>
+  <span class="label">Streaming schedule</span>
+  <h2>Official schedules are coming.</h2>
+  <p class="lead">Creators have not published fixed organization-wide schedules yet. When they do, this page is ready to display them without pretending someone is live when they are not.</p>
+  <div class="stream-schedule">
+    <div><span>Noah Alex CR</span><strong>Schedule not published</strong><a href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer">Check TikTok ↗</a></div>
+    <div><span>Tayla</span><strong>Schedule not published</strong><a href="https://www.tiktok.com/@taylaaaaaa67777" target="_blank" rel="noopener noreferrer">Check TikTok ↗</a></div>
+    <div><span>Sensei Mojo</span><strong>Schedule not published</strong><a href="https://www.tiktok.com/@mojosvibin" target="_blank" rel="noopener noreferrer">Check TikTok ↗</a></div>
+  </div>
 </section>
+
 <section class="cta-section">
-  <h2>Never miss a stream</h2>
-  <p>Announcements go out in our Discord.</p>
-  <a href="https://discord.gg/nFxd48maEg" class="btn btn-discord" target="_blank" rel="noopener noreferrer">Join our Discord</a>
+  <span class="label">Create with Royale</span>
+  <h2>Want to represent the organization?</h2>
+  <p>Players and creators can join the community now. As the creator program expands, confirmed creator roles and opportunities will be published here.</p>
+  <div class="btn-row">
+    <a href="join.html" class="btn btn-primary">Join the Organization</a>
+    <a href="team.html" class="btn btn-outline">Meet the Team</a>
+  </div>
 </section>
 </main>
 
@@ -57,5 +160,7 @@
   <p class="copyright">© 2026 The Royale Organization. All rights reserved.</p>
   <p class="disclaimer">This site is unofficial. The Royale Organization is not affiliated with, endorsed, or sponsored by Supercell, and Supercell is not responsible for it. Clash Royale is a trademark of Supercell. See Supercell's Fan Content Policy.</p>
 </footer>
-<script src="site.js"></script>\n</body>
+<script src="site.js"></script>
+<script src="streams.js"></script>
+</body>
 </html>

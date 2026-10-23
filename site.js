@@ -23,7 +23,7 @@
       ["balance-changes", "Balance Changes", "balance-changes.html"]
     ]},
     { label: "Community", pages: [
-      ["streams", "Streams", "streams.html"],
+      ["streams", "Streams & Creators", "streams.html"],
       ["join", "Join Us", "join.html"]
     ]}
   ];
