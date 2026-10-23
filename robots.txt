@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://royale-organization.pages.dev/sitemap.xml

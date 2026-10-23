@@ -128,4 +128,41 @@
   topButton.addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+
+  /* Subtle progressive reveal. Content stays fully usable if the observer is unavailable. */
+  var revealTargets = Array.prototype.slice.call(document.querySelectorAll(
+    ".section > .label, .section > h2, .section > .lead, .grid > *, " +
+    ".home-feature-grid > *, .home-clan-grid > *, .creator-grid > *, " +
+    ".leadership-grid > *, .join-path-grid > *, .join-clan-grid > *, " +
+    ".tournament-hub-grid > *, .home-split, .home-creator-feature"
+  ));
+
+  if (revealTargets.length) {
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    revealTargets.forEach(function (element, index) {
+      element.classList.add("reveal-item");
+      if (index % 3 === 1) element.classList.add("reveal-delay-1");
+      if (index % 3 === 2) element.classList.add("reveal-delay-2");
+    });
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealTargets.forEach(function (element) {
+        element.classList.add("is-visible");
+      });
+    } else {
+      var revealObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
+
+      revealTargets.forEach(function (element) {
+        revealObserver.observe(element);
+      });
+    }
+  }
 })();
