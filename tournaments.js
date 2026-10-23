@@ -1,9 +1,9 @@
 (function () {
   "use strict";
 
-  // Update this object when the next tournament is officially confirmed.
-  // Leave dateISO empty while the event is still awaiting announcement.
-  var tournament = {
+  // Shared event data lives in tournament-data.js so the homepage and
+  // tournament hub always show the same confirmed information.
+  var tournament = window.ROYALE_TOURNAMENT || {
     name: "Next Royale Championship",
     dateISO: "",
     entry: "To be announced",
