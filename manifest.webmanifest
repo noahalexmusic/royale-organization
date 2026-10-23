@@ -1,0 +1,17 @@
+{
+  "name": "The Royale Organization",
+  "short_name": "Royale Org",
+  "description": "Clash Royale esports community for clans, players, creators, tournaments, decks, and game updates.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090b10",
+  "theme_color": "#D4AF37",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
