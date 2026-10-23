@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Royale Organization | Clash Royale Esports</title>
-<meta name="description" content="The Royale Organization is a Clash Royale esports community uniting competitive players, clans, and creators.">
+<meta name="description" content="The Royale Organization is a Clash Royale esports community for competitive players, clans, creators, tournaments, decks, and live game updates.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home-page">
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="brand">
@@ -17,90 +19,203 @@
     <span class="brand-name">THE ROYALE ORGANIZATION</span>
     <span class="brand-tagline">COMPETE • UNITE • CONQUER</span>
   </div>
-  <nav class="site-nav" aria-label="Main">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="about.html">About Us</a>
-      <a href="clans.html">Our Clans</a>
-      <a href="tournaments.html">Tournaments</a>
-      <a href="decks.html">Pro Decks</a>
-      <a href="deck-builder.html">Deck Builder</a>
-      <a href="streams.html">Streams</a>
-      <a href="team.html">Team</a>
-      <a href="join.html">Join Us</a>
-      <a class="btn btn-discord btn-sm" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join Discord</a>
-  </nav>
+  <nav class="site-nav" aria-label="Main"></nav>
 </header>
 
 <main id="main">
-<section class="hero">
+<section class="hero home-hero">
+  <div class="home-hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
-    <span class="eyebrow">Welcome to the next era</span>
+    <span class="eyebrow">Clash Royale • Esports • Community</span>
+    <span class="home-hero-crown" aria-hidden="true">♛</span>
     <h1>The Royale Organization</h1>
-    <p>United by competition. Driven by greatness. Built for the community.</p>
+    <p class="home-hero-lead">One organization connecting competitive clans, players, creators, tournaments, and the tools to help you improve.</p>
     <div class="btn-row">
-      <a href="join.html" class="btn btn-primary">Join our community</a>
-      <a href="about.html" class="btn btn-outline">Explore the organization</a>
-      <a href="https://discord.gg/nFxd48maEg" class="btn btn-discord" target="_blank" rel="noopener noreferrer">Join our Discord</a>
+      <a href="join.html" class="btn btn-primary">Join the Organization</a>
+      <a href="deck-builder.html" class="btn btn-outline">Build a Deck</a>
+      <a href="https://discord.gg/nFxd48maEg" class="btn btn-discord" target="_blank" rel="noopener noreferrer">Join Discord</a>
+    </div>
+    <div class="home-quick-links" aria-label="Homepage shortcuts">
+      <a href="#clans">Clans</a>
+      <a href="#competition">Competition</a>
+      <a href="#meta">Game Updates</a>
+      <a href="#creator">Creators</a>
     </div>
   </div>
 </section>
 
-<section class="section" id="about">
-  <span class="label">Who we are</span>
-  <h2>More than just a clan.</h2>
-  <p class="lead">The Royale Organization is a growing Clash Royale esports community bringing together competitive players, clans, content creators, and leaders under one banner.</p>
-  <p class="lead">Our mission is to build a supportive environment where players can improve, compete, make connections, and achieve greatness together.</p>
-  <a href="about.html" class="text-link">Read our story</a>
+<section class="home-stats" aria-label="Organization snapshot">
+  <div><strong id="homeOfficialClans">3</strong><span>Official Clans</span></div>
+  <div><strong id="homeLiveMembers">Live</strong><span>Clan Members</span></div>
+  <div><strong>3</strong><span>Featured Creators</span></div>
+  <div><strong>24/7</strong><span>Community Hub</span></div>
+</section>
+
+<section class="section home-intro">
+  <span class="label">Everything under one crown</span>
+  <h2>Your Royale hub.</h2>
+  <p class="lead">Compete with the organization, build smarter decks, follow official Clash Royale changes, meet our clans, and connect with the people behind the community.</p>
+
+  <div class="home-feature-grid">
+    <a class="home-feature-card home-feature-primary" href="deck-builder.html">
+      <span class="home-feature-icon" aria-hidden="true">⚙</span>
+      <span class="home-feature-kicker">Smart tools</span>
+      <h3>Smart Deck Generator</h3>
+      <p>Choose your style, favorite card, Evolutions, and Hero settings. Let the builder create a complete eight-card deck.</p>
+      <strong>Build a deck →</strong>
+    </a>
+    <a class="home-feature-card" href="decks.html">
+      <span class="home-feature-icon" aria-hidden="true">⚔</span>
+      <span class="home-feature-kicker">Competitive library</span>
+      <h3>Pro Decks</h3>
+      <p>Browse competitive archetypes with live card artwork, average elixir, and direct Clash Royale deck links.</p>
+      <strong>Browse decks →</strong>
+    </a>
+    <a class="home-feature-card" href="balance-changes.html">
+      <span class="home-feature-icon" aria-hidden="true">↕</span>
+      <span class="home-feature-kicker">Official updates</span>
+      <h3>Balance Changes</h3>
+      <p>See the latest verified buffs, nerfs, and reworks with an official Supercell source monitor.</p>
+      <strong>Check the meta →</strong>
+    </a>
+    <a class="home-feature-card" href="tournaments.html">
+      <span class="home-feature-icon" aria-hidden="true">🏆</span>
+      <span class="home-feature-kicker">Royale esports</span>
+      <h3>Tournament Hub</h3>
+      <p>Registration, rules, schedules, brackets, results, and future Royale Organization championships in one place.</p>
+      <strong>Enter the arena →</strong>
+    </a>
+  </div>
 </section>
 
 <section class="section section-dark" id="clans">
-  <span class="label">Our community</span>
-  <h2>United under one crown.</h2>
-  <p class="lead">Different clans. Different players. One organization.</p>
-  <div class="grid grid-3">
-    <a class="card card-center" href="crownbound.html"><span class="card-icon" aria-hidden="true">♛</span><h3>Crownbound</h3><p>The founding clan of our growing competitive community.</p></a>
-    <a class="card card-center" href="mojos-dojo.html"><span class="card-icon" aria-hidden="true">⚔</span><h3>Mojo's Dojo</h3><p>A clan united with the organization through teamwork and competition.</p></a>
-    <a class="card card-center" href="mk-best-win-con.html"><span class="card-icon" aria-hidden="true">★</span><h3>MK Best Win Con</h3><p>Part of our multi-clan community, growing stronger together.</p></a>
+  <span class="label">Official clans</span>
+  <h2>Three clans. One organization.</h2>
+  <p class="lead">Each clan keeps its own identity while competing, growing, and building the wider Royale community together.</p>
+
+  <div class="home-clan-grid">
+    <article class="home-clan-card home-clan-crownbound" data-home-clan="crownbound">
+      <div class="home-clan-top"><span class="home-clan-emblem" aria-hidden="true">♛</span><span class="home-clan-badge">Founding Clan</span></div>
+      <h3>Crownbound</h3>
+      <p>Led by Noah Alex CR</p>
+      <div class="home-clan-stats">
+        <div><span>Members</span><strong data-home-field="members">Loading…</strong></div>
+        <div><span>Required</span><strong data-home-field="required">Loading…</strong></div>
+      </div>
+      <a href="crownbound.html" class="btn btn-outline btn-sm">View Clan</a>
+    </article>
+
+    <article class="home-clan-card home-clan-mojo" data-home-clan="mojo">
+      <div class="home-clan-top"><span class="home-clan-emblem" aria-hidden="true">⚔</span><span class="home-clan-badge">Partner Clan</span></div>
+      <h3>Mojo's Dojo</h3>
+      <p>Led by Sensei Mojo</p>
+      <div class="home-clan-stats">
+        <div><span>Members</span><strong data-home-field="members">Loading…</strong></div>
+        <div><span>Required</span><strong data-home-field="required">Loading…</strong></div>
+      </div>
+      <a href="mojos-dojo.html" class="btn btn-outline btn-sm">View Clan</a>
+    </article>
+
+    <article class="home-clan-card home-clan-mk" data-home-clan="mk">
+      <div class="home-clan-top"><span class="home-clan-emblem" aria-hidden="true">★</span><span class="home-clan-badge">Partner Clan</span></div>
+      <h3>MK Best Win Con</h3>
+      <p>Led by Tayla</p>
+      <div class="home-clan-stats">
+        <div><span>Members</span><strong data-home-field="members">Loading…</strong></div>
+        <div><span>Required</span><strong data-home-field="required">Loading…</strong></div>
+      </div>
+      <a href="mk-best-win-con.html" class="btn btn-outline btn-sm">View Clan</a>
+    </article>
   </div>
-  <div class="btn-row"><a href="clans.html" class="btn btn-outline">Explore our clans</a></div>
+  <div class="btn-row">
+    <a href="clans.html" class="btn btn-primary">Compare All Clans</a>
+    <a href="join.html#player-path" class="btn btn-outline">Find Your Clan</a>
+  </div>
 </section>
 
-
-<section class="section" id="balance-changes">
-  <span class="label">Live game updates</span>
-  <h2>Stay ahead of the meta.</h2>
-  <p class="lead">Track the newest official Clash Royale buffs, nerfs, and reworks without leaving The Royale Organization.</p>
-  <div class="home-balance-card">
-    <div class="home-balance-top">
-      <span id="homeBalanceBadge" class="home-balance-badge">LIVE</span>
-      <span class="label">Official Supercell monitor</span>
+<section class="section" id="competition">
+  <div class="home-split home-tournament-panel">
+    <div class="home-split-copy">
+      <span class="label">Next competition</span>
+      <span class="home-status-pill" id="homeTournamentStatus">Awaiting announcement</span>
+      <h2 id="homeTournamentName">Next Royale Championship</h2>
+      <p>The Tournament Hub is ready for the next official event. Confirmed dates, registration, format, bracket, and results will appear there without inventing details before they're announced.</p>
+      <div class="btn-row home-left-buttons">
+        <a href="tournaments.html" class="btn btn-primary">Tournament Hub</a>
+        <a href="https://discord.gg/nFxd48maEg" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Tournament Discord</a>
+      </div>
     </div>
-    <h3 id="homeBalanceTitle">October Balance Changes</h3>
-    <p id="homeBalanceMeta">Latest verified update: October 19, 2026</p>
-    <div class="btn-row">
-      <a href="balance-changes.html" class="btn btn-primary">View Balance Changes</a>
-      <a id="homeBalanceSource" href="https://supercell.com/en/games/clashroyale/blog/release-notes/october-balance-changes-2026/" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Official Source</a>
+    <div class="home-event-facts">
+      <div><span>Date</span><strong id="homeTournamentDate">To be announced</strong></div>
+      <div><span>Prize</span><strong id="homeTournamentPrize">To be announced</strong></div>
+      <div><span>Format</span><strong id="homeTournamentFormat">To be announced</strong></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="tournaments">
-  <span class="label">Competitive esports</span>
-  <h2>Prove your greatness.</h2>
-  <p class="lead">Take part in community competitions and events, and test your skills against other players.</p>
-  <div class="card panel-wide">
-    <span class="label">Competition</span>
-    <h3>Every battle matters.</h3>
-    <p>Whether you're an experienced competitor or just beginning your journey, there's a place to grow and compete.</p>
-    <a href="tournaments.html" class="btn btn-primary">View tournaments</a>
+<section class="section section-dark" id="meta">
+  <div class="home-split home-meta-panel">
+    <div class="home-split-copy">
+      <span class="label">Live game updates</span>
+      <div class="home-balance-top home-balance-left">
+        <span id="homeBalanceBadge" class="home-balance-badge">LIVE</span>
+        <span class="home-mini-label">Official Supercell monitor</span>
+      </div>
+      <h2 id="homeBalanceTitle">October Balance Changes</h2>
+      <p id="homeBalanceMeta">Latest verified update: October 19, 2026</p>
+      <p>Follow buffs, nerfs, and reworks with card artwork and a direct link back to the official source.</p>
+      <div class="btn-row home-left-buttons">
+        <a href="balance-changes.html" class="btn btn-primary">View Balance Changes</a>
+        <a id="homeBalanceSource" href="https://supercell.com/en/games/clashroyale/blog/release-notes/october-balance-changes-2026/" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Official Source</a>
+      </div>
+    </div>
+    <div class="home-meta-visual" aria-hidden="true">
+      <span>BUFF</span>
+      <span>NERF</span>
+      <span>REWORK</span>
+    </div>
   </div>
 </section>
 
-<section class="cta-section">
-  <span class="label">Your journey starts here</span>
+<section class="section" id="creator">
+  <span class="label">Featured creator</span>
+  <h2>Meet the people behind Royale.</h2>
+  <p class="lead">Organization creators bring gameplay, ranked pushes, community events, and updates to the people building with us.</p>
+
+  <article class="home-creator-feature">
+    <div class="home-creator-avatar" aria-hidden="true">NA</div>
+    <div class="home-creator-copy">
+      <span>Founder • Crownbound Leader • Creator</span>
+      <h3>Noah Alex CR</h3>
+      <p>Clash Royale gameplay, organization updates, ranked pushes, community events, and competitive content across TikTok, Twitch, and YouTube.</p>
+      <div class="home-creator-platforms">
+        <a href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer">TikTok ↗</a>
+        <a href="https://www.twitch.tv/noahalexcr" target="_blank" rel="noopener noreferrer">Twitch ↗</a>
+        <a href="https://www.youtube.com/@noahalexcr" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+      </div>
+      <div class="btn-row home-left-buttons">
+        <a href="streams.html" class="btn btn-primary">All Creators</a>
+        <a href="team.html" class="btn btn-outline">Meet the Team</a>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="section section-dark home-mission">
+  <span class="label">Compete • Unite • Conquer</span>
+  <h2>More than a clan.</h2>
+  <p class="lead">The Royale Organization brings multiple Clash Royale clans, players, creators, and leaders together so people can improve, compete, connect, and build something bigger than one clan alone.</p>
+  <a href="about.html" class="text-link">Read our story →</a>
+</section>
+
+<section class="cta-section home-final-cta">
+  <span class="label">Your place is waiting</span>
   <h2>Ready to join the Royale family?</h2>
-  <p>Players, creators, clan leaders, and community members are welcome to become part of something bigger.</p>
-  <a href="join.html" class="btn btn-primary">Become part of the organization</a>
+  <p>Find a clan, connect as a creator, bring your own clan into the organization, or simply join the community and see what's next.</p>
+  <div class="btn-row">
+    <a href="join.html" class="btn btn-primary">Choose Your Path</a>
+    <a href="https://discord.gg/nFxd48maEg" class="btn btn-discord" target="_blank" rel="noopener noreferrer">Join Discord</a>
+  </div>
 </section>
 </main>
 
@@ -112,6 +227,8 @@
   <p class="disclaimer">This site is unofficial. The Royale Organization is not affiliated with, endorsed, or sponsored by Supercell, and Supercell is not responsible for it. Clash Royale is a trademark of Supercell. See Supercell's Fan Content Policy.</p>
 </footer>
 <script src="site.js"></script>
+<script src="tournament-data.js"></script>
+<script src="home.js"></script>
 <script src="balance-changes.js"></script>
 </body>
 </html>
