@@ -17,6 +17,12 @@
       ["team", "Team", "team.html"]
     ]},
     { label: "Compete", pages: [
+  ["leaderboard", "Player Leaderboard", "leaderboard.html"],
+  ["tournaments", "Tournaments", "tournaments.html"],
+  ["decks", "Pro Decks", "decks.html"],
+  ["deck-builder", "Deck Builder", "deck-builder.html"],
+  ["balance-changes", "Balance Changes", "balance-changes.html"]
+]},
       ["tournaments", "Tournaments", "tournaments.html"],
       ["decks", "Pro Decks", "decks.html"],
       ["deck-builder", "Deck Builder", "deck-builder.html"],
