@@ -64,6 +64,9 @@ h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; margin: 0; }
 .theme-mk { --accent: #B266FF; --accent-soft: rgba(178, 102, 255, .45); --hero-tint: #30144D; }
 .theme-mk .btn-primary { color: #FFFFFF; background: #7B2CBF; }
 .theme-mk .btn-primary:hover { background: #9D4EDD; }
+.theme-lia { --accent: #FFD4D4; --accent-soft: rgba(255, 212, 212, .45); --hero-tint: #332426; }
+.theme-lia .btn-primary { color: #10131C; background: #FFD4D4; }
+.theme-lia .btn-primary:hover { background: #FFE4E4; }
 /* SECTIONS */
 .section { padding: 90px 20px; text-align: center; }
 .section-dark { background: var(--panel); }
