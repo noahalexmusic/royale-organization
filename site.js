@@ -23,11 +23,6 @@
   ["deck-builder", "Deck Builder", "deck-builder.html"],
   ["balance-changes", "Balance Changes", "balance-changes.html"]
 ]},
-      ["tournaments", "Tournaments", "tournaments.html"],
-      ["decks", "Pro Decks", "decks.html"],
-      ["deck-builder", "Deck Builder", "deck-builder.html"],
-      ["balance-changes", "Balance Changes", "balance-changes.html"]
-    ]},
     { label: "Community", pages: [
       ["streams", "Streams & Creators", "streams.html"],
       ["join", "Join Us", "join.html"]
