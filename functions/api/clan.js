@@ -1,6 +1,6 @@
 // GET /api/clan?tag=GRU222VR -> trimmed clan data from the official Clash Royale API (via RoyaleAPI proxy)
 const BASE = "https://proxy.royaleapi.dev/v1";
-const ALLOWED = ["GRU222VR", "J82QJ2QY", "JY298RRC"]; // our three partner clans only
+const ALLOWED = ["GRU222VR", "J82QJ2QY", "JY298RRC", "8PRRGLP8C"]; // official partner clans
 
 const json = (body, status = 200, ttl = 0) =>
   new Response(JSON.stringify(body), {
@@ -14,10 +14,10 @@ export async function onRequestGet({ request, env, waitUntil }) {
 
   if (!env.CR_TOKEN) {
     const current = new URL(request.url);
-    if (current.hostname !== "royale-organization.pages.dev") {
+    if (current.hostname !== "theroyaleorganization.com") {
       try {
         const production = await fetch(
-          "https://royale-organization.pages.dev/api/clan?tag=" + encodeURIComponent(tag),
+          "https://theroyaleorganization.com/api/clan?tag=" + encodeURIComponent(tag),
           { headers: { Accept: "application/json" } }
         );
         if (production.ok) {
