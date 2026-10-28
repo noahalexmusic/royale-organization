@@ -117,6 +117,34 @@ body { overflow-x: hidden; }
 .nav-discord { white-space: nowrap; }
 
 .site-footer { text-align: center; padding: 48px 20px; border-top: 1px solid var(--line); background: #080A10; }
+
+.footer-socials {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.footer-socials p {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.footer-socials a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-block;
+  padding: 8px 12px;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.footer-socials a:hover,
+.footer-socials a:focus-visible {
+  color: #ffffff;
+}
+
 .site-footer > * { max-width: 900px; margin-left: auto; margin-right: auto; }
 .site-footer .footer-brand { color: var(--gold); font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; letter-spacing: 2px; }
 .site-footer .copyright, .site-footer .disclaimer { color: #8E94A3; }
