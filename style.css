@@ -1959,6 +1959,10 @@ body { overflow-x: hidden; }
   --join-clan-accent: #B266FF;
   --join-clan-soft: rgba(178,102,255,.1);
 }
+.join-clan-lia {
+  --join-clan-accent: #FFD4D4;
+  --join-clan-soft: rgba(255,212,212,.12);
+}
 .join-clan-heading {
   display: flex;
   align-items: center;
@@ -2282,6 +2286,10 @@ body { overflow-x: hidden; }
 .home-clan-mk {
   --home-clan-accent: #B266FF;
   --home-clan-soft: rgba(178,102,255,.1);
+}
+.home-clan-lia {
+  --home-clan-accent: #FFD4D4;
+  --home-clan-soft: rgba(255,212,212,.12);
 }
 .home-clan-top {
   display: flex;
