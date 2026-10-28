@@ -1,152 +1,490 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>pist.lia.chio | The Royale Organization</title>
-<meta name="description" content="pist.lia.chio: a partner Clash Royale clan in The Royale Organization.">
-<meta name="theme-color" content="#090B12">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://theroyaleorganization.com/pist-lia-chio.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="manifest" href="manifest.webmanifest">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="The Royale Organization">
-<meta property="og:title" content="pist.lia.chio | The Royale Organization">
-<meta property="og:description" content="pist.lia.chio: a partner Clash Royale clan in The Royale Organization.">
-<meta property="og:url" content="https://theroyaleorganization.com/pist-lia-chio.html">
-<meta property="og:image" content="https://theroyaleorganization.com/social-card.svg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/svg+xml">
-<meta property="og:image:alt" content="The Royale Organization — Clash Royale esports community">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="pist.lia.chio | The Royale Organization">
-<meta name="twitter:description" content="pist.lia.chio: a partner Clash Royale clan in The Royale Organization.">
-<meta name="twitter:image" content="https://theroyaleorganization.com/social-card.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=21">
-<style>
-/* Cache-proof Lia clan hero overrides */
-#lia-clan-hero { --accent:#FFD4D4; --accent-soft:rgba(255,212,212,.55); --hero-tint:#332426; }
-#lia-clan-hero .eyebrow, #lia-clan-hero .page-hero-icon, #lia-clan-hero h1 { color:#FFD4D4 !important; }
-#lia-clan-hero h1 { text-shadow:0 0 28px rgba(255,212,212,.55) !important; }
-#lia-clan-hero .clan-profile-tag { color:#FFD4D4 !important; border-color:#FFD4D4 !important; }
-#lia-clan-hero .btn-primary { background:#FFD4D4 !important; border-color:#FFD4D4 !important; color:#10131C !important; box-shadow:0 0 20px rgba(255,212,212,.55) !important; }
-#lia-clan-hero .btn-outline { background:transparent !important; color:#FFD4D4 !important; border-color:#FFD4D4 !important; }
-#lia-clan-hero .btn-outline:hover { background:#FFD4D4 !important; color:#10131C !important; }
-.site-nav .nav-discord, .site-nav .nav-discord:visited, .site-nav .nav-discord[aria-current="page"] { background:#5865F2 !important; color:#fff !important; border-color:#5865F2 !important; }
-.site-nav .nav-discord:hover { background:#6F7BF7 !important; color:#fff !important; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>pist.lia.chio | The Royale Organization</title>
+  <meta name="description" content="Meet pist.lia.chio, a partner Clash Royale clan in The Royale Organization. Explore live stats, player roster, and clan leadership.">
+  <meta name="theme-color" content="#090B12">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical" href="https://theroyaleorganization.com/pist-lia-chio.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Royale Organization">
+  <meta property="og:title" content="pist.lia.chio | The Royale Organization">
+  <meta property="og:description" content="Meet pist.lia.chio, a partner Clash Royale clan in The Royale Organization.">
+  <meta property="og:url" content="https://theroyaleorganization.com/pist-lia-chio.html">
+  <meta property="og:image" content="https://theroyaleorganization.com/social-card.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=21">
+
+  <style>
+    /* Lia clan theme */
+    .lia-page {
+      --accent: #FFD4D4;
+      --accent-soft: rgba(255, 212, 212, .55);
+      --hero-tint: #332426;
+    }
+
+    /* Hero */
+    #lia-clan-hero {
+      --accent: #FFD4D4;
+      --accent-soft: rgba(255, 212, 212, .55);
+      --hero-tint: #332426;
+    }
+
+    #lia-clan-hero .eyebrow,
+    #lia-clan-hero .page-hero-icon,
+    #lia-clan-hero h1 {
+      color: #FFD4D4 !important;
+    }
+
+    #lia-clan-hero h1 {
+      text-shadow: 0 0 28px rgba(255, 212, 212, .55) !important;
+    }
+
+    #lia-clan-hero .clan-profile-tag {
+      color: #FFD4D4 !important;
+      border-color: #FFD4D4 !important;
+    }
+
+    /* Pink buttons throughout Lia's content */
+    .lia-page main .btn-primary {
+      background: #FFD4D4 !important;
+      border-color: #FFD4D4 !important;
+      color: #10131C !important;
+      box-shadow: 0 0 20px rgba(255, 212, 212, .22);
+    }
+
+    .lia-page main .btn-primary:hover {
+      background: #FFE5E5 !important;
+      border-color: #FFE5E5 !important;
+      color: #10131C !important;
+    }
+
+    .lia-page main .btn-outline {
+      background: transparent !important;
+      color: #FFD4D4 !important;
+      border-color: #FFD4D4 !important;
+    }
+
+    .lia-page main .btn-outline:hover {
+      background: #FFD4D4 !important;
+      color: #10131C !important;
+    }
+
+    /* Clan leadership */
+    .lia-page .clan-leader-card {
+      border-color: rgba(255, 212, 212, .65) !important;
+      box-shadow: 0 0 24px rgba(255, 212, 212, .08);
+    }
+
+    .lia-page .clan-leader-card h3 {
+      color: #FFD4D4 !important;
+    }
+
+    .lia-page .clan-leader-icon {
+      background: #FFD4D4 !important;
+      color: #10131C !important;
+      border-color: #FFD4D4 !important;
+    }
+
+    /* Pink section accents */
+    .lia-page main .label {
+      color: #FFD4D4 !important;
+    }
+
+    .lia-page .clan-profile-meta strong {
+      color: #FFD4D4;
+    }
+
+    .lia-page .clan-stats-grid .stat-value {
+      color: #FFD4D4;
+    }
+
+    /* Live roster */
+    .lia-page .clan-roster {
+      border-color: rgba(255, 212, 212, .35);
+    }
+
+    .lia-page .roster-header {
+      border-color: rgba(255, 212, 212, .4);
+    }
+
+    /* Keep organization navigation gold */
+    .lia-page .site-header {
+      --accent: #D4AF37;
+    }
+
+    /* Discord navigation remains blue */
+    .site-nav .nav-discord,
+    .site-nav .nav-discord:visited,
+    .site-nav .nav-discord[aria-current="page"] {
+      background: #5865F2 !important;
+      color: #FFFFFF !important;
+      border-color: #5865F2 !important;
+    }
+
+    .site-nav .nav-discord:hover {
+      background: #6F7BF7 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* Mobile layout */
+    @media (max-width: 640px) {
+      .lia-page .clan-leader-card .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .lia-page .clan-leader-card .btn {
+        text-align: center;
+      }
+    }
+  </style>
 </head>
+
 <body class="lia-page">
+
 <a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="brand">
-    <img class="brand-crown brand-logo" src="logo-mark.svg" alt="" width="42" height="42">
+    <img
+      class="brand-crown brand-logo"
+      src="logo-mark.svg"
+      alt=""
+      width="42"
+      height="42"
+    >
     <span class="brand-name">THE ROYALE ORGANIZATION</span>
     <span class="brand-tagline">COMPETE • UNITE • CONQUER</span>
   </div>
+
   <nav class="site-nav" aria-label="Main"></nav>
 </header>
 
 <main id="main">
-<section id="lia-clan-hero" class="page-hero clan-profile-hero theme-lia">
-  <span class="eyebrow">Partner clan</span>
-  <div class="page-hero-icon float" aria-hidden="true">⚔</div>
-  <h1>pist.lia.chio</h1>
-  <p>YAY PISTACHIOS, PISTACHIOS YAY</p>
-  <div class="clan-profile-tag">#JYPLU0QV</div>
-  <div class="btn-row">
-    <a href="#roster" class="btn btn-primary">View Live Roster</a>
-    <a href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV" class="btn btn-outline">Open in Clash Royale</a>
-  </div>
-</section>
 
-<section class="section">
-  <span class="label">About the clan</span>
-  <h2>Welcome to pist.lia.chio</h2>
-  <p class="lead">pist.lia.chio is a partner clan of The Royale Organization, bringing its own pistachio-powered identity and community into The Royale Organization while competing and growing together.</p>
-  <div class="clan-profile-meta">
-    <div><span>Leader</span><strong>Lia CR</strong></div>
-    <div><span>Clan tag</span><strong>#JYPLU0QV</strong></div>
-    <div><span>Location</span><strong id="clan-location">—</strong></div>
-    <div><span>Join type</span><strong id="clan-type">—</strong></div>
-  </div>
-</section>
+  <!-- Clan hero -->
+  <section id="lia-clan-hero" class="page-hero clan-profile-hero theme-lia">
+    <span class="eyebrow">Official Partner Clan</span>
 
-<section class="section section-dark">
-  <span class="label">Live clan overview</span>
-  <h2>Clan statistics</h2>
-  <p class="lead">Pulled from Clash Royale and refreshed automatically.</p>
-  <div class="clan-stats-grid">
-    <div class="stat-card"><span class="stat-value" id="member-count">—</span><span class="stat-label">Members</span></div>
-    <div class="stat-card"><span class="stat-value" id="clan-score">—</span><span class="stat-label">Clan score</span></div>
-    <div class="stat-card"><span class="stat-value" id="clan-trophies">—</span><span class="stat-label">War trophies</span></div>
-    <div class="stat-card"><span class="stat-value" id="required-trophies">—</span><span class="stat-label">Required trophies</span></div>
-  </div>
-  <div class="btn-row">
-    <a class="btn btn-outline btn-sm" href="https://royaleapi.com/clan/JYPLU0QV" target="_blank" rel="noopener noreferrer">View on RoyaleAPI</a>
-    <a class="btn btn-outline btn-sm" href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV">Open in Clash Royale</a>
-  </div>
-  <p class="note" data-live-note>Connecting to live clan data...</p>
-</section>
+    <div class="page-hero-icon float" aria-hidden="true">⚔</div>
 
-<section class="section clan-leader-section">
-  <span class="label">Clan leadership</span>
-  <h2>Meet the leader</h2>
-  <article class="clan-leader-card">
-    <div class="clan-leader-icon" aria-hidden="true">⚔</div>
-    <div>
-      <h3>Lia CR</h3>
-      <p>pist.lia.chio leader</p>
-      <div class="links"><a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@cr_lia_cr" target="_blank" rel="noopener noreferrer">TikTok</a><a class="btn btn-outline btn-sm" href="https://www.instagram.com/cr_lia_cr/" target="_blank" rel="noopener noreferrer">Instagram</a><a class="btn btn-outline btn-sm" href="https://www.twitch.tv/cr_lia_cr" target="_blank" rel="noopener noreferrer">Twitch</a><a class="btn btn-outline btn-sm" href="https://www.youtube.com/@LiaCR-07" target="_blank" rel="noopener noreferrer">YouTube</a><a class="btn btn-outline btn-sm" href="https://discord.gg/ucM5yW7tZK" target="_blank" rel="noopener noreferrer">Clan Discord</a></div>
+    <h1>pist.lia.chio</h1>
+
+    <p>YAY PISTACHIOS, PISTACHIOS YAY</p>
+
+    <div class="clan-profile-tag">#JYPLU0QV</div>
+
+    <div class="btn-row">
+      <a href="#roster" class="btn btn-primary">View Live Roster</a>
+
+      <a
+        href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV"
+        class="btn btn-outline"
+      >
+        Open in Clash Royale
+      </a>
     </div>
-  </article>
-</section>
+  </section>
 
-<section class="section section-dark" id="roster">
-  <span class="label">Live roster</span>
-  <h2>pist.lia.chio players</h2>
-  <p class="lead">In-game names, clan roles, and trophy counts update automatically from Clash Royale.</p>
-  <div class="roster clan-roster">
-    <div class="roster-header"><span>Player</span><span>Role</span><span>Trophies</span><span>Profile</span></div>
-    <div class="roster-empty">Loading roster…</div>
-  </div>
-  <p class="note">Player profile buttons open RoyaleAPI in a new tab.</p>
-</section>
+  <!-- About -->
+  <section class="section">
+    <span class="label">About the clan</span>
 
-<section class="cta-section theme-lia">
-  <span class="label">Join pist.lia.chio</span>
-  <h2>Ready to join the pistachios?</h2>
-  <p>Explore the live clan profile in Clash Royale or see how players and clans join The Royale Organization.</p>
-  <div class="btn-row">
-    <a href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV" class="btn btn-primary">View Clan in Game</a>
-    <a href="join.html" class="btn btn-outline">How to Join</a>
-    <a href="clans.html" class="btn btn-outline">All Clans</a>
-  </div>
-</section>
+    <h2>Welcome to pist.lia.chio</h2>
+
+    <p class="lead">
+      pist.lia.chio is a partner clan of The Royale Organization,
+      bringing its own pistachio-powered identity and community
+      into the organization while competing and growing together.
+    </p>
+
+    <div class="clan-profile-meta">
+      <div>
+        <span>Leader</span>
+        <strong>Lia CR</strong>
+      </div>
+
+      <div>
+        <span>Clan tag</span>
+        <strong>#JYPLU0QV</strong>
+      </div>
+
+      <div>
+        <span>Location</span>
+        <strong id="clan-location">—</strong>
+      </div>
+
+      <div>
+        <span>Join type</span>
+        <strong id="clan-type">—</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live statistics -->
+  <section class="section section-dark">
+    <span class="label">Live Clan Overview</span>
+
+    <h2>Clan Statistics</h2>
+
+    <p class="lead">
+      Live Clash Royale statistics, refreshed automatically.
+    </p>
+
+    <div class="clan-stats-grid">
+
+      <div class="stat-card">
+        <span class="stat-value" id="member-count">—</span>
+        <span class="stat-label">Members</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-value" id="clan-score">—</span>
+        <span class="stat-label">Clan Score</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-value" id="clan-trophies">—</span>
+        <span class="stat-label">War Trophies</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-value" id="required-trophies">—</span>
+        <span class="stat-label">Required Trophies</span>
+      </div>
+
+    </div>
+
+    <div class="btn-row">
+      <a
+        class="btn btn-outline btn-sm"
+        href="https://royaleapi.com/clan/JYPLU0QV"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View on RoyaleAPI
+      </a>
+
+      <a
+        class="btn btn-outline btn-sm"
+        href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV"
+      >
+        Open in Clash Royale
+      </a>
+    </div>
+
+    <p class="note" data-live-note>
+      Connecting to live clan data...
+    </p>
+  </section>
+
+  <!-- Leadership -->
+  <section class="section clan-leader-section">
+    <span class="label">Clan Leadership</span>
+
+    <h2>Meet the Leader</h2>
+
+    <article class="clan-leader-card">
+
+      <div class="clan-leader-icon" aria-hidden="true">⚔</div>
+
+      <div>
+        <h3>Lia CR</h3>
+        <p>pist.lia.chio Leader</p>
+
+        <div class="links">
+
+          <a
+            class="btn btn-outline btn-sm"
+            href="https://www.tiktok.com/@cr_lia_cr"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            TikTok
+          </a>
+
+          <a
+            class="btn btn-outline btn-sm"
+            href="https://www.instagram.com/cr_lia_cr/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram
+          </a>
+
+          <a
+            class="btn btn-outline btn-sm"
+            href="https://www.twitch.tv/cr_lia_cr"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Twitch
+          </a>
+
+          <a
+            class="btn btn-outline btn-sm"
+            href="https://www.youtube.com/@LiaCR-07"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            YouTube
+          </a>
+
+          <a
+            class="btn btn-outline btn-sm"
+            href="https://discord.gg/ucM5yW7tZK"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Clan Discord
+          </a>
+
+        </div>
+      </div>
+
+    </article>
+  </section>
+
+  <!-- Live roster -->
+  <section class="section section-dark" id="roster">
+    <span class="label">Live Roster</span>
+
+    <h2>pist.lia.chio Players</h2>
+
+    <p class="lead">
+      In-game names, clan roles, and trophy counts
+      update automatically from Clash Royale.
+    </p>
+
+    <div class="roster clan-roster">
+      <div class="roster-header">
+        <span>Player</span>
+        <span>Role</span>
+        <span>Trophies</span>
+        <span>Profile</span>
+      </div>
+
+      <div class="roster-empty">Loading roster…</div>
+    </div>
+
+    <p class="note">
+      Player profile buttons open RoyaleAPI in a new tab.
+    </p>
+  </section>
+
+  <!-- Join clan -->
+  <section class="cta-section theme-lia">
+    <span class="label">Join pist.lia.chio</span>
+
+    <h2>Ready to Join the Pistachios?</h2>
+
+    <p>
+      Explore the clan in Clash Royale or discover how to
+      become part of The Royale Organization.
+    </p>
+
+    <div class="btn-row">
+
+      <a
+        href="https://link.clashroyale.com/en?action=OpenClanProfile&amp;tag=%23JYPLU0QV"
+        class="btn btn-primary"
+      >
+        View Clan in Game
+      </a>
+
+      <a href="join.html" class="btn btn-outline">
+        How to Join
+      </a>
+
+      <a href="clans.html" class="btn btn-outline">
+        All Clans
+      </a>
+
+    </div>
+  </section>
+
 </main>
 
+<!-- Footer -->
 <footer class="site-footer">
-  <div class="footer-brand">♛ THE ROYALE ORGANIZATION</div>
-  <p>COMPETE • UNITE • CONQUER</p>
-  <p><a class="text-link" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join our Discord</a></p>
-  
-<div class="footer-socials">
-  <p>Follow The Royale Organization</p>
-  <a href="https://www.tiktok.com/@the.royal.organiz" target="_blank" rel="noopener noreferrer">Official TikTok</a>
-  <span> | </span>
-  <a href="https://www.instagram.com/theroyaleorganization/" target="_blank" rel="noopener noreferrer">Official Instagram</a>
-</div>
 
-  <p class="copyright">© 2026 The Royale Organization. All rights reserved.</p>
-  <p class="disclaimer">This site is unofficial. The Royale Organization is not affiliated with, endorsed, or sponsored by Supercell, and Supercell is not responsible for it. Clash Royale is a trademark of Supercell. See Supercell's Fan Content Policy.</p>
+  <div class="footer-brand">
+    ♛ THE ROYALE ORGANIZATION
+  </div>
+
+  <p>COMPETE • UNITE • CONQUER</p>
+
+  <p>
+    <a
+      class="text-link"
+      href="https://discord.gg/nFxd48maEg"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Join our Discord
+    </a>
+  </p>
+
+  <div class="footer-socials">
+    <p>Follow The Royale Organization</p>
+
+    <a
+      href="https://www.tiktok.com/@the.royal.organiz"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Official TikTok
+    </a>
+
+    <span> | </span>
+
+    <a
+      href="https://www.instagram.com/theroyaleorganization/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Official Instagram
+    </a>
+  </div>
+
+  <p class="copyright">
+    © 2026 The Royale Organization. All rights reserved.
+  </p>
+
+  <p class="disclaimer">
+    This site is unofficial. The Royale Organization is not
+    affiliated with, endorsed, or sponsored by Supercell,
+    and Supercell is not responsible for it.
+    Clash Royale is a trademark of Supercell.
+    See Supercell's Fan Content Policy.
+  </p>
+
 </footer>
-<script>window.CLAN_TAG="JYPLU0QV";</script>
+
+<!-- Existing live clan functionality -->
+<script>
+  window.CLAN_TAG = "JYPLU0QV";
+</script>
+
 <script src="clan-live.js"></script>
 <script src="site.js"></script>
+
 </body>
 </html>
