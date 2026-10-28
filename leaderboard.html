@@ -549,7 +549,7 @@
     async function fetchClan(clan) {
       // This endpoint must match your existing clan-data API.
       const response = await fetch(
-        "/api/clan/" + encodeURIComponent(clan.tag),
+        "/api/clan?tag=" + encodeURIComponent(clan.tag),
         { cache: "no-store" }
       );
 
