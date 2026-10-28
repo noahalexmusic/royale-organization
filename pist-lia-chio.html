@@ -28,9 +28,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=2">
-<style>.theme-lia{--clan-accent:#FFD4D4}.theme-lia .btn-primary{background:#FFD4D4;color:#111;border-color:#FFD4D4}.theme-lia .clan-profile-tag{border-color:#FFD4D4}</style>
+<style>
+body.theme-lia{--accent:#FFD4D4;--accent-soft:rgba(255,212,212,.45);--hero-tint:#332426;--gold:#FFD4D4;--gold-light:#FFE4E4;--gold-bright:#FFD4D4;--line:rgba(255,212,212,.35)}
+.theme-lia .btn-primary{background:#FFD4D4;color:#111;border-color:#FFD4D4}
+.theme-lia .btn-primary:hover{background:#FFE4E4}
+.theme-lia .btn-outline{color:#FFD4D4;border-color:#FFD4D4}
+.theme-lia .btn-outline:hover{background:#FFD4D4;color:#111}
+.theme-lia .clan-profile-tag{border-color:#FFD4D4;color:#FFD4D4}
+.theme-lia .cta-section{background:radial-gradient(ellipse at center,#332426 0%,var(--bg) 75%)}
+</style>
 </head>
-<body>
+<body class="theme-lia">
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="brand">
@@ -42,7 +50,7 @@
 </header>
 
 <main id="main">
-<section class="page-hero clan-profile-hero theme-lia">
+<section class="page-hero clan-profile-hero">
   <span class="eyebrow">Partner clan</span>
   <div class="page-hero-icon float" aria-hidden="true">⚔</div>
   <h1>pist.lia.chio</h1>
@@ -107,7 +115,7 @@
   <p class="note">Player profile buttons open RoyaleAPI in a new tab.</p>
 </section>
 
-<section class="cta-section theme-lia">
+<section class="cta-section">
   <span class="label">Join pist.lia.chio</span>
   <h2>Ready to join the pistachios?</h2>
   <p>Explore the live clan profile in Clash Royale or see how players and clans join The Royale Organization.</p>
