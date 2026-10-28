@@ -2657,3 +2657,50 @@ body { overflow-x: hidden; }
   .reveal-item { opacity: 1; transform: none; }
   .btn:hover { transform: none; }
 }
+
+
+/* pist.lia.chio page: keep the TRO header gold, theme clan content pink */
+.lia-page .clan-profile-hero,
+.lia-page .cta-section {
+  --accent: #FFD4D4;
+  --accent-soft: rgba(255, 212, 212, .45);
+  --hero-tint: #332426;
+}
+.lia-page .clan-profile-hero .eyebrow,
+.lia-page .clan-profile-hero .page-hero-icon,
+.lia-page .clan-profile-hero h1,
+.lia-page .clan-profile-hero .clan-profile-tag {
+  color: #FFD4D4;
+}
+.lia-page .clan-profile-hero .clan-profile-tag { border-color: #FFD4D4; }
+.lia-page .clan-profile-hero .btn-primary,
+.lia-page .cta-section .btn-primary {
+  background: #FFD4D4;
+  border-color: #FFD4D4;
+  color: #10131C;
+  box-shadow: 0 0 20px rgba(255, 212, 212, .45);
+}
+.lia-page .clan-profile-hero .btn-outline,
+.lia-page .cta-section .btn-outline {
+  color: #FFD4D4;
+  border-color: #FFD4D4;
+}
+.lia-page .clan-profile-hero .btn-outline:hover,
+.lia-page .cta-section .btn-outline:hover {
+  background: #FFD4D4;
+  color: #10131C;
+}
+/* Keep Discord action visibly Discord blue instead of gray/neutral states */
+.nav-discord,
+.nav-discord:visited,
+.nav-discord[aria-current="page"] {
+  background: #5865F2 !important;
+  color: #FFFFFF !important;
+  border-color: #5865F2 !important;
+}
+.nav-discord:hover,
+.nav-discord:focus-visible {
+  background: #6F7BF7 !important;
+  color: #FFFFFF !important;
+  border-color: #6F7BF7 !important;
+}
