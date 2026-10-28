@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore The Royale Organization player leaderboard, featuring Crownbound, Mojo's Dojo, and MK Best Win Con.">
+  <title>Player Leaderboard | The Royale Organization</title>
+  <link rel="stylesheet" href="style.css?v=2">
+
+  <style>
+    .lb-container {
+      width: min(1150px, 92%);
+      margin: 0 auto;
+    }
+
+    .lb-hero {
+      text-align: center;
+      padding: 85px 20px 65px;
+      background: radial-gradient(ellipse at top,
+        #30250d 0%, #090b12 70%);
+      border-bottom: 1px solid rgba(212,175,55,.25);
+    }
+
+    .lb-eyebrow {
+      color: #d4af37;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .lb-hero h1 {
+      color: #fff;
+      font-size: clamp(42px, 7vw, 80px);
+      margin: 15px 0;
+    }
+
+    .lb-hero p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #b9beca;
+      font-size: 17px;
+    }
+
+    .lb-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 45px auto;
+    }
+
+    .lb-stat {
+      padding: 25px 15px;
+      border: 1px solid rgba(212,175,55,.35);
+      background: #141720;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .lb-stat strong {
+      display: block;
+      color: #ffd700;
+      font-size: 32px;
+    }
+
+    .lb-stat span {
+      color: #b9beca;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .lb-section {
+      padding: 35px 0 90px;
+    }
+
+    .lb-heading {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .lb-heading h2 {
+      font-size: clamp(30px, 5vw, 48px);
+      color: #fff;
+    }
+
+    .lb-heading p {
+      color: #b9beca;
+    }
+
+    .lb-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .lb-controls input,
+    .lb-controls select {
+      padding: 13px 16px;
+      background: #151923;
+      border: 1px solid rgba(212,175,55,.4);
+      border-radius: 9px;
+      color: white;
+      font-size: 15px;
+    }
+
+    .lb-controls input {
+      flex: 1 1 260px;
+      min-width: 0;
+    }
+
+    .lb-controls select {
+      flex: 1 1 190px;
+    }
+
+    .lb-controls input:focus,
+    .lb-controls select:focus {
+      outline: 2px solid #d4af37;
+      outline-offset: 2px;
+    }
+
+    .lb-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(212,175,55,.3);
+      border-radius: 14px;
+      background: #11141d;
+    }
+
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    .lb-table th {
+      background: #1e1a12;
+      color: #ffd700;
+      text-align: left;
+      padding: 17px 20px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .lb-table td {
+      padding: 17px 20px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      color: #e5e7eb;
+    }
+
+    .lb-table tbody tr:hover {
+      background: rgba(212,175,55,.07);
+    }
+
+    .lb-rank {
+      font-weight: 800;
+      color: #d4af37;
+      font-size: 19px;
+    }
+
+    .lb-first { color: #ffd700; }
+    .lb-second { color: #c0c0c0; }
+    .lb-third { color: #cd7f32; }
+
+    .lb-player {
+      font-weight: 700;
+      color: white;
+    }
+
+    .lb-clan {
+      color: #b9beca;
+      font-size: 14px;
+    }
+
+    .lb-trophies {
+      font-weight: 800;
+      color: #ffd700;
+    }
+
+    .lb-profile {
+      color: #d4af37;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 700;
+    }
+
+    .lb-profile:hover {
+      color: #fff;
+    }
+
+    .lb-message {
+      text-align: center;
+      padding: 40px 20px;
+      color: #b9beca;
+    }
+
+    .lb-refresh {
+      display: block;
+      margin: 25px auto 0;
+      background: #d4af37;
+      color: #090b12;
+      border: none;
+      padding: 13px 25px;
+      border-radius: 9px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .lb-refresh:hover {
+      background: #ffd700;
+    }
+
+    .lb-note {
+      color: #b9beca;
+      text-align: center;
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    .lb-cta {
+      text-align: center;
+      padding: 65px 20px;
+      background: #13161e;
+      border-top: 1px solid rgba(212,175,55,.25);
+    }
+
+    .lb-cta h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .lb-cta p {
+      color: #b9beca;
+      margin-bottom: 25px;
+    }
+
+    .lb-button {
+      display: inline-block;
+      padding: 14px 25px;
+      background: #d4af37;
+      color: #090b12;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .lb-button:hover {
+      background: #ffd700;
+    }
+
+    .lb-footer {
+      padding: 35px 20px;
+      text-align: center;
+      background: #090b12;
+      border-top: 1px solid rgba(212,175,55,.25);
+    }
+
+    .lb-footer p {
+      color: #b9beca;
+    }
+
+    .lb-footer .footer-socials a {
+      color: #d4af37;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      display: inline-block;
+      padding: 8px 12px;
+    }
+
+    .lb-footer .footer-socials a:hover {
+      color: white;
+    }
+
+    @media (max-width: 650px) {
+      .lb-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .lb-hero {
+        padding: 60px 20px;
+      }
+
+      .lb-table th,
+      .lb-table td {
+        padding: 14px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="lb-container" style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <a href="index.html" style="color:#ffd700;font-weight:800;font-size:20px">
+        👑 THE ROYALE ORGANIZATION
+      </a>
+      <nav aria-label="Main navigation" style="display:flex;gap:18px;flex-wrap:wrap">
+        <a href="index.html">Home</a>
+        <a href="clans.html">Clans</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="decks.html">Decks</a>
+        <a href="join.html">Join Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="lb-hero">
+      <div class="lb-container">
+        <div class="lb-eyebrow">Compete • Unite • Conquer</div>
+        <h1>PLAYER LEADERBOARD</h1>
+        <p>
+          The best of The Royale Organization.
+          See how players from all three official clans
+          stack up against one another.
+        </p>
+      </div>
+    </section>
+
+    <div class="lb-container">
+      <div class="lb-stats">
+        <div class="lb-stat">
+          <strong id="totalPlayers">—</strong>
+          <span>Ranked Players</span>
+        </div>
+        <div class="lb-stat">
+          <strong id="totalClans">3</strong>
+          <span>Official Clans</span>
+        </div>
+        <div class="lb-stat">
+          <strong id="highestTrophies">—</strong>
+          <span>Highest Trophy Count</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="lb-section">
+      <div class="lb-container">
+        <div class="lb-heading">
+          <h2>Organization Rankings</h2>
+          <p>Players ranked by their current trophy counts.</p>
+        </div>
+
+        <div class="lb-controls">
+          <input
+            type="search"
+            id="playerSearch"
+            placeholder="Search for a player..."
+            aria-label="Search players"
+          >
+
+          <select id="clanFilter" aria-label="Filter by clan">
+            <option value="all">All Clans</option>
+            <option value="GRU222VR">Crownbound</option>
+            <option value="J82QJ2QY">Mojo's Dojo</option>
+            <option value="JY298RRC">MK Best Win Con</option>
+          </select>
+
+          <select id="sortFilter" aria-label="Sort players">
+            <option value="highest">Highest Trophies</option>
+            <option value="lowest">Lowest Trophies</option>
+            <option value="name">Player Name</option>
+          </select>
+        </div>
+
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Clan</th>
+                <th>Trophies</th>
+                <th>Profile</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <tr>
+                <td colspan="5" class="lb-message">
+                  Loading organization rankings...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="lb-refresh" id="refreshButton">
+          ↻ Refresh Leaderboard
+        </button>
+
+        <p class="lb-note" id="statusMessage" role="status" aria-live="polite">
+          Connecting to Clash Royale clan data...
+        </p>
+      </div>
+    </section>
+
+    <section class="lb-cta">
+      <div class="lb-container">
+        <h2>Think You Can Reach The Top?</h2>
+        <p>
+          Join one of our official clans, improve your gameplay,
+          and climb the organization rankings.
+        </p>
+        <a href="join.html" class="lb-button">
+          Join The Royale Organization
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lb-footer">
+    <p>© <span id="year"></span> The Royale Organization</p>
+
+    <div class="footer-socials">
+      <p>Follow The Royale Organization</p>
+      <a
+        href="https://www.tiktok.com/@the.royal.organiz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >TikTok</a>
+      <a
+        href="https://www.instagram.com/theroyaleorganization/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Instagram</a>
+    </div>
+
+    <p>Unofficial Clash Royale community. Not affiliated with Supercell.</p>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const CLANS = [
+      { tag: "GRU222VR", name: "Crownbound" },
+      { tag: "J82QJ2QY", name: "Mojo's Dojo" },
+      { tag: "JY298RRC", name: "MK Best Win Con" }
+    ];
+
+    let allPlayers = [];
+
+    const tbody = document.getElementById("leaderboardBody");
+    const status = document.getElementById("statusMessage");
+    const searchInput = document.getElementById("playerSearch");
+    const clanFilter = document.getElementById("clanFilter");
+    const sortFilter = document.getElementById("sortFilter");
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function formatNumber(value) {
+      return Number(value).toLocaleString("en-US");
+    }
+
+    function getRankClass(rank) {
+      if (rank === 1) return "lb-first";
+      if (rank === 2) return "lb-second";
+      if (rank === 3) return "lb-third";
+      return "";
+    }
+
+    function renderLeaderboard() {
+      const query = searchInput.value.trim().toLowerCase();
+      const selectedClan = clanFilter.value;
+      const sort = sortFilter.value;
+
+      let players = allPlayers.filter(player => {
+        const matchesName =
+          player.name.toLowerCase().includes(query);
+        const matchesClan =
+          selectedClan === "all" || player.clanTag === selectedClan;
+
+        return matchesName && matchesClan;
+      });
+
+      if (sort === "highest") {
+        players.sort((a, b) =>
+          b.trophies - a.trophies || a.name.localeCompare(b.name)
+        );
+      } else if (sort === "lowest") {
+        players.sort((a, b) =>
+          a.trophies - b.trophies || a.name.localeCompare(b.name)
+        );
+      } else {
+        players.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      if (players.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="lb-message">
+              No players match your filters.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = players.map((player, index) => {
+        const rank = index + 1;
+        const rankClass = getRankClass(rank);
+        const profileURL =
+          "https://royaleapi.com/player/" +
+          encodeURIComponent(player.tag.replace("#", ""));
+
+        return `
+          <tr>
+            <td>
+              <span class="lb-rank ${rankClass}">
+                #${rank}
+              </span>
+            </td>
+            <td class="lb-player">
+              ${escapeHTML(player.name)}
+            </td>
+            <td class="lb-clan">
+              ${escapeHTML(player.clanName)}
+            </td>
+            <td class="lb-trophies">
+              🏆 ${formatNumber(player.trophies)}
+            </td>
+            <td>
+              <a
+                class="lb-profile"
+                href="${profileURL}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >View Profile</a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function fetchClan(clan) {
+      // This endpoint must match your existing clan-data API.
+      const response = await fetch(
+        "/api/clan/" + encodeURIComponent(clan.tag),
+        { cache: "no-store" }
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to load " + clan.name);
+      }
+
+      const data = await response.json();
+
+      // Supports common clan API response structures.
+      const members =
+        data.memberList ||
+        data.members ||
+        data.data?.memberList ||
+        data.data?.members;
+
+      if (!Array.isArray(members)) {
+        throw new Error("No roster returned for " + clan.name);
+      }
+
+      return members
+        .filter(member =>
+          member &&
+          member.tag &&
+          member.name &&
+          Number.isFinite(Number(member.trophies))
+        )
+        .map(member => ({
+          name: String(member.name),
+          tag: String(member.tag),
+          trophies: Number(member.trophies),
+          clanTag: clan.tag,
+          clanName: clan.name
+        }));
+    }
+
+    async function loadLeaderboard() {
+      status.textContent = "Updating player rankings...";
+
+      const results = await Promise.allSettled(
+        CLANS.map(clan => fetchClan(clan))
+      );
+
+      allPlayers = results.flatMap(result =>
+        result.status === "fulfilled" ? result.value : []
+      );
+
+      const loadedClans = results.filter(
+        result => result.status === "fulfilled"
+      ).length;
+
+      document.getElementById("totalPlayers").textContent =
+        allPlayers.length || "—";
+
+      document.getElementById("totalClans").textContent =
+        loadedClans + " / " + CLANS.length;
+
+      document.getElementById("highestTrophies").textContent =
+        allPlayers.length
+          ? formatNumber(Math.max(...allPlayers.map(p => p.trophies)))
+          : "—";
+
+      if (loadedClans === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="lb-message">
+              Live rankings are temporarily unavailable.
+              Please try again later.
+            </td>
+          </tr>
+        `;
+        status.textContent =
+          "Unable to connect to the clan API. " +
+          "The leaderboard needs the same data endpoint " +
+          "used by your existing clan roster pages.";
+        return;
+      }
+
+      renderLeaderboard();
+
+      const time = new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+
+      status.textContent =
+        loadedClans === CLANS.length
+          ? "All three clans updated at " + time + "."
+          : loadedClans + " of 3 clans updated at " + time +
+            ". Some player data may be missing.";
+    }
+
+    searchInput.addEventListener("input", renderLeaderboard);
+    clanFilter.addEventListener("change", renderLeaderboard);
+    sortFilter.addEventListener("change", renderLeaderboard);
+
+    document.getElementById("refreshButton")
+      .addEventListener("click", loadLeaderboard);
+
+    loadLeaderboard();
+  </script>
+
+</body>
+</html>
