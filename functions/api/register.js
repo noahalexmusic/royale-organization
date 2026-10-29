@@ -1,56 +1,33 @@
 
 /*
  * THE ROYALE ORGANIZATION
- * Official Event Registration API
+ * OFFICIAL EVENT REGISTRATION API
  *
- * POST /api/register
- * Database binding: DB
+ * Endpoint: POST /api/register
+ *
+ * Cloudflare bindings:
+ * DB                       - D1 Database
+ * TURNSTILE_SECRET_KEY     - Turnstile Secret
+ * REGISTRATION_SECURITY    - Workers KV
+ *
+ * Registration status: Pending approval
  */
-
-async function checkRegistrationLimit(env, request) {
-  if (!env.REGISTRATION_SECURITY) {
-    console.error("Registration security KV binding missing");
-    return false;
-  }
-
-  const ip = request.headers.get("CF-Connecting-IP");
-
-  if (!ip) {
-    return false;
-  }
-
-  const encoder = new TextEncoder();
-  const ipBytes = encoder.encode(ip);
-  const digest = await crypto.subtle.digest("SHA-256", ipBytes);
-
-  const ipHash = Array.from(new Uint8Array(digest))
-    .map(byte => byte.toString(16).padStart(2, "0"))
-    .join("");
-
-  const key = "registration-attempt:" + ipHash;
-
-  try {
-    const existing = await env.REGISTRATION_SECURITY.get(key);
-
-    if (existing) {
-      return false;
-    }
-
-    await env.REGISTRATION_SECURITY.put(key, "1", {
-      expirationTtl: 60
-    });
-
-    return true;
-  } catch (error) {
-    console.error("Registration security check failed", error);
-    return false;
-  }
-}
 
 const JSON_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store"
 };
+
+const ALLOWED_CLANS = new Set([
+  "Crownbound",
+  "Mojo's Dojo",
+  "MK Best Win Con",
+  "pist.lia.chio",
+  "Other Clan",
+  "No Clan"
+]);
+
+const COOLDOWN_SECONDS = 60;
 
 function reply(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -68,12 +45,17 @@ function normalizeTag(value) {
   return value
     .replace(/^#/, "")
     .replace(/\s/g, "")
-    .toUpperCase();
+    .toUpperCase()
+    .replace(/O/g, "0");
 }
 
 function validDate(value) {
-  if (typeof value !== "string") return false;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  if (
+    typeof value !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(value)
+  ) {
+    return false;
+  }
 
   const parsed = new Date(value + "T00:00:00Z");
 
@@ -87,20 +69,185 @@ function todayUTC() {
   return new Date().toISOString().slice(0, 10);
 }
 
-const ALLOWED_CLANS = new Set([
-  "Crownbound",
-  "Mojo's Dojo",
-  "MK Best Win Con",
-  "pist.lia.chio",
-  "Other Clan",
-  "No Clan"
-]);
+/*
+ * CLOUDFLARE TURNSTILE VERIFICATION
+ */
+
+async function verifyTurnstile(env, request, token) {
+  if (!env.TURNSTILE_SECRET_KEY) {
+    console.error("Turnstile secret missing");
+    return {
+      ok: false,
+      status: 503,
+      message: "Registration is temporarily unavailable."
+    };
+  }
+
+  if (
+    typeof token !== "string" ||
+    !token ||
+    token.length > 2048
+  ) {
+    return {
+      ok: false,
+      status: 400,
+      message: "Please complete the security verification."
+    };
+  }
+
+  try {
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          secret: env.TURNSTILE_SECRET_KEY,
+          response: token,
+          remoteip: request.headers.get("CF-Connecting-IP")
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Turnstile service unavailable");
+    }
+
+    const result = await response.json();
+
+    if (
+      result.success !== true ||
+      result.hostname !== "theroyaleorganization.com"
+    ) {
+      return {
+        ok: false,
+        status: 403,
+        message: "Security verification failed. Please try again."
+      };
+    }
+
+    return { ok: true };
+
+  } catch (error) {
+    console.error("Turnstile error:", error);
+
+    return {
+      ok: false,
+      status: 503,
+      message: "Security verification is temporarily unavailable."
+    };
+  }
+}
+
+/*
+ * REGISTRATION COOLDOWN
+ *
+ * Best-effort protection using Cloudflare KV.
+ * This is not a guaranteed atomic rate limiter.
+ */
+
+async function checkRegistrationLimit(env, request) {
+  if (!env.REGISTRATION_SECURITY) {
+    console.error("Registration KV binding missing");
+    return {
+      allowed: false,
+      unavailable: true
+    };
+  }
+
+  const ip = request.headers.get("CF-Connecting-IP");
+
+  if (!ip) {
+    return {
+      allowed: false,
+      unavailable: true
+    };
+  }
+
+  try {
+    const bytes = new TextEncoder().encode(ip);
+
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      bytes
+    );
+
+    const hash = Array.from(new Uint8Array(digest))
+      .map(function (byte) {
+        return byte.toString(16).padStart(2, "0");
+      })
+      .join("");
+
+    const key = "registration-attempt:" + hash;
+
+    const existing = await env.REGISTRATION_SECURITY.get(key);
+
+    if (existing) {
+      return {
+        allowed: false,
+        unavailable: false
+      };
+    }
+
+    await env.REGISTRATION_SECURITY.put(key, "1", {
+      expirationTtl: COOLDOWN_SECONDS
+    });
+
+    return {
+      allowed: true,
+      unavailable: false
+    };
+
+  } catch (error) {
+    console.error("Registration cooldown error:", error);
+
+    return {
+      allowed: false,
+      unavailable: true
+    };
+  }
+}
+
+/*
+ * LOAD OFFICIAL EVENT DATABASE
+ */
+
+async function loadOfficialEvents(env, request) {
+  if (!env.ASSETS) {
+    throw new Error("Cloudflare asset binding missing");
+  }
+
+  const url = new URL("/events.json", request.url);
+
+  const response = await env.ASSETS.fetch(
+    new Request(url.toString())
+  );
+
+  if (!response.ok) {
+    throw new Error("Events database unavailable");
+  }
+
+  const data = await response.json();
+
+  if (!data || !Array.isArray(data.events)) {
+    throw new Error("Invalid events database");
+  }
+
+  return data.events;
+}
+
+/*
+ * REGISTRATION ENDPOINT
+ */
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   if (!env.DB) {
-    console.error("Missing D1 database binding");
+    console.error("D1 database binding missing");
+
     return reply({
       success: false,
       message: "Registration is temporarily unavailable."
@@ -140,6 +287,7 @@ export async function onRequestPost(context) {
     }
 
     data = JSON.parse(raw);
+
   } catch {
     return reply({
       success: false,
@@ -147,14 +295,21 @@ export async function onRequestPost(context) {
     }, 400);
   }
 
-  if (!data || typeof data !== "object" || Array.isArray(data)) {
+  if (
+    !data ||
+    typeof data !== "object" ||
+    Array.isArray(data)
+  ) {
     return reply({
       success: false,
       message: "Invalid registration data."
     }, 400);
   }
 
-  // Honeypot field: ordinary visitors must leave it empty.
+  /*
+   * HONEYPOT SPAM CHECK
+   */
+
   if (data.website) {
     return reply({
       success: false,
@@ -162,84 +317,15 @@ export async function onRequestPost(context) {
     }, 400);
   }
 
-  // Verify Cloudflare Turnstile before processing registrations.
-  if (!env.TURNSTILE_SECRET_KEY) {
-    console.error("Turnstile secret is not configured");
-
-    return reply({
-      success: false,
-      message: "Registration is temporarily unavailable."
-    }, 503);
-  }
-
-  const turnstileToken = data.turnstileToken;
-
-  if (
-    typeof turnstileToken !== "string" ||
-    !turnstileToken ||
-    turnstileToken.length > 2048
-  ) {
-    return reply({
-      success: false,
-      message: "Please complete the security verification."
-    }, 400);
-  }
-
-  let verification;
-
-  try {
-    const verificationResponse = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          secret: env.TURNSTILE_SECRET_KEY,
-          response: turnstileToken,
-          remoteip: request.headers.get("CF-Connecting-IP")
-        })
-      }
-    );
-
-    if (!verificationResponse.ok) {
-      throw new Error("Turnstile verification service error");
-    }
-
-    verification = await verificationResponse.json();
-  } catch (error) {
-    console.error("Turnstile verification failed", error);
-
-    return reply({
-      success: false,
-      message: "Security verification is temporarily unavailable."
-    }, 503);
-  }
-
-  if (
-    verification.success !== true ||
-    verification.hostname !== "theroyaleorganization.com"
-  ) {
-    return reply({
-      success: false,
-      message: "Security verification failed. Please try again."
-    }, 403);
-  }
-
-  // Best-effort cooldown after successful Turnstile verification.
-  const allowed = await checkRegistrationLimit(env, request);
-
-  if (!allowed) {
-    return reply({
-      success: false,
-      message: "Please wait at least 60 seconds before trying another registration."
-    }, 429);
-  }
+  /*
+   * VALIDATE PLAYER INFORMATION
+   */
 
   const eventId = clean(data.eventId, 100);
   const playerName = clean(data.playerName, 50);
-  const playerTag = normalizeTag(clean(data.playerTag, 15));
+  const playerTag = normalizeTag(
+    clean(data.playerTag, 15)
+  );
   const discordName = clean(data.discordName, 50);
   const clan = clean(data.clan, 50);
 
@@ -300,23 +386,22 @@ export async function onRequestPost(context) {
     }, 400);
   }
 
-  // Load the official events database from this deployment.
-  let eventData;
+  /*
+   * VERIFY OFFICIAL EVENT
+   *
+   * Check event availability before consuming
+   * the Turnstile token or starting cooldown.
+   */
+
+  let officialEvents;
 
   try {
-    const url = new URL("/events.json", request.url);
-
-    const assetResponse = await env.ASSETS.fetch(
-      new Request(url.toString())
+    officialEvents = await loadOfficialEvents(
+      env,
+      request
     );
-
-    if (!assetResponse.ok) {
-      throw new Error("Events file unavailable");
-    }
-
-    eventData = await assetResponse.json();
   } catch (error) {
-    console.error("Could not load official events", error);
+    console.error("Event loading error:", error);
 
     return reply({
       success: false,
@@ -324,14 +409,7 @@ export async function onRequestPost(context) {
     }, 503);
   }
 
-  if (!eventData || !Array.isArray(eventData.events)) {
-    return reply({
-      success: false,
-      message: "Event registration is temporarily unavailable."
-    }, 503);
-  }
-
-  const selectedEvent = eventData.events.find(function (event) {
+  const selectedEvent = officialEvents.find(function (event) {
     return event && event.id === eventId;
   });
 
@@ -346,6 +424,53 @@ export async function onRequestPost(context) {
       message: "This event is not accepting registrations."
     }, 400);
   }
+
+  /*
+   * VERIFY CLOUDFLARE TURNSTILE
+   */
+
+  const verification = await verifyTurnstile(
+    env,
+    request,
+    data.turnstileToken
+  );
+
+  if (!verification.ok) {
+    return reply({
+      success: false,
+      message: verification.message
+    }, verification.status);
+  }
+
+  /*
+   * APPLY BEST-EFFORT COOLDOWN
+   *
+   * Runs only after validating the event
+   * and successfully verifying Turnstile.
+   */
+
+  const cooldown = await checkRegistrationLimit(
+    env,
+    request
+  );
+
+  if (!cooldown.allowed) {
+    if (cooldown.unavailable) {
+      return reply({
+        success: false,
+        message: "Registration security is temporarily unavailable."
+      }, 503);
+    }
+
+    return reply({
+      success: false,
+      message: "Please wait at least 60 seconds before trying another registration."
+    }, 429);
+  }
+
+  /*
+   * SAVE REGISTRATION TO CLOUDFLARE D1
+   */
 
   try {
     const result = await env.DB.prepare(`
@@ -389,7 +514,7 @@ export async function onRequestPost(context) {
       }, 409);
     }
 
-    console.error("Registration database error", error);
+    console.error("Registration database error:", error);
 
     return reply({
       success: false,
@@ -397,6 +522,10 @@ export async function onRequestPost(context) {
     }, 500);
   }
 }
+
+/*
+ * GET REQUESTS ARE NOT REGISTRATIONS
+ */
 
 export function onRequestGet() {
   return reply({
