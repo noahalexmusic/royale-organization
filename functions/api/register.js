@@ -227,6 +227,16 @@ export async function onRequestPost(context) {
     }, 403);
   }
 
+  // Best-effort cooldown after successful Turnstile verification.
+  const allowed = await checkRegistrationLimit(env, request);
+
+  if (!allowed) {
+    return reply({
+      success: false,
+      message: "Please wait at least 60 seconds before trying another registration."
+    }, 429);
+  }
+
   const eventId = clean(data.eventId, 100);
   const playerName = clean(data.playerName, 50);
   const playerTag = normalizeTag(clean(data.playerTag, 15));
