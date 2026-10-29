@@ -7,6 +7,46 @@
  * Database binding: DB
  */
 
+async function checkRegistrationLimit(env, request) {
+  if (!env.REGISTRATION_SECURITY) {
+    console.error("Registration security KV binding missing");
+    return false;
+  }
+
+  const ip = request.headers.get("CF-Connecting-IP");
+
+  if (!ip) {
+    return false;
+  }
+
+  const encoder = new TextEncoder();
+  const ipBytes = encoder.encode(ip);
+  const digest = await crypto.subtle.digest("SHA-256", ipBytes);
+
+  const ipHash = Array.from(new Uint8Array(digest))
+    .map(byte => byte.toString(16).padStart(2, "0"))
+    .join("");
+
+  const key = "registration-attempt:" + ipHash;
+
+  try {
+    const existing = await env.REGISTRATION_SECURITY.get(key);
+
+    if (existing) {
+      return false;
+    }
+
+    await env.REGISTRATION_SECURITY.put(key, "1", {
+      expirationTtl: 60
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Registration security check failed", error);
+    return false;
+  }
+}
+
 const JSON_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store"
