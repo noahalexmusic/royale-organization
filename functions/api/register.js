@@ -122,6 +122,71 @@ export async function onRequestPost(context) {
     }, 400);
   }
 
+  // Verify Cloudflare Turnstile before processing registrations.
+  if (!env.TURNSTILE_SECRET_KEY) {
+    console.error("Turnstile secret is not configured");
+
+    return reply({
+      success: false,
+      message: "Registration is temporarily unavailable."
+    }, 503);
+  }
+
+  const turnstileToken = data.turnstileToken;
+
+  if (
+    typeof turnstileToken !== "string" ||
+    !turnstileToken ||
+    turnstileToken.length > 2048
+  ) {
+    return reply({
+      success: false,
+      message: "Please complete the security verification."
+    }, 400);
+  }
+
+  let verification;
+
+  try {
+    const verificationResponse = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          secret: env.TURNSTILE_SECRET_KEY,
+          response: turnstileToken,
+          remoteip: request.headers.get("CF-Connecting-IP")
+        })
+      }
+    );
+
+    if (!verificationResponse.ok) {
+      throw new Error("Turnstile verification service error");
+    }
+
+    verification = await verificationResponse.json();
+  } catch (error) {
+    console.error("Turnstile verification failed", error);
+
+    return reply({
+      success: false,
+      message: "Security verification is temporarily unavailable."
+    }, 503);
+  }
+
+  if (
+    verification.success !== true ||
+    verification.hostname !== "theroyaleorganization.com"
+  ) {
+    return reply({
+      success: false,
+      message: "Security verification failed. Please try again."
+    }, 403);
+  }
+
   const eventId = clean(data.eventId, 100);
   const playerName = clean(data.playerName, 50);
   const playerTag = normalizeTag(clean(data.playerTag, 15));
