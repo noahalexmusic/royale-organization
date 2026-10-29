@@ -513,9 +513,14 @@
       return;
     }
 
-    submitButton.disabled = true;
-    submitButton.textContent = "Submitting...";
+
+    if (isSubmitting) return;
+
+    isSubmitting = true;
+    updateSubmitButton();
+
     setStatus("Submitting your registration securely...");
+
 
     try {
       var response = await fetch("/api/register", {
