@@ -533,3 +533,4 @@ export function onRequestGet() {
     message: "Use the official TRO registration form."
   }, 405);
 }
+
