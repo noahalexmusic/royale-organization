@@ -570,14 +570,22 @@
   
   // Enable submissions only when an event is available.
   // The backend performs all final security checks.
+  
+  var isSubmitting = false;
+
   function updateSubmitButton() {
-    var available = !eventSelect.disabled &&
-                    Boolean(eventSelect.value);
+    var available =
+      !isSubmitting &&
+      !eventSelect.disabled &&
+      Boolean(eventSelect.value);
 
     submitButton.disabled = !available;
-    submitButton.textContent = available
-      ? "Submit Registration"
-      : "Registration Unavailable";
+
+    submitButton.textContent = isSubmitting
+      ? "Submitting..."
+      : available
+        ? "Submit Registration"
+        : "Registration Unavailable";
   }
 
   eventSelect.addEventListener("change", updateSubmitButton);
