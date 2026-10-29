@@ -1,4 +1,15 @@
 
 {
-  "events": []
+  "events": [
+    {
+      "id": "tro-registration-test",
+      "date": "2026-11-01",
+      "title": "TRO Registration System Test",
+      "type": "community",
+      "time": "7:00 PM ET",
+      "description": "Temporary event for testing the registration system. This is not an official tournament.",
+      "registrationOpen": false,
+      "url": "register.html"
+    }
+  ]
 }
