@@ -1,4 +1,13 @@
 
 {
-  "events": []
+  "events": [
+    {
+      "date": "2026-11-01",
+      "title": "TRO Calendar System Test",
+      "type": "community",
+      "time": "7:00 PM ET",
+      "description": "Temporary test event to verify that the TRO Events Calendar is working correctly.",
+      "url": "events.html"
+    }
+  ]
 }
