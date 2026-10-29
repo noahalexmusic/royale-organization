@@ -487,17 +487,106 @@
       });
   }
 
-  form.addEventListener("submit", function (event) {
+ 
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    setStatus(
-      "Online registration is not active yet. " +
-      "No information has been submitted or saved."
+    if (!form.reportValidity() || submitButton.disabled) {
+      return;
+    }
+
+    var tokenInput = document.querySelector(
+      'input[name="cf-turnstile-response"]'
     );
+
+    var turnstileToken = tokenInput ? tokenInput.value : "";
+
+    if (!turnstileToken) {
+      setStatus("Please complete the security verification.");
+      return;
+    }
+
+    var selectedEventId = eventSelect.value;
+
+    if (!selectedEventId) {
+      setStatus("Please select an available event.");
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+    setStatus("Submitting your registration securely...");
+
+    try {
+      var response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          eventId: selectedEventId,
+          playerName: document.getElementById("playerName").value,
+          playerTag: document.getElementById("playerTag").value,
+          discordName: document.getElementById("discordName").value,
+          clan: document.getElementById("clanSelect").value,
+          rulesAgreement: document.getElementById("rulesAgreement").checked,
+          accuracyAgreement: document.getElementById("accuracyAgreement").checked,
+          turnstileToken: turnstileToken,
+          website: ""
+        })
+      });
+
+      var result = await response.json();
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(
+          result.message || "Registration could not be completed."
+        );
+      }
+
+      form.reset();
+      eventSelect.value = "";
+
+      setStatus(
+        "Registration received successfully! " +
+        "Your application is pending review."
+      );
+
+    } catch (error) {
+      setStatus(
+        error.message || "Something went wrong. Please try again."
+      );
+
+    } finally {
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
+
+      updateSubmitButton();
+    }
   });
+
+
+  
+  // Enable submissions only when an event is available.
+  // The backend performs all final security checks.
+  function updateSubmitButton() {
+    var available = !eventSelect.disabled &&
+                    Boolean(eventSelect.value);
+
+    submitButton.disabled = !available;
+    submitButton.textContent = available
+      ? "Submit Registration"
+      : "Registration Unavailable";
+  }
+
+  eventSelect.addEventListener("change", updateSubmitButton);
+
+  form.addEventListener("input", updateSubmitButton);
 
   submitButton.disabled = true;
   loadEvents();
+
 })();
 </script>
 
