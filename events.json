@@ -8,7 +8,7 @@
       "type": "community",
       "time": "7:00 PM ET",
       "description": "Temporary event for testing the registration system. This is not an official tournament.",
-      "registrationOpen": false,
+      "registrationOpen": true,
       "url": "register.html"
     }
   ]
