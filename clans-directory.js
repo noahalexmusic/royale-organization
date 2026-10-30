@@ -6,7 +6,8 @@
     crownbound: "GRU222VR",
     mojo: "J82QJ2QY",
     mk: "JY298RRC",
-    lia: "JYPLU0QV"
+    lia: "JYPLU0QV",
+    jordan: "G0VLV9VC"
   };
 
   var status = document.getElementById("clans-live-status");
@@ -26,7 +27,19 @@
       inviteOnly: "Invite only",
       closed: "Closed"
     };
+
     return types[value] || "—";
+  }
+
+  function getLeader(data) {
+    var members = data.memberList || [];
+
+    var leader = members.find(function (member) {
+      return member.role &&
+        member.role.toLowerCase() === "leader";
+    });
+
+    return leader ? leader.name : "—";
   }
 
   function updateClan(id, data) {
@@ -41,7 +54,8 @@
       score: fmt(data.clanScore),
       war: fmt(data.clanWarTrophies),
       required: fmt(data.requiredTrophies),
-      type: prettyType(data.type)
+      type: prettyType(data.type),
+      leader: getLeader(data)
     };
 
     Object.keys(fields).forEach(function (field) {
@@ -82,6 +96,7 @@
         if (!response.ok) {
           throw new Error("HTTP " + response.status);
         }
+
         return response.json();
       })
       .then(function (data) {
