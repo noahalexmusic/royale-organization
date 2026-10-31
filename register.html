@@ -309,6 +309,7 @@
           <option value="Mojo's Dojo">Mojo's Dojo</option>
           <option value="MK Best Win Con">MK Best Win Con</option>
           <option value="pist.lia.chio">pist.lia.chio</option>
+          <option value="Jordan First">Jordan First</option>
           <option value="Other Clan">Other Clan</option>
           <option value="No Clan">No Clan</option>
         </select>
@@ -468,8 +469,7 @@
         } else {
           eventSelect.disabled = false;
           setStatus(
-            "Event selection is available. Online registration " +
-            "submissions will open after secure storage is configured."
+            "Select an event to register. Registrations are reviewed by TRO staff."
           );
         }
       })
@@ -484,7 +484,8 @@
         setStatus(
           "We couldn't load the event list. Please try again later."
         );
-      });
+      })
+      .finally(updateSubmitButton);
   }
 
  
@@ -516,7 +517,7 @@
 
     if (isSubmitting) return;
 
-    isSubmitting = false;
+    isSubmitting = true;
     updateSubmitButton();
 
     setStatus("Submitting your registration securely...");
@@ -563,6 +564,7 @@
       );
 
     } finally {
+      isSubmitting = false;
       if (window.turnstile) {
         window.turnstile.reset();
       }
