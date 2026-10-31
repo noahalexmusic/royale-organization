@@ -23,6 +23,7 @@ const ALLOWED_CLANS = new Set([
   "Mojo's Dojo",
   "MK Best Win Con",
   "pist.lia.chio",
+  "Jordan First",
   "Other Clan",
   "No Clan"
 ]);
