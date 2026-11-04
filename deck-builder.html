@@ -71,6 +71,9 @@
     #slots .slot:nth-child(2) { border-color: #e2b74d; }
     #slots .slot:nth-child(3) { border-color: #6bc6e8; }
 
+    #slots .slot.filled { cursor: grab; touch-action: pan-y; }
+    #slots .slot.filled:active { cursor: grabbing; }
+
     /* EIGHT DECK SLOTS */
 
     #slots.deck-slots {
@@ -902,6 +905,7 @@
     <div class="builder">
 
       <h2 class="builder-heading">Your Deck</h2>
+      <p class="note" style="text-align:center">Drag a card onto another card to switch their positions. On mobile, slide one card onto another. Complete all eight cards, then select Copy Link to paste the deck into Clash Royale.</p>
 
       <div
         class="deck-slots"
@@ -1079,7 +1083,7 @@
 </footer>
 
 <script src="cards-fallback.js"></script>
-<script src="deck-builder.js?v=3"></script>
+<script src="deck-builder.js?v=4"></script>
 <script src="site.js"></script>
 </body>
 </html>
