@@ -360,7 +360,28 @@
         var label = $("seasonLabel");
         if (label) label.textContent = seasonLabel + " · " + (data.status || "Curated creator decks");
         render();
-      }).catch(function () {});
+        loadLiveCreatorDecks();
+      }).catch(function () { loadLiveCreatorDecks(); });
+  }
+
+  function loadLiveCreatorDecks() {
+    ["Mohamed Light", "Ian77", "Ryley"].forEach(function (creator) {
+      fetch("/api/creator-decks?creator=" + encodeURIComponent(creator), { cache: "no-store" })
+        .then(function (response) { if (!response.ok) throw new Error("Unavailable"); return response.json(); })
+        .then(function (data) {
+          if (!data.decks || !data.decks.length) return;
+          var deck = decks.find(function (item) { return item.creator === creator; });
+          if (!deck) return;
+          var top = data.decks[0];
+          deck.cards = top.cards;
+          deck.name = creator + " — Most-used recent deck";
+          deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
+          deck.description = "Most-used 1v1 deck in the available current-month battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
+          deck.strategy = "Based on the official Clash Royale battle-log sample. This selection changes as new battles enter the log.";
+          deck.verifiedMostUsed = true;
+          render();
+        }).catch(function () {});
+    });
   }
 
   function loadCards() {
