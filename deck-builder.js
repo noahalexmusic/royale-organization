@@ -177,14 +177,35 @@
     }).join(";");
   }
 
+  // Clash Royale's current first-row slots: Evolution, Hero, Wild, Normal.
+  // The remaining five positions are normal deck slots.
+  function arrangeSpecialSlots() {
+    var evo = deck.filter(function (item) { return item.variant === "EVO"; });
+    var heroes = deck.filter(function (item) {
+      return item.variant === "HERO" || (byId[item.id] && byId[item.id].r === "champion");
+    });
+    var regular = deck.filter(function (item) {
+      return item.variant !== "EVO" && item.variant !== "HERO" &&
+        !(byId[item.id] && byId[item.id].r === "champion");
+    });
+    // The Wild slot accepts a second Evolution, Hero, or Champion.
+    var ordered = [];
+    if (evo.length) ordered.push(evo.shift());
+    if (heroes.length) ordered.push(heroes.shift());
+    if (evo.length) ordered.push(evo.shift());
+    else if (heroes.length) ordered.push(heroes.shift());
+    deck = ordered.concat(regular, evo, heroes).slice(0, MAX);
+  }
+
   function renderSlots() {
     var html = "";
+    var slotNames = ["Evolution", "Hero / Champion", "Wild", "Normal", "Normal", "Normal", "Normal", "Normal"];
 
     for (var i = 0; i < MAX; i++) {
       var item = deck[i];
 
       if (!item) {
-        html += '<div class="slot" aria-label="Empty slot">+</div>';
+        html += '<div class="slot special-slot slot-' + i + '" aria-label="Empty ' + slotNames[i] + ' slot">' + '<small>' + slotNames[i] + '</small><strong>+</strong></div>';
         continue;
       }
 
@@ -198,6 +219,7 @@
       html += '<button class="slot filled" type="button" ' +
         'data-remove="' + i + '" ' +
         'aria-label="Remove ' + safe(name) + '">' +
+        '<small class="slot-role">' + slotNames[i] + '</small>' +
         (card ? '<span class="elixir">' + card.e + '</span>' : '') +
         (card ? imageHTML(imageFor(card, item.variant)) : '') +
         '<span>' + safe(name) + '</span>' +
@@ -336,6 +358,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
   }
 
   function render() {
+    arrangeSpecialSlots();
     renderSlots();
     renderStats();
     renderPicker();
@@ -379,10 +402,21 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
       }
     }
 
-    if (variant === "HERO" && deck.some(function (item) {
-      return item.variant === "HERO";
-    })) {
-      say("Only one Hero can be selected.");
+    var heroLike = variant === "HERO" || byId[id].r === "champion";
+    var heroCount = deck.filter(function (item) {
+      return item.variant === "HERO" ||
+        (byId[item.id] && byId[item.id].r === "champion");
+    }).length;
+    var specialCount = deck.filter(function (item) {
+      return item.variant === "EVO" || item.variant === "HERO" ||
+        (byId[item.id] && byId[item.id].r === "champion");
+    }).length;
+    if (heroLike && heroCount >= 2) {
+      say("Hero and Wild slots can hold at most two Heroes/Champions.");
+      return;
+    }
+    if ((variant === "EVO" || heroLike) && specialCount >= 3) {
+      say("Only three special slots are available: Evolution, Hero, and Wild.");
       return;
     }
 
