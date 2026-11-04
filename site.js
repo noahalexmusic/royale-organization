@@ -20,7 +20,8 @@
         ["about", "About Us", "about.html"],
         ["clans", "Our Clans", "clans.html"],
         ["team", "Team", "team.html"],
-        ["coaching", "Coaching", "coaching.html"]
+        ["coaching", "Coaching", "coaching.html"],
+        ["sponsors", "Sponsors & Advertising", "sponsors.html"]
       ]
     },
     {
