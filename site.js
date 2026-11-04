@@ -41,7 +41,8 @@
       pages: [
         ["streams", "Streams & Creators", "streams.html"],
         ["news", "News & Announcements", "news.html"],
-        ["faq", "FAQ & Help", "faq.html"]
+        ["faq", "FAQ & Help", "faq.html"],
+        ["code-of-conduct", "Code of Conduct", "code-of-conduct.html"]
       ]
     }
   ];
