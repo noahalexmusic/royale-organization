@@ -29,6 +29,7 @@
       pages: [
         ["leaderboard", "Player Leaderboard", "leaderboard.html"],
         ["tournaments", "Tournaments", "tournaments.html"],
+        ["tournament-rules", "Tournament Rules", "tournament-rules.html"],
         ["events", "Events Calendar", "events.html"],
         ["decks", "Pro Decks", "decks.html"],
         ["deck-builder", "Deck Builder", "deck-builder.html"],
