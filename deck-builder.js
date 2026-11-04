@@ -199,33 +199,42 @@
 
   function renderSlots() {
     var html = "";
-    var slotNames = ["Evolution", "Hero / Champion", "Wild", "Normal", "Normal", "Normal", "Normal", "Normal"];
+    var roles = ["Evolution", "Hero / Champion", "Wild", "Normal", "Normal", "Normal", "Normal", "Normal"];
+    var placed = Array(MAX).fill(null);
+    var remaining = [];
+    deck.forEach(function (item, index) {
+      var isChampion = byId[item.id] && byId[item.id].r === "champion";
+      if (item.variant === "EVO" && !placed[0]) placed[0] = { item: item, index: index };
+      else if ((item.variant === "HERO" || isChampion) && !placed[1])
+        placed[1] = { item: item, index: index };
+      else if ((item.variant === "EVO" || item.variant === "HERO" || isChampion) && !placed[2])
+        placed[2] = { item: item, index: index };
+      else remaining.push({ item: item, index: index });
+    });
+    remaining.forEach(function (entry) {
+      var position = placed.findIndex(function (value) { return !value; });
+      if (position !== -1) placed[position] = entry;
+    });
 
     for (var i = 0; i < MAX; i++) {
-      var item = deck[i];
-
-      if (!item) {
-        html += '<div class="slot special-slot slot-' + i + '" aria-label="Empty ' + slotNames[i] + ' slot">' + '<small>' + slotNames[i] + '</small><strong>+</strong></div>';
+      var entry = placed[i];
+      if (!entry) {
+        html += '<div class="slot" aria-label="Empty ' + roles[i] + ' slot">' +
+          '<small class="slot-role">' + roles[i] + '</small><strong>+</strong></div>';
         continue;
       }
-
+      var item = entry.item;
       var card = byId[item.id];
       var name = card ? card.n : "Card #" + item.id;
-
-      if (item.variant) {
-        name = item.variant + " " + name;
-      }
-
+      if (item.variant) name = item.variant + " " + name;
       html += '<button class="slot filled" type="button" ' +
-        'data-remove="' + i + '" ' +
+        'data-remove="' + entry.index + '" ' +
         'aria-label="Remove ' + safe(name) + '">' +
-        '<small class="slot-role">' + slotNames[i] + '</small>' +
+        '<small class="slot-role">' + roles[i] + '</small>' +
         (card ? '<span class="elixir">' + card.e + '</span>' : '') +
         (card ? imageHTML(imageFor(card, item.variant)) : '') +
-        '<span>' + safe(name) + '</span>' +
-        '</button>';
+        '<span>' + safe(name) + '</span></button>';
     }
-
     $("slots").innerHTML = html;
   }
 
