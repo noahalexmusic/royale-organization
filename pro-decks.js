@@ -5,86 +5,121 @@
 
   var decks = [
     {
-      name: "Hog 2.6 Cycle",
-      category: "CYCLE",
-      label: "Classic Cycle",
-      description: "Fast rotations, efficient defense, and constant Hog Rider pressure.",
-      strategy: "Defend for as little elixir as possible, outcycle the opponent's Hog counter, and keep forcing single-lane pressure.",
-      cards: ["Hog Rider", "Ice Golem", "Musketeer", "Skeletons", "Ice Spirit", "Cannon", "Fireball", "The Log"]
+      "name": "Hunter — Ice Bow",
+      "creator": "Hunter",
+      "category": "CONTROL",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable Ice Bow archetype associated with Hunter. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "X-Bow",
+        "Ice Wizard",
+        "Tesla",
+        "Knight",
+        "Skeletons",
+        "Tornado",
+        "Rocket",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
     },
     {
-      name: "P.E.K.K.A Bridge Spam",
-      category: "BRIDGE",
-      label: "Bridge Spam",
-      description: "Heavy defense that turns surviving troops into dangerous counterpushes.",
-      strategy: "Use P.E.K.K.A to erase tanks, then pressure the bridge with Battle Ram, Bandit, and Royal Ghost while supporting with ranged troops.",
-      cards: ["P.E.K.K.A", "Battle Ram", "Bandit", "Royal Ghost", "Electro Wizard", "Magic Archer", "Poison", "Zap"]
+      "name": "Ryley — Log Bait",
+      "creator": "Ryley",
+      "category": "BAIT",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable Log Bait archetype associated with Ryley. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "Goblin Barrel",
+        "Princess",
+        "Mighty Miner",
+        "Tesla",
+        "Skeletons",
+        "Ice Spirit",
+        "Rocket",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
     },
     {
-      name: "Royal Giant Cycle",
-      category: "CONTROL",
-      label: "Control / Cycle",
-      description: "Efficient defense backed by repeat Royal Giant pressure.",
-      strategy: "Use Fisherman and Hunter to break apart pushes, then place Royal Giant when you have an elixir or troop advantage.",
-      cards: ["Royal Giant", "Fisherman", "Hunter", "Royal Ghost", "Skeletons", "Electro Spirit", "Fireball", "The Log"]
+      "name": "Jynxzi — Giant Graveyard",
+      "creator": "Jynxzi",
+      "category": "BEATDOWN",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable Giant Graveyard archetype associated with Jynxzi. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "Giant",
+        "Graveyard",
+        "Witch",
+        "Bowler",
+        "Zappies",
+        "Guards",
+        "Arrows",
+        "Giant Snowball"
+      ],
+      "verifiedMostUsed": false
     },
     {
-      name: "LavaLoon",
-      category: "BEATDOWN",
-      label: "Air Beatdown",
-      description: "Build a huge aerial push with Lava Hound tanking for Balloon and support troops.",
-      strategy: "Absorb pressure efficiently, start Lava Hound when safe, then stack Balloon and air support while spells clear defenders.",
-      cards: ["Lava Hound", "Balloon", "Mega Minion", "Skeleton Dragons", "Tombstone", "Barbarians", "Fireball", "Arrows"]
+      "name": "Yerson — Hog 2.6",
+      "creator": "Yerson",
+      "category": "CYCLE",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable Hog 2.6 archetype associated with Yerson. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "Hog Rider",
+        "Musketeer",
+        "Ice Golem",
+        "Cannon",
+        "Skeletons",
+        "Ice Spirit",
+        "Fireball",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
     },
     {
-      name: "Hog Exe-Nado",
-      category: "CONTROL",
-      label: "Control / Splash",
-      description: "Executioner and Tornado control pushes while Hog Rider provides the win condition.",
-      strategy: "Activate and protect your King Tower when possible, group troops with Tornado for Executioner, then counterpressure with Hog Rider.",
-      cards: ["Hog Rider", "Executioner", "Valkyrie", "Goblin Cage", "Ice Spirit", "Tornado", "Rocket", "The Log"]
+      "name": "Eragon — X-Bow Cycle",
+      "creator": "Eragon",
+      "category": "CONTROL",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable X-Bow Cycle archetype associated with Eragon. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "X-Bow",
+        "Tesla",
+        "Knight",
+        "Archers",
+        "Skeletons",
+        "Electro Spirit",
+        "Fireball",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
     },
     {
-      name: "Miner Balloon",
-      category: "CONTROL",
-      label: "Control / Air Pressure",
-      description: "Miner chip damage and Balloon pressure backed by compact defensive tools.",
-      strategy: "Use Miner for safe chip and tanking, defend with Bomb Tower and Musketeer, then pair Miner with Balloon when the opponent is low on answers.",
-      cards: ["Miner", "Balloon", "Musketeer", "Bomb Tower", "Skeletons", "Ice Golem", "Giant Snowball", "Fireball"]
-    },
-    {
-      name: "Giant Graveyard",
-      category: "BEATDOWN",
-      label: "Beatdown / Graveyard",
-      description: "A sturdy counterpush deck that lets Giant tank for Graveyard.",
-      strategy: "Defend with splash and air support, place Giant in front of surviving troops, then use Graveyard and Poison once the tower is distracted.",
-      cards: ["Giant", "Graveyard", "Bowler", "Baby Dragon", "Phoenix", "Tombstone", "Poison", "Arrows"]
-    },
-    {
-      name: "Goblin Drill Cycle",
-      category: "CYCLE",
-      label: "Cycle / Control",
-      description: "Repeated Goblin Drill pressure with quick defensive rotations.",
-      strategy: "Vary Drill placements, force awkward responses with Wall Breakers, and use cheap defense to return to your pressure cards quickly.",
-      cards: ["Goblin Drill", "Wall Breakers", "Valkyrie", "Firecracker", "Bomb Tower", "Skeletons", "Poison", "The Log"]
-    },
-    {
-      name: "Mortar Bait",
-      category: "BAIT",
-      label: "Siege / Bait",
-      description: "Mortar pressure mixed with bait cards and Miner chip damage.",
-      strategy: "Force out small spells with your bait cards, protect offensive Mortars when the matchup allows it, and use Miner to finish damage.",
-      cards: ["Mortar", "Skeleton Barrel", "Miner", "Cannon Cart", "Goblin Gang", "Minions", "Fireball", "Barbarian Barrel"]
-    },
-    {
-      name: "Electro Giant",
-      category: "BEATDOWN",
-      label: "Beatdown / Control",
-      description: "Control the board, then punish with a supported Electro Giant push.",
-      strategy: "Defend first, use Tornado to maximize splash and reflected damage, then commit Electro Giant when the opponent's best counters are out of cycle.",
-      cards: ["Electro Giant", "Bomber", "Phoenix", "Dark Prince", "Tornado", "Lightning", "Barbarian Barrel", "Goblin Cage"]
+      "name": "Surgical Goblin — Bridge Spam",
+      "creator": "Surgical Goblin",
+      "category": "BRIDGE",
+      "label": "Creator-inspired · unverified",
+      "description": "A recognizable Bridge Spam archetype associated with Surgical Goblin. This lineup is illustrative, not a verified November most-used deck.",
+      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
+      "cards": [
+        "P.E.K.K.A",
+        "Battle Ram",
+        "Bandit",
+        "Royal Ghost",
+        "Electro Wizard",
+        "Magic Archer",
+        "Poison",
+        "Zap"
+      ],
+      "verifiedMostUsed": false
     }
   ];
+  var seasonLabel = "November 2026";
 
   var cards = [];
   var cardMap = {};
@@ -222,7 +257,8 @@
       deck.name,
       deck.label,
       deck.description,
-      deck.strategy
+      deck.strategy,
+      deck.creator
     ].concat(deck.cards).join(" ").toLowerCase();
 
     return haystack.indexOf(query) !== -1;
@@ -310,6 +346,21 @@
     });
   }
 
+  function loadSeasonDecks() {
+    return fetch("/creator-decks-season.json", { cache: "no-store" })
+      .then(function (response) { if (!response.ok) throw new Error("No seasonal data"); return response.json(); })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.decks) || !data.decks.length) return;
+        seasonLabel = String(data.season || seasonLabel);
+        decks = data.decks.filter(function (item) {
+          return item && Array.isArray(item.cards) && item.cards.length === 8 && item.name;
+        });
+        var label = $("seasonLabel");
+        if (label) label.textContent = seasonLabel + " · " + (data.status || "Curated creator decks");
+        render();
+      }).catch(function () {});
+  }
+
   function loadCards() {
     render();
 
@@ -338,5 +389,6 @@
   }
 
   setupControls();
+  loadSeasonDecks();
   loadCards();
 })();
