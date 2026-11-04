@@ -6,6 +6,7 @@
   var cards = [];
   var byId = {};
   var deck = [];
+  var manualOrder = false;
 
   var type = "ALL";
   var special = "";
@@ -198,38 +199,22 @@
   }
 
   function renderSlots() {
-    var html = "";
     var roles = ["Evolution", "Hero / Champion", "Wild", "Normal", "Normal", "Normal", "Normal", "Normal"];
-    var placed = Array(MAX).fill(null);
-    var remaining = [];
-    deck.forEach(function (item, index) {
-      var isChampion = byId[item.id] && byId[item.id].r === "champion";
-      if (item.variant === "EVO" && !placed[0]) placed[0] = { item: item, index: index };
-      else if ((item.variant === "HERO" || isChampion) && !placed[1])
-        placed[1] = { item: item, index: index };
-      else if ((item.variant === "EVO" || item.variant === "HERO" || isChampion) && !placed[2])
-        placed[2] = { item: item, index: index };
-      else remaining.push({ item: item, index: index });
-    });
-    remaining.forEach(function (entry) {
-      var position = placed.findIndex(function (value) { return !value; });
-      if (position !== -1) placed[position] = entry;
-    });
-
+    var html = "";
     for (var i = 0; i < MAX; i++) {
-      var entry = placed[i];
-      if (!entry) {
-        html += '<div class="slot" aria-label="Empty ' + roles[i] + ' slot">' +
-          '<small class="slot-role">' + roles[i] + '</small><strong>+</strong></div>';
+      var item = deck[i];
+      if (!item) {
+        html += '<div class="slot" data-slot="' + i + '" aria-label="Empty ' +
+          roles[i] + ' slot"><small class="slot-role">' + roles[i] +
+          '</small><strong>+</strong></div>';
         continue;
       }
-      var item = entry.item;
       var card = byId[item.id];
       var name = card ? card.n : "Card #" + item.id;
       if (item.variant) name = item.variant + " " + name;
-      html += '<button class="slot filled" type="button" ' +
-        'data-remove="' + entry.index + '" ' +
-        'aria-label="Remove ' + safe(name) + '">' +
+      html += '<button class="slot filled" type="button" draggable="true" ' +
+        'data-slot="' + i + '" data-remove="' + i + '" ' +
+        'aria-label="Move or remove ' + safe(name) + '">' +
         '<small class="slot-role">' + roles[i] + '</small>' +
         (card ? '<span class="elixir">' + card.e + '</span>' : '') +
         (card ? imageHTML(imageFor(card, item.variant)) : '') +
@@ -367,7 +352,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
   }
 
   function render() {
-    arrangeSpecialSlots();
+    if (!manualOrder) arrangeSpecialSlots();
     renderSlots();
     renderStats();
     renderPicker();
@@ -429,6 +414,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
       return;
     }
 
+    manualOrder = false;
     deck.push({ id: id, variant: variant });
     render();
   }
@@ -838,6 +824,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
     }
 
     deck = [];
+    manualOrder = false;
 
     if (favorite) {
       generatorAdd(favorite);
@@ -883,12 +870,68 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
     say("Generated deck ready. You can swap any card below.");
   }
 
+  // Drag a deck card onto another slot to swap positions (desktop or touch).
+  var dragFrom = null;
+  var suppressRemove = false;
+  function swapSlots(from, to) {
+    if (from === null || to === null || from === to ||
+        from < 0 || to < 0 || from >= deck.length || to >= deck.length) return;
+    var temp = deck[from];
+    deck[from] = deck[to];
+    deck[to] = temp;
+    manualOrder = true;
+    suppressRemove = true;
+    render();
+    say("Cards switched. Copy Link to use this order in Clash Royale.");
+  }
+  $("slots").addEventListener("dragstart", function (event) {
+    var slot = event.target.closest("[data-slot]");
+    if (!slot || !slot.hasAttribute("data-remove")) return;
+    dragFrom = Number(slot.dataset.slot);
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", String(dragFrom));
+  });
+  $("slots").addEventListener("dragover", function (event) {
+    if (dragFrom === null) return;
+    var slot = event.target.closest("[data-slot]");
+    if (!slot) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  });
+  $("slots").addEventListener("drop", function (event) {
+    event.preventDefault();
+    var slot = event.target.closest("[data-slot]");
+    if (slot && dragFrom !== null) swapSlots(dragFrom, Number(slot.dataset.slot));
+    dragFrom = null;
+  });
+  $("slots").addEventListener("dragend", function () { dragFrom = null; });
+  var touchStart = null;
+  $("slots").addEventListener("touchstart", function (event) {
+    var slot = event.target.closest("[data-remove]");
+    if (slot && event.touches.length === 1)
+      touchStart = { index: Number(slot.dataset.slot),
+        x: event.touches[0].clientX, y: event.touches[0].clientY };
+  }, { passive: true });
+  $("slots").addEventListener("touchend", function (event) {
+    if (!touchStart || !event.changedTouches.length) return;
+    var touch = event.changedTouches[0];
+    var distance = Math.hypot(touch.clientX - touchStart.x, touch.clientY - touchStart.y);
+    var target = document.elementFromPoint(touch.clientX, touch.clientY);
+    var slot = target && target.closest("[data-slot]");
+    if (distance > 18 && slot) {
+      swapSlots(touchStart.index, Number(slot.dataset.slot));
+      event.preventDefault();
+    }
+    touchStart = null;
+  }, { passive: false });
+
   document.addEventListener("click", function (event) {
     var button = event.target.closest(
       "[data-add],[data-remove],[data-type-btn],[data-special-btn]"
     );
 
     if (!button) return;
+    if (suppressRemove && !button.hasAttribute("data-remove")) suppressRemove = false;
 
     if (button.hasAttribute("data-add")) {
       addCard(button.dataset.add, button.dataset.variant);
@@ -896,6 +939,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
     }
 
     if (button.hasAttribute("data-remove")) {
+      if (suppressRemove) { suppressRemove = false; return; }
       deck.splice(Number(button.dataset.remove), 1);
       render();
       return;
@@ -964,6 +1008,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
 
   $("clearBtn").addEventListener("click", function () {
     deck = [];
+    manualOrder = false;
     render();
   });
 
@@ -998,6 +1043,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
       return;
     }
 
+    manualOrder = false;
     deck = ids.map(function (id) {
       return { id: id, variant: "" };
     });
@@ -1011,6 +1057,7 @@ return Boolean(card.heroImage && card.heroImage.includes("/cardheroes/"));
   var initial = new URLSearchParams(location.search).get("deck");
 
   if (initial) {
+    manualOrder = false;
     deck = parseDeck(initial).map(function (id) {
       return { id: id, variant: "" };
     });
