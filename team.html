@@ -28,6 +28,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=2">
+<style>
+.co-leadership-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; max-width:1120px; margin:38px auto 0; align-items:stretch; }
+.co-leadership-grid .founder-profile { display:flex; flex-direction:column; align-items:center; text-align:center; margin:0; max-width:none; height:100%; }
+.co-leadership-grid .founder-mark { width:100px; height:100px; flex:none; font-size:2rem; }
+.co-leadership-grid .founder-profile-copy { width:100%; }
+.co-leadership-grid .founder-profile h3 { font-size:clamp(1.7rem,3vw,2.4rem); }
+.co-leadership-grid .team-profile-links { justify-content:center; }
+.co-leadership-grid .scarlet-mark { border-color:#d24b69; color:#ffd4de; background:rgba(210,75,105,.12); }
+.supporting-leadership-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:760px; }
+@media(max-width:700px) { .co-leadership-grid { grid-template-columns:1fr; } .supporting-leadership-grid { grid-template-columns:1fr; } }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -55,34 +66,38 @@
 <section class="section" id="leadership">
   <span class="label">Organization leadership</span>
   <h2>Meet our executive team.</h2>
-  <article class="founder-profile">
-    <div class="founder-mark" aria-hidden="true">NA</div>
-    <div class="founder-profile-copy">
-      <span class="team-role-badge">Founder &amp; CEO • Crownbound Leader</span>
-      <h3>Noah Alex CR</h3>
-      <p>Founder &amp; CEO of The Royale Organization and leader of Crownbound, responsible for the organization's direction, community growth, clan partnerships, competition, and long-term development.</p>
-      <div class="team-profile-links">
-        <a class="btn btn-primary btn-sm" href="crownbound.html">Crownbound</a>
-        <a class="btn btn-outline btn-sm" href="streams.html">Creator Profile</a>
-        <a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer">TikTok</a>
-        <a class="btn btn-outline btn-sm" href="https://www.twitch.tv/noahalexcr" target="_blank" rel="noopener noreferrer">Twitch</a>
-        <a class="btn btn-outline btn-sm" href="https://www.youtube.com/@noahalexcr" target="_blank" rel="noopener noreferrer">YouTube</a>
+  <div class="co-leadership-grid" aria-label="Joint organization leadership">
+    <article class="founder-profile">
+      <div class="founder-mark" aria-hidden="true">NA</div>
+      <div class="founder-profile-copy">
+        <span class="team-role-badge">Founder &amp; CEO • Crownbound Leader</span>
+        <h3>Noah Alex CR</h3>
+        <p>Co-leads The Royale Organization with Scarlet, guiding its vision, clan partnerships, competitions, community growth, and long-term development.</p>
+        <div class="team-profile-links">
+          <a class="btn btn-primary btn-sm" href="crownbound.html">Crownbound</a>
+          <a class="btn btn-outline btn-sm" href="streams.html">Creator Profile</a>
+          <a class="btn btn-outline btn-sm" href="https://www.tiktok.com/@noahalexcr" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a class="btn btn-outline btn-sm" href="https://www.twitch.tv/noahalexcr" target="_blank" rel="noopener noreferrer">Twitch</a>
+          <a class="btn btn-outline btn-sm" href="https://www.youtube.com/@noahalexcr" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </div>
       </div>
-    </div>
-  </article>
-
-  <div class="leadership-grid" aria-label="Executive leadership and advertising">
-    <article class="leader-profile">
-      <div class="leader-emblem" aria-hidden="true">S</div>
-      <span class="team-role-badge">Co-Owner • Executive Leadership</span>
-      <h3>Scarlet</h3>
-      <p>Supports organizational strategy, partnerships, community development, and major leadership decisions alongside the Founder and Manager.</p>
     </article>
+    <article class="founder-profile">
+      <div class="founder-mark scarlet-mark" aria-hidden="true">S</div>
+      <div class="founder-profile-copy">
+        <span class="team-role-badge">Co-Owner • Executive Leadership</span>
+        <h3>Scarlet</h3>
+        <p>Co-leads The Royale Organization alongside Noah, helping shape its strategy, partnerships, community development, and major organizational decisions.</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="leadership-grid supporting-leadership-grid" aria-label="Organization management and advertising">
     <article class="leader-profile">
       <div class="leader-emblem" aria-hidden="true">RG</div>
       <span class="team-role-badge">Organization Manager</span>
       <h3>RG</h3>
-      <p>Works with the Founder on day-to-day operations, recruitment, partnered clans, community development, and organization decisions.</p>
+      <p>Works with the co-leaders on day-to-day operations, recruitment, partnered clans, community development, and organization decisions.</p>
     </article>
     <article class="leader-profile">
       <div class="leader-emblem" aria-hidden="true">L</div>
@@ -134,7 +149,7 @@
 
   <div class="org-chart">
     <div class="org-chart-tier org-chart-founder">
-      <div class="org-node"><span>Organization Leadership</span><strong>Noah Alex CR</strong><small>Founder &amp; CEO</small></div>
+      <div class="org-node"><span>Joint Organization Leadership</span><strong>Noah Alex CR &amp; Scarlet</strong><small>Founder &amp; CEO • Co-Owner</small></div>
     </div>
     <div class="org-chart-line" aria-hidden="true"></div>
     <div class="org-chart-tier org-chart-clans">
