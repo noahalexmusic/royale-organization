@@ -8,7 +8,7 @@ const TAGS = {
 };
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status, headers: { "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": "public, max-age=900" }
+    "Cache-Control": "no-store, no-cache, must-revalidate" }
 });
 export async function onRequestGet({ request, env }) {
   const creator = new URL(request.url).searchParams.get("creator") || "";
