@@ -28,7 +28,7 @@ export async function onRequestGet({ request, env }) {
       if (!battle || !Array.isArray(battle.team) || battle.team.length !== 1 ||
           !Array.isArray(battle.opponent) || battle.opponent.length !== 1) continue;
       const time = Date.parse(String(battle.battleTime || "").replace(
-        /^(\\d{4})(\\d{2})(\\d{2})T(\\d{2})(\\d{2})(\\d{2})/, "$1-$2-$3T$4:$5:$6"));
+        /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, "$1-$2-$3T$4:$5:$6Z"));
       if (!Number.isFinite(time) || time < seasonStart) continue;
       const player = battle.team[0];
       const cards = player.cards;
