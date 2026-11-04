@@ -1,0 +1,20 @@
+const headers={"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"};
+function reply(message,status=200){return new Response(JSON.stringify({success:status===200,message}),{status,headers})}
+function value(v,max){return typeof v==="string"?v.trim().slice(0,max+1):""}
+export async function onRequestPost({request,env}){
+ if(!env.RESEND_API_KEY||!env.TURNSTILE_SECRET_KEY||!env.REGISTRATION_SECURITY)return reply("Coach applications are temporarily unavailable.",503);
+ if(!(request.headers.get("content-type")||"").includes("application/json"))return reply("Invalid request format.",415);
+ let d;try{const raw=await request.text();if(raw.length>6500)return reply("Application is too large.",413);d=JSON.parse(raw)}catch{return reply("Invalid application.",400)}
+ if(!d||typeof d!=="object"||Array.isArray(d))return reply("Invalid application.",400);
+ if(d.faxNumber)return reply("Application could not be processed.",400);
+ const name=value(d.name,100),email=value(d.email,254),discord=value(d.discord,100),playerTag=value(d.playerTag,25),experience=value(d.experience,1200),specialties=value(d.specialties,500),price=value(d.price,20),duration=value(d.duration,40),availability=value(d.availability,500);
+ if(name.length<2||name.length>100||!/^\S+@\S+\.\S+$/.test(email)||email.length>254||discord.length<2||discord.length>100||playerTag.length>25||experience.length<20||experience.length>1200||specialties.length<5||specialties.length>500||availability.length>500||!/^\d{1,4}(?:\.\d{1,2})?$/.test(price)||Number(price)<=0||Number(price)>1000||!["30 minutes","45 minutes","60 minutes","Other / negotiable"].includes(duration)||d.agree!==true)return reply("Please check the required fields.",400);
+ const token=value(d.turnstileToken,2048);if(!token)return reply("Please complete the security check.",400);
+ let verified;try{const r=await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({secret:env.TURNSTILE_SECRET_KEY,response:token,remoteip:request.headers.get("CF-Connecting-IP")})});verified=await r.json();if(!r.ok)throw Error("verification unavailable")}catch{return reply("Security verification is temporarily unavailable.",503)}
+ if(!verified.success||verified.hostname!=="theroyaleorganization.com")return reply("Security check failed. Please try again.",403);
+ const ip=request.headers.get("CF-Connecting-IP");if(!ip)return reply("Security check unavailable.",503);
+ try{const hash=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(ip));const key="coach-attempt:"+Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");if(await env.REGISTRATION_SECURITY.get(key))return reply("Please wait a few minutes before applying again.",429);await env.REGISTRATION_SECURITY.put(key,"1",{expirationTtl:300})}catch{return reply("Application security is temporarily unavailable.",503)}
+ const body=["New TRO Coach Application","Applicant: "+name,"Email: "+email,"Discord: "+discord,"Player tag: "+(playerTag||"Not provided"),"Proposed price: $"+price,"Session length: "+duration,"Coaching experience: "+experience,"Specialties: "+specialties,"Availability: "+(availability||"Not provided"),"Applicant acknowledges 80% coach / 20% TRO revenue share."].join("\n\n");
+ try{const r=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+env.RESEND_API_KEY,"Content-Type":"application/json"},body:JSON.stringify({from:"TRO Coaching <coaching@theroyaleorganization.com>",to:["contact@theroyaleorganization.com"],subject:"New TRO coach application — "+name.replace(/[\r\n]/g," "),text:body,reply_to:email})});if(!r.ok){console.error("Coach email status",r.status);return reply("We couldn't deliver your application. Please try again later.",502)}return reply("Your coach application was sent successfully! TRO leadership will review it.")}catch(e){console.error("Coach email error",e);return reply("We couldn't deliver your application. Please try again later.",502)}
+}
+export function onRequestGet(){return reply("Use the coach application form.",405)}
