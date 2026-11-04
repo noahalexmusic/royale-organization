@@ -22,14 +22,13 @@ export async function onRequestGet({ request, env }) {
     if (!response.ok) return json({ error: "Player battle log unavailable" }, 502);
     const battles = await response.json();
     const now = new Date();
-    const seasonStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1);
+    // Battle-log history is a rolling sample, not a calendar-month archive.
     const groups = new Map();
     for (const battle of Array.isArray(battles) ? battles : []) {
-      if (!battle || !Array.isArray(battle.team) || battle.team.length !== 1 ||
-          !Array.isArray(battle.opponent) || battle.opponent.length !== 1) continue;
+      if (!battle || !Array.isArray(battle.team) || battle.team.length !== 1) continue;
       const time = Date.parse(String(battle.battleTime || "").replace(
         /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, "$1-$2-$3T$4:$5:$6Z"));
-      if (!Number.isFinite(time) || time < seasonStart) continue;
+      if (!Number.isFinite(time)) continue;
       const player = battle.team[0];
       const cards = player.cards;
       if (!Array.isArray(cards) || cards.length !== 8) continue;
@@ -41,10 +40,12 @@ export async function onRequestGet({ request, env }) {
       groups.get(key).games++;
     }
     const sorted = [...groups.values()].sort((a,b) => b.games-a.games);
+    const totalBattleLogEntries = Array.isArray(battles) ? battles.length : 0;
     return json({ creator, tag: "#" + tag, source: "Official Clash Royale API",
-      scope: "Available 1v1 battle-log sample since start of current UTC month",
+      scope: "Recent 1v1 battles in the available rolling API sample (not season-wide)",
       season: now.toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }),
       sampledBattles: sorted.reduce((sum,d) => sum+d.games, 0),
+      totalBattleLogEntries,
       fetchedAt: now.toISOString(), decks: sorted.slice(0, 3) });
   } catch (error) {
     return json({ error: "Unable to load recent player battles" }, 502);
