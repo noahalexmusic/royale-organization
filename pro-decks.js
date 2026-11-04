@@ -226,6 +226,7 @@
     var url = clashUrl(deck);
     var ready = Boolean(url);
     var cardsHTML = deck.cards.map(cardHTML).join("");
+    var externalOnly = deck.cards.length !== 8 && Boolean(deck.source);
 
     return '<article class="pro-deck-panel" data-category="' + safe(deck.category) + '">' +
       '<div class="pro-deck-panel-head">' +
@@ -236,9 +237,10 @@
         '<div class="pro-deck-cost"><strong>' + safe(averageElixir(deck)) + '</strong><span>Avg elixir</span></div>' +
       '</div>' +
       '<p class="pro-deck-description">' + safe(deck.description) + '</p>' +
-      '<ul class="pro-deck-cards" aria-label="' + safe(deck.name) + ' cards">' + cardsHTML + '</ul>' +
+      (externalOnly ? '<p class="pro-deck-description">Current deck and usage details are provided by the live tracker.</p>' : '<ul class="pro-deck-cards" aria-label="' + safe(deck.name) + ' cards">' + cardsHTML + '</ul>') +
       '<div class="pro-deck-strategy"><strong>Game plan</strong><p>' + safe(deck.strategy) + '</p></div>' +
       '<div class="pro-deck-actions">' +
+        (externalOnly ? '<a class="btn btn-primary btn-sm" href="' + safe(deck.source) + '" target="_blank" rel="noopener noreferrer">View Live Decks</a>' : '') +
         (ready
           ? '<a class="btn btn-primary btn-sm" href="' + safe(url) + '" target="_blank" rel="noopener noreferrer">Open in Clash Royale</a>'
           : '<button class="btn btn-primary btn-sm" type="button" disabled>Deck Link Loading</button>') +
@@ -353,7 +355,7 @@
         if (!data || !Array.isArray(data.decks) || !data.decks.length) return;
         seasonLabel = String(data.season || seasonLabel);
         decks = data.decks.filter(function (item) {
-          return item && Array.isArray(item.cards) && item.cards.length === 8 && item.name;
+          return item && Array.isArray(item.cards) && (item.cards.length === 8 || item.source) && item.name;
         });
         var label = $("seasonLabel");
         if (label) label.textContent = seasonLabel + " · " + (data.status || "Curated creator decks");
