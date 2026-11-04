@@ -168,6 +168,12 @@
   });
 
 
+  /* Ensure footer layout CSS refreshes alongside the navigation script. */
+  var footerStyles = document.createElement("link");
+  footerStyles.rel = "stylesheet";
+  footerStyles.href = "style.css?v=32";
+  document.head.appendChild(footerStyles);
+
   /* Shared footer for every page using the site navigation script. */
   var footer = document.querySelector(".site-footer");
   if (footer) {
