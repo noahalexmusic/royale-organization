@@ -39,6 +39,7 @@
       label: "Community",
       pages: [
         ["streams", "Streams & Creators", "streams.html"],
+        ["news", "News & Announcements", "news.html"],
         ["join", "Join Us", "join.html"]
       ]
     }
