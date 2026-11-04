@@ -167,6 +167,25 @@
     }
   });
 
+
+  /* Shared footer for every page using the site navigation script. */
+  var footer = document.querySelector(".site-footer");
+  if (footer) {
+    footer.innerHTML =
+      '<div class="footer-inner">' +
+        '<div class="footer-top">' +
+          '<div class="footer-identity"><div class="footer-brand">♛ THE ROYALE ORGANIZATION</div><p>COMPETE • UNITE • CONQUER</p><p>Connecting Clash Royale clans, players, and creators.</p></div>' +
+          '<div class="footer-columns">' +
+            '<div><h2>Organization</h2><a href="about.html">About Us</a><a href="clans.html">Our Clans</a><a href="team.html">Our Team</a><a href="join.html">Join TRO</a></div>' +
+            '<div><h2>Competition</h2><a href="tournaments.html">Tournaments</a><a href="leaderboard.html">Leaderboard</a><a href="coaching.html">Coaching</a><a href="deck-builder.html">Deck Builder</a></div>' +
+            '<div><h2>Community</h2><a href="news.html">News</a><a href="streams.html">Creators</a><a href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Discord</a></div>' +
+            '<div><h2>Business</h2><a href="sponsors.html">Sponsorships &amp; Advertising</a><a href="sponsor-apply.html">Sponsor Inquiry</a><a href="join.html">Get Involved</a></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="footer-bottom"><span>© 2026 The Royale Organization. All rights reserved.</span><span>Independent fan organization. Not affiliated with, endorsed, or sponsored by Supercell. Clash Royale is a trademark of Supercell.</span></div>' +
+      '</div>';
+  }
+
   /* BACK TO TOP */
 
   var topButton = document.createElement("button");
