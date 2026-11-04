@@ -369,7 +369,11 @@
       fetch("/api/creator-decks?creator=" + encodeURIComponent(creator), { cache: "no-store" })
         .then(function (response) { if (!response.ok) throw new Error("Unavailable"); return response.json(); })
         .then(function (data) {
-          if (!data.decks || !data.decks.length) return;
+          if (!data.decks || !data.decks.length) {
+            var pending = decks.find(function (item) { return item.creator === creator; });
+            if (pending) { pending.label = "No current-month battles in API sample"; render(); }
+            return;
+          }
           var deck = decks.find(function (item) { return item.creator === creator; });
           if (!deck) return;
           var top = data.decks[0];
@@ -380,7 +384,10 @@
           deck.strategy = "Based on the official Clash Royale battle-log sample. This selection changes as new battles enter the log.";
           deck.verifiedMostUsed = true;
           render();
-        }).catch(function () {});
+        }).catch(function () {
+          var pending = decks.find(function (item) { return item.creator === creator; });
+          if (pending) { pending.label = "Live battle data unavailable"; render(); }
+        });
     });
   }
 
