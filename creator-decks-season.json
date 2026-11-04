@@ -1,0 +1,121 @@
+{
+  "season": "November 2026",
+  "status": "Creator-inspired examples; usage rankings not yet verified",
+  "updated": "2026-11-04",
+  "decks": [
+    {
+      "name": "Hunter — Ice Bow",
+      "creator": "Hunter",
+      "category": "CONTROL",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative Ice Bow deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "X-Bow",
+        "Ice Wizard",
+        "Tesla",
+        "Knight",
+        "Skeletons",
+        "Tornado",
+        "Rocket",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Ryley — Log Bait",
+      "creator": "Ryley",
+      "category": "BAIT",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative Log Bait deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "Goblin Barrel",
+        "Princess",
+        "Mighty Miner",
+        "Tesla",
+        "Skeletons",
+        "Ice Spirit",
+        "Rocket",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Jynxzi — Giant Graveyard",
+      "creator": "Jynxzi",
+      "category": "BEATDOWN",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative Giant Graveyard deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "Giant",
+        "Graveyard",
+        "Witch",
+        "Bowler",
+        "Zappies",
+        "Guards",
+        "Arrows",
+        "Giant Snowball"
+      ],
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Yerson — Hog 2.6",
+      "creator": "Yerson",
+      "category": "CYCLE",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative Hog 2.6 deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "Hog Rider",
+        "Musketeer",
+        "Ice Golem",
+        "Cannon",
+        "Skeletons",
+        "Ice Spirit",
+        "Fireball",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Eragon — X-Bow Cycle",
+      "creator": "Eragon",
+      "category": "CONTROL",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative X-Bow Cycle deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "X-Bow",
+        "Tesla",
+        "Knight",
+        "Archers",
+        "Skeletons",
+        "Electro Spirit",
+        "Fireball",
+        "The Log"
+      ],
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Surgical Goblin — Bridge Spam",
+      "creator": "Surgical Goblin",
+      "category": "BRIDGE",
+      "label": "Creator-inspired · unverified",
+      "description": "Illustrative Bridge Spam deck. Not a verified most-used deck for this season.",
+      "strategy": "Study the archetype and adjust to current balance changes. Verified usage counts are not available for this lineup.",
+      "cards": [
+        "P.E.K.K.A",
+        "Battle Ram",
+        "Bandit",
+        "Royal Ghost",
+        "Electro Wizard",
+        "Magic Archer",
+        "Poison",
+        "Zap"
+      ],
+      "verifiedMostUsed": false
+    }
+  ]
+}
