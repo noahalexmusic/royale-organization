@@ -19,8 +19,8 @@
       pages: [
         ["about", "About Us", "about.html"],
         ["clans", "Our Clans", "clans.html"],
-        ["team", "Team", "team.html"],
-        ["coaching", "Coaching", "coaching.html"],
+        ["team", "Our Team", "team.html"],
+        ["join", "Join the Organization", "join.html"],
         ["sponsors", "Sponsors & Advertising", "sponsors.html"]
       ]
     },
@@ -32,6 +32,7 @@
         ["events", "Events Calendar", "events.html"],
         ["decks", "Pro Decks", "decks.html"],
         ["deck-builder", "Deck Builder", "deck-builder.html"],
+        ["coaching", "Coaching", "coaching.html"],
         ["balance-changes", "Balance Changes", "balance-changes.html"]
       ]
     },
@@ -39,8 +40,7 @@
       label: "Community",
       pages: [
         ["streams", "Streams & Creators", "streams.html"],
-        ["news", "News & Announcements", "news.html"],
-        ["join", "Join Us", "join.html"]
+        ["news", "News & Announcements", "news.html"]
       ]
     }
   ];
