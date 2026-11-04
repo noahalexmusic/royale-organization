@@ -238,7 +238,7 @@
       '</div>' +
       '<p class="pro-deck-description">' + safe(deck.description) + '</p>' +
       (externalOnly ? '<p class="pro-deck-description">Verified current-season deck data is pending.</p>' : '<ul class="pro-deck-cards" aria-label="' + safe(deck.name) + ' cards">' + cardsHTML + '</ul>') +
-      '<div class="pro-deck-strategy"><strong>Game plan</strong><p>' + safe(deck.strategy) + '</p></div>' +
+      (externalOnly ? '<div class="pro-deck-strategy"><strong>Live data status</strong><p>' + safe(deck.label) + '</p></div>' : '<div class="pro-deck-strategy"><strong>Game plan</strong><p>' + safe(deck.strategy) + '</p></div>') +
       '<div class="pro-deck-actions">' +
         (externalOnly && deck.source ? '<a class="btn btn-primary btn-sm" href="' + safe(deck.source) + '" target="_blank" rel="noopener noreferrer">View Tracker</a>' : '') +
         (ready
@@ -371,7 +371,7 @@
         .then(function (data) {
           if (!data.decks || !data.decks.length) {
             var pending = decks.find(function (item) { return item.creator === creator; });
-            if (pending) { pending.label = "No current-month battles in API sample"; render(); }
+            if (pending) { pending.label = "No current-month battles in API sample"; pending.description = "The API returned no eligible current-month battles for this player."; render(); }
             return;
           }
           var deck = decks.find(function (item) { return item.creator === creator; });
@@ -386,7 +386,7 @@
           render();
         }).catch(function () {
           var pending = decks.find(function (item) { return item.creator === creator; });
-          if (pending) { pending.label = "Live battle data unavailable"; render(); }
+          if (pending) { pending.label = "Live battle data unavailable"; pending.description = "The live battle-log request failed. Player tag or API access may need correction."; render(); }
         });
     });
   }
