@@ -21,8 +21,7 @@
         ["clans", "Our Clans", "clans.html"],
         ["team", "Team", "team.html"],
         ["coaching", "Coaching", "coaching.html"],
-        ["sponsors", "Sponsors & Advertising", "sponsors.html"],
-        ["sponsor-apply", "Apply to Sponsor", "sponsor-apply.html"]
+        ["sponsors", "Sponsors & Advertising", "sponsors.html"]
       ]
     },
     {
