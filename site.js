@@ -19,7 +19,8 @@
       pages: [
         ["about", "About Us", "about.html"],
         ["clans", "Our Clans", "clans.html"],
-        ["team", "Team", "team.html"]
+        ["team", "Team", "team.html"],
+        ["coaching", "Coaching", "coaching.html"]
       ]
     },
     {
