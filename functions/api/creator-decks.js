@@ -24,16 +24,17 @@ export async function onRequestGet({ request, env }) {
     const now = new Date();
     // Battle-log history is a rolling sample, not a calendar-month archive.
     const groups = new Map();
+    const diagnostics = { noTeam: 0, noEightCards: 0, invalidCardIds: 0 };
     for (const battle of Array.isArray(battles) ? battles : []) {
-      if (!battle || !Array.isArray(battle.team) || battle.team.length !== 1) continue;
+      if (!battle || !Array.isArray(battle.team) || !battle.team.length) { diagnostics.noTeam++; continue; }
       const time = Date.parse(String(battle.battleTime || "").replace(
         /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/, "$1-$2-$3T$4:$5:$6Z"));
-      if (!Number.isFinite(time)) continue;
-      const player = battle.team[0];
-      const cards = player.cards;
-      if (!Array.isArray(cards) || cards.length !== 8) continue;
+      // A valid deck is useful even when a battle timestamp uses an unexpected format.
+      const player = battle.team.find(p => String(p.tag || "").replace("#", "").toUpperCase() === tag) || battle.team[0];
+      const cards = player.cards || player.deck;
+      if (!Array.isArray(cards) || cards.length !== 8) { diagnostics.noEightCards++; continue; }
       const ids = cards.map(card => Number(card.id));
-      if (ids.some(id => !Number.isFinite(id))) continue;
+      if (ids.some(id => !Number.isFinite(id))) { diagnostics.invalidCardIds++; continue; }
       const key = ids.slice().sort((a,b) => a-b).join(";");
       if (!groups.has(key)) groups.set(key, { cards: cards.map(card => card.name),
         ids, games: 0, lastPlayed: battle.battleTime });
@@ -45,7 +46,7 @@ export async function onRequestGet({ request, env }) {
       scope: "Recent 1v1 battles in the available rolling API sample (not season-wide)",
       season: now.toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }),
       sampledBattles: sorted.reduce((sum,d) => sum+d.games, 0),
-      totalBattleLogEntries,
+      totalBattleLogEntries, diagnostics,
       fetchedAt: now.toISOString(), decks: sorted.slice(0, 3) });
   } catch (error) {
     return json({ error: "Unable to load recent player battles" }, 502);
