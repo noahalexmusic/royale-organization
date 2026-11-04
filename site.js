@@ -40,7 +40,8 @@
       label: "Community",
       pages: [
         ["streams", "Streams & Creators", "streams.html"],
-        ["news", "News & Announcements", "news.html"]
+        ["news", "News & Announcements", "news.html"],
+        ["faq", "FAQ & Help", "faq.html"]
       ]
     }
   ];
