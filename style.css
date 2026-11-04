@@ -2709,3 +2709,12 @@ body { overflow-x: hidden; }
 .home-stats{grid-template-columns:repeat(2,minmax(0,1fr));max-width:760px;margin:0 auto 0}
 .home-hero{min-height:0;padding-top:clamp(95px,12vw,145px);padding-bottom:72px}
 @media(max-width:700px){.home-stats{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 16px}.home-hero{padding-top:80px;padding-bottom:54px}}
+
+/* Consistent, compact interior-page headings and accessible controls */
+.page-hero{min-height:0;padding:clamp(65px,8vw,105px) 20px clamp(48px,6vw,75px)}
+.page-hero h1{font-size:clamp(2.1rem,5vw,3.8rem);line-height:1.12;letter-spacing:.025em;max-width:900px}
+.page-hero p{font-size:clamp(1rem,1.6vw,1.15rem);line-height:1.65}
+.page-hero-icon{font-size:clamp(2.6rem,5vw,3.7rem)}
+.btn{min-height:44px;line-height:1.35}
+:where(a,button,input,select,textarea):focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+@media(max-width:600px){.page-hero{padding:55px 18px 42px}.page-hero h1{letter-spacing:0}.section{padding-top:58px;padding-bottom:58px}.btn-row{gap:12px}}
