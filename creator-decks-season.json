@@ -1,8 +1,30 @@
 {
   "season": "November 2026",
-  "status": "Creator-inspired examples; usage rankings not yet verified",
+  "status": "Live-tracker links for Ian77 and Mohamed Light; other lineups are illustrative",
   "updated": "2026-11-04",
   "decks": [
+    {
+      "name": "Mohamed Light — current-season decks",
+      "creator": "Mohamed Light",
+      "category": "CONTROL",
+      "label": "Live usage: external tracker",
+      "description": "See Mohamed Light's actual ranked decks and their recent usage counts at DeckRoyale. No unverified lineup is presented here.",
+      "strategy": "Open the verified tracking page for current deck counts.",
+      "cards": [],
+      "source": "https://deckroyale.gg/pro-players/mohamed-light",
+      "verifiedMostUsed": false
+    },
+    {
+      "name": "Ian77 — current-season decks",
+      "creator": "Ian77",
+      "category": "CONTROL",
+      "label": "Live usage: external tracker",
+      "description": "See Ian77's recent most-used battle-log deck at Clashest. This is a recent sample, not full-season usage.",
+      "strategy": "Open the tracking page for live battle-log deck usage.",
+      "cards": [],
+      "source": "https://clashest.com/players/Y9R22RQ2",
+      "verifiedMostUsed": false
+    },
     {
       "name": "Hunter — Ice Bow",
       "creator": "Hunter",
