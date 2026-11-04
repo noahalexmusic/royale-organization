@@ -4,7 +4,8 @@ const BASE = "https://proxy.royaleapi.dev/v1";
 const TAGS = {
   "Mohamed Light": "G9YV9GR8R",
   "Ian77": "Y9R22RQ2",
-  "Ryley": "C0V0UQ9UY"
+  "Ryley": "C0V0UQ9UY",
+  "Hunter": "J8R89YC"
 };
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status, headers: { "Content-Type": "application/json; charset=utf-8",
