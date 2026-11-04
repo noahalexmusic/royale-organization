@@ -3,122 +3,7 @@
 
   var CLASH_LINK = "https://link.clashroyale.com/deck/en?deck=";
 
-  var decks = [
-    {
-      "name": "Hunter — Ice Bow",
-      "creator": "Hunter",
-      "category": "CONTROL",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable Ice Bow archetype associated with Hunter. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "X-Bow",
-        "Ice Wizard",
-        "Tesla",
-        "Knight",
-        "Skeletons",
-        "Tornado",
-        "Rocket",
-        "The Log"
-      ],
-      "verifiedMostUsed": false
-    },
-    {
-      "name": "Ryley — Log Bait",
-      "creator": "Ryley",
-      "category": "BAIT",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable Log Bait archetype associated with Ryley. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "Goblin Barrel",
-        "Princess",
-        "Mighty Miner",
-        "Tesla",
-        "Skeletons",
-        "Ice Spirit",
-        "Rocket",
-        "The Log"
-      ],
-      "verifiedMostUsed": false
-    },
-    {
-      "name": "Jynxzi — Giant Graveyard",
-      "creator": "Jynxzi",
-      "category": "BEATDOWN",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable Giant Graveyard archetype associated with Jynxzi. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "Giant",
-        "Graveyard",
-        "Witch",
-        "Bowler",
-        "Zappies",
-        "Guards",
-        "Arrows",
-        "Giant Snowball"
-      ],
-      "verifiedMostUsed": false
-    },
-    {
-      "name": "Yerson — Hog 2.6",
-      "creator": "Yerson",
-      "category": "CYCLE",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable Hog 2.6 archetype associated with Yerson. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "Hog Rider",
-        "Musketeer",
-        "Ice Golem",
-        "Cannon",
-        "Skeletons",
-        "Ice Spirit",
-        "Fireball",
-        "The Log"
-      ],
-      "verifiedMostUsed": false
-    },
-    {
-      "name": "Eragon — X-Bow Cycle",
-      "creator": "Eragon",
-      "category": "CONTROL",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable X-Bow Cycle archetype associated with Eragon. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "X-Bow",
-        "Tesla",
-        "Knight",
-        "Archers",
-        "Skeletons",
-        "Electro Spirit",
-        "Fireball",
-        "The Log"
-      ],
-      "verifiedMostUsed": false
-    },
-    {
-      "name": "Surgical Goblin — Bridge Spam",
-      "creator": "Surgical Goblin",
-      "category": "BRIDGE",
-      "label": "Creator-inspired · unverified",
-      "description": "A recognizable Bridge Spam archetype associated with Surgical Goblin. This lineup is illustrative, not a verified November most-used deck.",
-      "strategy": "Review the eight cards and adapt to the current balance changes. The exact current-season usage ranking has not been verified.",
-      "cards": [
-        "P.E.K.K.A",
-        "Battle Ram",
-        "Bandit",
-        "Royal Ghost",
-        "Electro Wizard",
-        "Magic Archer",
-        "Poison",
-        "Zap"
-      ],
-      "verifiedMostUsed": false
-    }
-  ];
+  var decks = [];
   var seasonLabel = "November 2026";
 
   var cards = [];
@@ -243,10 +128,9 @@
         (externalOnly && deck.source ? '<a class="btn btn-primary btn-sm" href="' + safe(deck.source) + '" target="_blank" rel="noopener noreferrer">View Tracker</a>' : '') +
         (ready
           ? '<a class="btn btn-primary btn-sm" href="' + safe(url) + '" target="_blank" rel="noopener noreferrer">Open in Clash Royale</a>'
-          : '<button class="btn btn-primary btn-sm" type="button" disabled>Deck Link Loading</button>') +
-        '<button class="btn btn-outline btn-sm copy-deck-btn" type="button" data-deck-index="' + index + '"' +
-          (ready ? "" : " disabled") + '>Copy Deck Link</button>' +
-        '<a class="btn btn-outline btn-sm" href="' + safe(builderUrl(deck)) + '">Edit in Builder</a>' +
+          : '') +
+        (ready ? '<button class="btn btn-outline btn-sm copy-deck-btn" type="button" data-deck-index="' + index + '">Copy Deck Link</button>' +
+        '<a class="btn btn-outline btn-sm" href="' + safe(builderUrl(deck)) + '">Edit in Builder</a>' : '') +
       '</div>' +
     '</article>';
   }
@@ -371,7 +255,7 @@
         .then(function (data) {
           if (!data.decks || !data.decks.length) {
             var pending = decks.find(function (item) { return item.creator === creator; });
-            if (pending) { pending.label = "No current-month battles in API sample"; pending.description = "The API returned no eligible current-month battles for this player."; render(); }
+            if (pending) { pending.label = "No eligible decks in recent battle sample"; pending.description = "The API returned no eligible recent 1v1 decks for this player."; render(); }
             return;
           }
           var deck = decks.find(function (item) { return item.creator === creator; });
@@ -380,7 +264,7 @@
           deck.cards = top.cards;
           deck.name = creator + " — Most-used recent deck";
           deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
-          deck.description = "Most-used 1v1 deck in the available current-month battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
+          deck.description = "Most-used 1v1 deck in the available recent battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
           deck.strategy = "Based on the official Clash Royale battle-log sample. This selection changes as new battles enter the log.";
           deck.verifiedMostUsed = true;
           render();
