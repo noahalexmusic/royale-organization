@@ -192,7 +192,7 @@
   }
 
   function monitorOfficialSource() {
-    fetch("/api/balance-changes", { cache: "no-store" })
+    fetch("/data/balance-latest.json", { cache: "no-store" })
       .then(function (response) {
         if (!response.ok) throw new Error("Balance monitor " + response.status);
         return response.json();
@@ -222,8 +222,8 @@
         var status = document.getElementById("officialStatus");
         if (status) {
           status.textContent = isKnown
-            ? "Synced with the latest official Supercell balance article."
-            : "A newer official Supercell balance article was detected.";
+            ? "Official source monitored automatically every six hours; detailed card stats are reviewed separately."
+            : "A newer official balance article was found. Detailed card stats are awaiting verification.";
         }
 
         var alert = document.getElementById("newUpdateAlert");
