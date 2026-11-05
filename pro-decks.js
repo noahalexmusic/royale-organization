@@ -102,12 +102,14 @@
     // Giant (26000003) and Royal Giant (26000024) are distinct cards.
     // Never substitute Royal Giant art when Giant Evolution artwork is absent.
     var hero = Boolean(deck && deck.heroes && deck.heroes.indexOf(Number(card.id)) !== -1);
-    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
+    var suggestedHero = Boolean(deck && deck.suggestedHeroId === Number(card.id) && !hero);
+    var artwork = (hero || suggestedHero) && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
         (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
         (hero ? '<span class="pro-deck-hero-badge" aria-label="Confirmed Hero">HERO</span>' : "") +
+        (suggestedHero ? '<span class="pro-deck-hero-badge" aria-label="Suggested Hero, not confirmed">SUGGESTED HERO</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
@@ -120,7 +122,7 @@
       var card = resolveCard(name);
       var id = deck.ids && Number(deck.ids[index]) || (card && Number(card.id));
       var evo = Boolean(deck.evolutions && deck.evolutions.indexOf(id) !== -1);
-      var hero = Boolean(deck.heroes && deck.heroes.indexOf(id) !== -1);
+      var hero = Boolean((deck.heroes && deck.heroes.indexOf(id) !== -1) || deck.suggestedHeroId === id);
       return { name: name, evo: evo, hero: hero, id: id };
     });
     var remaining = items.slice();
@@ -292,6 +294,10 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
+          // Suggest Hero Ice Wizard only when the actual deck contains Ice Wizard,
+          // its Hero artwork is available, and no verified Hero is present.
+          var iceWizard = cards.find(function (card) { return card.id === 26000023; });
+          deck.suggestedHeroId = !deck.heroes.length && top.ids && top.ids.indexOf(26000023) !== -1 && iceWizard && iceWizard.heroImage ? 26000023 : null;
           deck.name = creator + " — Most-used recent deck";
           deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
           deck.description = "Most-used 1v1 deck in the available recent battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
@@ -321,6 +327,10 @@
         if (!list.length) throw new Error("No cards returned");
 
         buildCardMap(list);
+        decks.forEach(function (deck) {
+          var iceWizard = cards.find(function (card) { return Number(card.id) === 26000023; });
+          deck.suggestedHeroId = (!deck.heroes || !deck.heroes.length) && deck.ids && deck.ids.indexOf(26000023) !== -1 && iceWizard && iceWizard.heroImage ? 26000023 : null;
+        });
         $("deckDataStatus").textContent =
           "Live card data loaded • " + list.length + " cards available";
         render();
