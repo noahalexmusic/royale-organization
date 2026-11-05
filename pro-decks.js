@@ -312,7 +312,7 @@
             // Curated special-card choices for Ian77: Hero Mini P.E.K.K.A, Evo Wizard.
             deck.heroes = [];
             deck.suggestedHeroId = 26000018;
-            deck.evolutions = [26000017];
+            deck.evolutions = [26000017, 26000003];
           } else {
             deck.suggestedHeroId = suggestedHeroForDeck(deck);
           }
@@ -349,7 +349,7 @@
           if (deck.creator === "Ian77" && deck.ids && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
             deck.heroes = [];
             deck.suggestedHeroId = 26000018;
-            deck.evolutions = [26000017];
+            deck.evolutions = [26000017, 26000003];
           } else {
             deck.suggestedHeroId = suggestedHeroForDeck(deck);
           }
