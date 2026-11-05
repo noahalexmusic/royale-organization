@@ -41,7 +41,12 @@ export async function onRequestGet({ request, env }) {
       const ids = cards.map(card => Number(card.id));
       if (ids.some(id => !Number.isFinite(id))) { diagnostics.invalidCardIds++; continue; }
       const evolutions = cards.filter(card => Number(card.evolutionLevel) > 0).map(card => Number(card.id));
-      const heroes = cards.filter(card => Number(card.heroLevel) > 0 || card.isHero === true || card.hero === true).map(card => Number(card.id));
+      const heroes = cards.filter(card =>
+        Number(card.heroLevel) > 0 || Number(card.heroCardLevel) > 0 ||
+        card.isHero === true || card.hero === true ||
+        (card.hero && typeof card.hero === "object") ||
+        card.cardType === "hero" || card.variant === "hero"
+      ).map(card => Number(card.id));
       const key = ids.slice().sort((a,b) => a-b).join(";") + "|evo:" + evolutions.slice().sort((a,b) => a-b).join(";") + "|hero:" + heroes.slice().sort((a,b) => a-b).join(";");
       if (!groups.has(key)) groups.set(key, { cards: cards.map(card => card.name),
         ids, evolutions, heroes, games: 0, lastPlayed: battle.battleTime });
