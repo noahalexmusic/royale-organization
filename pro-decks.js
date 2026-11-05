@@ -99,6 +99,8 @@
     }
 
     var evolved = Boolean(deck && deck.evolutions && deck.evolutions.indexOf(Number(card.id)) !== -1);
+    // Giant (26000003) and Royal Giant (26000024) are distinct cards.
+    // Never substitute Royal Giant art when Giant Evolution artwork is absent.
     var artwork = evolved && card.evoImage ? card.evoImage : card.i;
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
