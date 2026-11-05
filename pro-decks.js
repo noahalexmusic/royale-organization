@@ -102,15 +102,18 @@
     // Giant (26000003) and Royal Giant (26000024) are distinct cards.
     // Never substitute Royal Giant art when Giant Evolution artwork is absent.
     var hero = Boolean(deck && deck.heroes && deck.heroes.indexOf(Number(card.id)) !== -1);
-    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
+    var heroPreview = !hero && !evolved && Boolean(card.heroImage);
+    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : (heroPreview ? card.heroImage : card.i));
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
         (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
-        (hero ? '<span class="pro-deck-hero-badge" aria-label="Hero">HERO</span>' : "") +
+        (hero ? '<span class="pro-deck-hero-badge" aria-label="Confirmed Hero">HERO</span>' : "") +
+        (heroPreview ? '<span class="pro-deck-hero-badge" aria-label="Hero artwork available; not verified as used">HERO ART</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
+      (heroPreview ? '<small title="Hero artwork preview; battle data does not confirm Hero usage">Hero art preview · usage unverified</small>' : '') +
     '</li>';
   }
 
