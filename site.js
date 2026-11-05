@@ -81,6 +81,7 @@
     html += "</div></div>";
   });
 
+  html += link("updates", "Get Updates", "updates.html", "btn btn-sm nav-updates");
   html += '<a class="btn btn-discord btn-sm nav-discord" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join Discord</a>';
 
   html += "</div>";
