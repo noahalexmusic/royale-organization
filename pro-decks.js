@@ -101,11 +101,13 @@
     var evolved = Boolean(deck && deck.evolutions && deck.evolutions.indexOf(Number(card.id)) !== -1);
     // Giant (26000003) and Royal Giant (26000024) are distinct cards.
     // Never substitute Royal Giant art when Giant Evolution artwork is absent.
-    var artwork = evolved && card.evoImage ? card.evoImage : card.i;
+    var hero = Boolean(deck && deck.heroes && deck.heroes.indexOf(Number(card.id)) !== -1);
+    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
         (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
+        (hero ? '<span class="pro-deck-hero-badge" aria-label="Hero">HERO</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
@@ -268,6 +270,7 @@
           var top = data.decks[0];
           deck.cards = top.cards;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
+          deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
           deck.name = creator + " — Most-used recent deck";
           deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
           deck.description = "Most-used 1v1 deck in the available recent battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
