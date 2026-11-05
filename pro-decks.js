@@ -249,7 +249,7 @@
   }
 
   function loadLiveCreatorDecks() {
-    ["Mohamed Light", "Ian77", "Ryley", "Hunter", "Jynxzi", "Morten"].forEach(function (creator) {
+    ["Mohamed Light", "Ian77", "Ryley", "Hunter", "Jynxzi", "Morten", "B-rad"].forEach(function (creator) {
       fetch("/api/creator-decks?creator=" + encodeURIComponent(creator), { cache: "no-store" })
         .then(function (response) { if (!response.ok) throw new Error("Unavailable"); return response.json(); })
         .then(function (data) {
