@@ -111,7 +111,7 @@
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
         (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
         (hero ? '<span class="pro-deck-hero-badge" aria-label="Confirmed Hero">HERO</span>' : "") +
-        (suggestedHero ? '<span class="pro-deck-hero-badge" aria-label="Suggested Hero, not confirmed">SUGGESTED HERO</span>' : "") +
+        (suggestedHero ? '<span class="pro-deck-hero-badge" aria-label="Hero recommendation, not verified player selection">HERO</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
