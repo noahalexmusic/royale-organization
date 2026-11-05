@@ -118,6 +118,8 @@
     // A card can occupy only one special slot: Hero takes priority over Evolution.
     if (hero || suggestedHero) evolved = false;
     var artwork = (hero || suggestedHero) && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
+    // Use the uploaded Evo Giant artwork directly, regardless of cached API card metadata.
+    if (evolved && Number(card.id) === 26000003) artwork = "/clash-royale-evolution-giant-card.webp";
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
