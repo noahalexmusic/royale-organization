@@ -5,7 +5,8 @@ const TAGS = {
   "Mohamed Light": "G9YV9GR8R",
   "Ian77": "Y9R22RQ2",
   "Ryley": "C0V0UQ9UY",
-  "Hunter": "J8R89YC8"
+  "Hunter": "J8R89YC8",
+  "Jynxzi": "PRLGCJGC"
 };
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status, headers: { "Content-Type": "application/json; charset=utf-8",
