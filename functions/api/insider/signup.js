@@ -1,7 +1,7 @@
 const json=(message,status=200)=>new Response(JSON.stringify({message}),{status,headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});
 const hex=b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
 const hash=async s=>hex(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)));
-const emailValid=s=>typeof s==="string"&&s.length<=254&&/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(s);
+const emailValid=s=>typeof s==="string"&&s.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 const origin="https://theroyaleorganization.com";
 async function send(env,to,subject,body){const r=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+env.RESEND_API_KEY,"Content-Type":"application/json"},body:JSON.stringify({from:"The Royale Insider <updates@theroyaleorganization.com>",to:[to],subject,text:body})});if(!r.ok)throw Error("email provider failed "+r.status)}
 async function signature(env,email){const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(env.RESEND_API_KEY),{name:"HMAC",hash:"SHA-256"},false,["sign"]);return hex(await crypto.subtle.sign("HMAC",key,new TextEncoder().encode("unsubscribe:"+email)))}
