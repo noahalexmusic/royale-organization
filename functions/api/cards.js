@@ -52,7 +52,7 @@ function normalizeCard(card) {
   const rarity = String(card.rarity || "").toLowerCase();
 
   const evoImage = card.id === 26000003
-    ? "https://api-assets.clashroyale.com/cardevolutions/300/Axr4ox5_b7edmLsoHxBX3vmgijAIibuF6RImTbqLlXE.png"
+    ? "/clash-royale-evolution-giant-card.webp"
     : artwork(
     icons.evolutionMedium ||
     icons.evoMedium ||
