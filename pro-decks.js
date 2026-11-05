@@ -102,25 +102,42 @@
     // Giant (26000003) and Royal Giant (26000024) are distinct cards.
     // Never substitute Royal Giant art when Giant Evolution artwork is absent.
     var hero = Boolean(deck && deck.heroes && deck.heroes.indexOf(Number(card.id)) !== -1);
-    var heroPreview = !hero && !evolved && Boolean(card.heroImage);
-    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : (heroPreview ? card.heroImage : card.i));
+    var artwork = hero && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
         (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
         (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
         (hero ? '<span class="pro-deck-hero-badge" aria-label="Confirmed Hero">HERO</span>' : "") +
-        (heroPreview ? '<span class="pro-deck-hero-badge" aria-label="Hero artwork available; not verified as used">HERO ART</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
-      (heroPreview ? '<small title="Hero artwork preview; battle data does not confirm Hero usage">Hero art preview · usage unverified</small>' : '') +
     '</li>';
+  }
+
+  function orderedDeckCards(deck) {
+    // Preserve card IDs for exact matching, and put verified special cards in game slots.
+    var items = deck.cards.map(function (name, index) {
+      var card = resolveCard(name);
+      var id = deck.ids && Number(deck.ids[index]) || (card && Number(card.id));
+      var evo = Boolean(deck.evolutions && deck.evolutions.indexOf(id) !== -1);
+      var hero = Boolean(deck.heroes && deck.heroes.indexOf(id) !== -1);
+      return { name: name, evo: evo, hero: hero, id: id };
+    });
+    var remaining = items.slice();
+    function take(predicate) {
+      var index = remaining.findIndex(predicate);
+      return index < 0 ? null : remaining.splice(index, 1)[0];
+    }
+    var slots = [take(function (item) { return item.evo; }),
+      take(function (item) { return item.hero; }),
+      take(function (item) { return item.evo || item.hero; })];
+    return slots.concat(remaining).filter(Boolean);
   }
 
   function deckHTML(deck, index) {
     var url = clashUrl(deck);
     var ready = Boolean(url);
-    var cardsHTML = deck.cards.map(function (name) { return cardHTML(name, deck); }).join("");
+    var cardsHTML = orderedDeckCards(deck).map(function (item) { return cardHTML(item.name, deck); }).join("");
     var externalOnly = deck.cards.length !== 8;
 
     return '<article class="pro-deck-panel" data-category="' + safe(deck.category) + '">' +
@@ -272,6 +289,7 @@
           if (!deck) return;
           var top = data.decks[0];
           deck.cards = top.cards;
+          deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
           deck.name = creator + " — Most-used recent deck";
