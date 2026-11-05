@@ -103,6 +103,8 @@
     // Never substitute Royal Giant art when Giant Evolution artwork is absent.
     var hero = Boolean(deck && deck.heroes && deck.heroes.indexOf(Number(card.id)) !== -1);
     var suggestedHero = Boolean(deck && deck.suggestedHeroId === Number(card.id) && !hero);
+    // A card can occupy only one special slot: Hero takes priority over Evolution.
+    if (hero || suggestedHero) evolved = false;
     var artwork = (hero || suggestedHero) && card.heroImage ? card.heroImage : (evolved && card.evoImage ? card.evoImage : card.i);
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
@@ -121,8 +123,8 @@
     var items = deck.cards.map(function (name, index) {
       var card = resolveCard(name);
       var id = deck.ids && Number(deck.ids[index]) || (card && Number(card.id));
-      var evo = Boolean(deck.evolutions && deck.evolutions.indexOf(id) !== -1);
       var hero = Boolean((deck.heroes && deck.heroes.indexOf(id) !== -1) || deck.suggestedHeroId === id);
+      var evo = !hero && Boolean(deck.evolutions && deck.evolutions.indexOf(id) !== -1);
       return { name: name, evo: evo, hero: hero, id: id };
     });
     var remaining = items.slice();
