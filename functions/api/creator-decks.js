@@ -40,9 +40,10 @@ export async function onRequestGet({ request, env }) {
       if (!Array.isArray(cards) || cards.length !== 8) { diagnostics.noEightCards++; continue; }
       const ids = cards.map(card => Number(card.id));
       if (ids.some(id => !Number.isFinite(id))) { diagnostics.invalidCardIds++; continue; }
-      const key = ids.slice().sort((a,b) => a-b).join(";");
+      const evolutions = cards.filter(card => Number(card.evolutionLevel) > 0).map(card => Number(card.id));
+      const key = ids.slice().sort((a,b) => a-b).join(";") + "|evo:" + evolutions.slice().sort((a,b) => a-b).join(";");
       if (!groups.has(key)) groups.set(key, { cards: cards.map(card => card.name),
-        ids, games: 0, lastPlayed: battle.battleTime });
+        ids, evolutions, games: 0, lastPlayed: battle.battleTime });
       groups.get(key).games++;
     }
     const sorted = [...groups.values()].sort((a,b) => b.games-a.games);
