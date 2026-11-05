@@ -51,7 +51,9 @@ function normalizeCard(card) {
   const icons = card.iconUrls || {};
   const rarity = String(card.rarity || "").toLowerCase();
 
-  const evoImage = artwork(
+  const evoImage = card.id === 26000003
+    ? "https://api-assets.clashroyale.com/cardevolutions/300/Axr4ox5_b7edmLsoHxBX3vmgijAIibuF6RImTbqLlXE.png"
+    : artwork(
     icons.evolutionMedium ||
     icons.evoMedium ||
     card.evolutionImage ||
