@@ -23,7 +23,7 @@ export async function onRequestPost({request,env}) {
  const expiry=new Date(Date.now()+24*3600000).toISOString();
  await env.database.prepare("INSERT INTO subscribers(email,status,verification_token_hash,verification_expires_at,verified_at,unsubscribed_at) VALUES(?,'pending',?,?,NULL,NULL) ON CONFLICT(email) DO UPDATE SET status='pending',verification_token_hash=excluded.verification_token_hash,verification_expires_at=excluded.verification_expires_at,verified_at=NULL,unsubscribed_at=NULL").bind(email,tokenHash,expiry).run();
  const url=origin+"/api/insider/verify?token="+token;
- await send(env,email,"Confirm your Royale Insider subscription","Thanks for signing up for The Royale Insider!\\n\\nConfirm your email within 24 hours:\\n"+url+"\\n\\nIf you didn't request this, ignore this message. No updates will be sent unless you confirm.");
+ await send(env,email,"Confirm your Royale Insider subscription","Thanks for signing up for The Royale Insider!\n\nConfirm your email within 24 hours:\n"+url+"\n\nIf you didn't request this, ignore this message. No updates will be sent unless you confirm.");
  return json("Check your inbox for a verification link. It expires in 24 hours.");
  }catch(e){console.error("insider signup failed",e);return json("We couldn't complete signup right now. Please try again later.",503)}
 }
