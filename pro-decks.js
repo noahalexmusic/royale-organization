@@ -78,7 +78,7 @@
 
   function clashUrl(deck) {
     var ids = deckIds(deck);
-    return ids.length === 8 ? CLASH_LINK + ids.join(";") : "";
+    return ids.length === 8 ? CLASH_LINK + ids.join(";") + (deck.evolutions && deck.evolutions.length ? "&evo=" + deck.evolutions.join(";") : "") : "";
   }
 
   function builderUrl(deck) {
@@ -88,7 +88,7 @@
       : "deck-builder.html";
   }
 
-  function cardHTML(name) {
+  function cardHTML(name, deck) {
     var card = resolveCard(name);
 
     if (!card) {
@@ -98,9 +98,12 @@
       '</li>';
     }
 
+    var evolved = Boolean(deck && deck.evolutions && deck.evolutions.indexOf(Number(card.id)) !== -1);
+    var artwork = evolved && card.evoImage ? card.evoImage : card.i;
     return '<li class="pro-deck-card">' +
       '<div class="pro-deck-card-art">' +
-        (card.i ? '<img src="' + safe(card.i) + '" alt="" loading="lazy">' : "") +
+        (artwork ? '<img src="' + safe(artwork) + '" alt="" loading="lazy">' : "") +
+        (evolved ? '<span class="pro-deck-evo-badge" aria-label="Evolution">EVO</span>' : "") +
         '<span class="pro-deck-elixir" aria-label="' + safe(card.e) + ' elixir">' + safe(card.e) + '</span>' +
       '</div>' +
       '<span>' + safe(card.n) + '</span>' +
@@ -110,7 +113,7 @@
   function deckHTML(deck, index) {
     var url = clashUrl(deck);
     var ready = Boolean(url);
-    var cardsHTML = deck.cards.map(cardHTML).join("");
+    var cardsHTML = deck.cards.map(function (name) { return cardHTML(name, deck); }).join("");
     var externalOnly = deck.cards.length !== 8;
 
     return '<article class="pro-deck-panel" data-category="' + safe(deck.category) + '">' +
@@ -262,6 +265,7 @@
           if (!deck) return;
           var top = data.decks[0];
           deck.cards = top.cards;
+          deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.name = creator + " — Most-used recent deck";
           deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
           deck.description = "Most-used 1v1 deck in the available recent battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
