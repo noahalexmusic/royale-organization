@@ -88,6 +88,18 @@
       : "deck-builder.html";
   }
 
+  function suggestedHeroForDeck(deck) {
+    if (!deck || !Array.isArray(deck.ids) || (deck.heroes && deck.heroes.length)) return null;
+    var eligible = deck.ids.map(Number).filter(function (id) {
+      return cards.some(function (card) { return Number(card.id) === id && Boolean(card.heroImage); });
+    });
+    // Prefer a Hero that does not replace an existing Evolution selection.
+    var nonEvo = eligible.find(function (id) {
+      return !deck.evolutions || deck.evolutions.indexOf(id) === -1;
+    });
+    return nonEvo || eligible[0] || null;
+  }
+
   function cardHTML(name, deck) {
     var card = resolveCard(name);
 
@@ -296,10 +308,7 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          // Suggest Hero Ice Wizard only when the actual deck contains Ice Wizard,
-          // its Hero artwork is available, and no verified Hero is present.
-          var iceWizard = cards.find(function (card) { return card.id === 26000023; });
-          deck.suggestedHeroId = !deck.heroes.length && top.ids && top.ids.indexOf(26000023) !== -1 && iceWizard && iceWizard.heroImage ? 26000023 : null;
+          deck.suggestedHeroId = suggestedHeroForDeck(deck);
           deck.name = creator + " — Most-used recent deck";
           deck.label = "Live sample · " + top.games + " of " + data.sampledBattles + " games";
           deck.description = "Most-used 1v1 deck in the available recent battle log, not a complete season ranking. Updated " + new Date(data.fetchedAt).toLocaleString() + ".";
@@ -329,10 +338,7 @@
         if (!list.length) throw new Error("No cards returned");
 
         buildCardMap(list);
-        decks.forEach(function (deck) {
-          var iceWizard = cards.find(function (card) { return Number(card.id) === 26000023; });
-          deck.suggestedHeroId = (!deck.heroes || !deck.heroes.length) && deck.ids && deck.ids.indexOf(26000023) !== -1 && iceWizard && iceWizard.heroImage ? 26000023 : null;
-        });
+        decks.forEach(function (deck) { deck.suggestedHeroId = suggestedHeroForDeck(deck); });
         $("deckDataStatus").textContent =
           "Live card data loaded • " + list.length + " cards available";
         render();
