@@ -31,7 +31,7 @@
     set("event-status", "Awaiting announcement");
     if (countdown) {
       countdown.innerHTML =
-        '<div class="countdown-tba"><strong>Next event loading...</strong><span>Date and registration details will appear here once they are confirmed.</span></div>';
+        '<div class="countdown-tba"><strong>No upcoming tournament announced</strong><span>Date and registration details will appear here once they are confirmed.</span></div>';
     }
     if (registerButton) {
       registerButton.textContent = "Registration Not Open Yet";
