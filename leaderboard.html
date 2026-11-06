@@ -342,7 +342,7 @@
       <div class="lb-container">
         <div class="lb-heading">
           <h2>Organization Rankings</h2>
-          <p>Players ranked by their current trophy counts.</p>
+          <p>Compare Trophy Road and current-season Ranked performance. Ranked results may take a moment to load.</p>
         </div>
 
         <div class="lb-controls">
@@ -366,6 +366,8 @@
             <option value="highest">Highest Trophies</option>
             <option value="lowest">Lowest Trophies</option>
             <option value="name">Player Name</option>
+            <option value="ranked">Highest Ranked Trophies</option>
+            <option value="league">Highest Ranked League</option>
           </select>
         </div>
 
@@ -376,13 +378,15 @@
                 <th>Rank</th>
                 <th>Player</th>
                 <th>Clan</th>
-                <th>Trophies</th>
+                <th>Trophy Road</th>
+                <th>Ranked League</th>
+                <th>Ranked Trophies</th>
                 <th>Profile</th>
               </tr>
             </thead>
             <tbody id="leaderboardBody">
               <tr>
-                <td colspan="5" class="lb-message">
+                <td colspan="7" class="lb-message">
                   Loading organization rankings...
                 </td>
               </tr>
@@ -500,6 +504,10 @@ const CLANS = [
         players.sort((a, b) =>
           a.trophies - b.trophies || a.name.localeCompare(b.name)
         );
+      } else if (sort === "ranked") {
+        players.sort((a, b) => (b.rankedTrophies ?? -1) - (a.rankedTrophies ?? -1) || a.name.localeCompare(b.name));
+      } else if (sort === "league") {
+        players.sort((a, b) => (b.rankedLeague ?? -1) - (a.rankedLeague ?? -1) || (b.rankedTrophies ?? -1) - (a.rankedTrophies ?? -1));
       } else {
         players.sort((a, b) => a.name.localeCompare(b.name));
       }
@@ -507,7 +515,7 @@ const CLANS = [
       if (players.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="lb-message">
+            <td colspan="7" class="lb-message">
               No players match your filters.
             </td>
           </tr>
@@ -538,6 +546,8 @@ const CLANS = [
             <td class="lb-trophies">
               🏆 ${formatNumber(player.trophies)}
             </td>
+            <td>${player.rankedLeague == null ? "—" : "League " + player.rankedLeague}</td>
+            <td class="lb-trophies">${player.rankedTrophies == null ? "—" : "🏆 " + formatNumber(player.rankedTrophies)}</td>
             <td>
               <a
                 class="lb-profile"
@@ -591,6 +601,24 @@ const CLANS = [
         }));
     }
 
+    async function loadRankedStats(players) {
+      // Limit concurrent requests to avoid overwhelming the Clash Royale API.
+      let next = 0;
+      const workers = Array.from({ length: Math.min(6, players.length) }, async () => {
+        while (next < players.length) {
+          const player = players[next++];
+          try {
+            const response = await fetch("/api/player?tag=" + encodeURIComponent(player.tag.replace("#", "")), { cache: "no-store" });
+            if (!response.ok) continue;
+            const data = await response.json();
+            player.rankedLeague = Number.isFinite(Number(data.currentPathOfLegendSeasonResult?.leagueNumber)) && data.currentPathOfLegendSeasonResult?.leagueNumber != null ? Number(data.currentPathOfLegendSeasonResult.leagueNumber) : null;
+            player.rankedTrophies = data.rankedDataAvailable && typeof data.currentRankedTrophies === "number" ? data.currentRankedTrophies : null;
+          } catch (error) { /* Missing Ranked data remains unavailable, not zero. */ }
+        }
+      });
+      await Promise.all(workers);
+    }
+
     async function loadLeaderboard() {
       status.textContent = "Updating player rankings...";
 
@@ -620,7 +648,7 @@ const CLANS = [
       if (loadedClans === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="lb-message">
+            <td colspan="7" class="lb-message">
               Live rankings are temporarily unavailable.
               Please try again later.
             </td>
@@ -633,6 +661,9 @@ const CLANS = [
         return;
       }
 
+      renderLeaderboard();
+      status.textContent = "Loading current-season Ranked results for " + allPlayers.length + " players...";
+      await loadRankedStats(allPlayers);
       renderLeaderboard();
 
       const time = new Date().toLocaleTimeString([], {
