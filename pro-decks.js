@@ -314,7 +314,7 @@
             // Confirmed by deck curator: Evo Giant and Hero Dark Prince.
             deck.heroes = [26000027];
             deck.suggestedHeroId = null;
-            deck.evolutions = [26000003];
+            deck.evolutions = [26000003, 26000022];
           } else if (creator === "Ian77" && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
             // Curated special-card choices for Ian77: Hero Mini P.E.K.K.A, Evo Wizard.
             deck.heroes = [];
@@ -356,7 +356,7 @@
           if (deck.creator === "Hunter" && deck.ids && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
             deck.heroes = [26000027];
             deck.suggestedHeroId = null;
-            deck.evolutions = [26000003];
+            deck.evolutions = [26000003, 26000022];
           } else if (deck.creator === "Ian77" && deck.ids && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
             deck.heroes = [];
             deck.suggestedHeroId = 26000018;
