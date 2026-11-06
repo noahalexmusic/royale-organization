@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clan Comparison | The Royale Organization</title>
+<meta name="description" content="Compare live Clash Royale statistics for all five partnered clans of The Royale Organization.">
+<meta name="theme-color" content="#090B12">
+<link rel="canonical" href="https://theroyaleorganization.com/clan-comparison.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=31">
+<style>
+.compare-wrap{max-width:1100px;margin:auto;padding:3rem 1.25rem 5rem}
+.compare-intro{max-width:750px;margin-bottom:2rem}
+.compare-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.5rem 0}
+.compare-control{display:flex;flex-direction:column;gap:.5rem}
+.compare-control label{font-weight:700}
+.compare-control select{width:100%;padding:.85rem;border:1px solid #64748b;border-radius:10px;background:#151b2b;color:#fff;font:inherit}
+.compare-status{min-height:1.5em;margin:1rem 0;color:#d6deee}
+.compare-table-wrap{overflow-x:auto;border:1px solid #49536a;border-radius:14px}
+.compare-table{width:100%;border-collapse:collapse;min-width:490px}
+.compare-table th,.compare-table td{padding:1rem .8rem;text-align:center;border-bottom:1px solid #384358}
+.compare-table th:first-child,.compare-table td:first-child{text-align:left;width:32%}
+.compare-table thead th{background:#202a40;color:#fff}
+.compare-table tbody tr:nth-child(even){background:rgba(255,255,255,.035)}
+.compare-table tbody tr:last-child td{border-bottom:0}
+.compare-table .better{color:#86efac;font-weight:800}
+.compare-links{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+.compare-note{font-size:.9rem;opacity:.8;margin-top:1rem}
+@media(max-width:600px){.compare-controls{grid-template-columns:1fr}.compare-table th,.compare-table td{padding:.8rem .55rem;font-size:.88rem}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="brand"><img class="brand-crown brand-logo" src="logo-mark.svg" alt="" width="42" height="42"><span class="brand-name">THE ROYALE ORGANIZATION</span><span class="brand-tagline">COMPETE • UNITE • CONQUER</span></div><nav class="site-nav" aria-label="Main"></nav></header>
+<main id="main">
+<section class="page-hero"><span class="eyebrow">Five clans • live statistics</span><h1>Clan Comparison</h1><p>Compare two partnered Clash Royale clans side by side using live statistics.</p><div class="btn-row"><a class="btn btn-outline" href="clans.html">← Back to Our Clans</a></div></section>
+<section class="compare-wrap" aria-labelledby="compare-heading">
+<div class="compare-intro"><span class="label">Head to head</span><h2 id="compare-heading">Choose two clans</h2><p>Switch clans at any time to compare their current scores, members, war trophies, entry requirements and join settings.</p></div>
+<div class="compare-controls">
+<div class="compare-control"><label for="clan-a">First clan</label><select id="clan-a"></select></div>
+<div class="compare-control"><label for="clan-b">Second clan</label><select id="clan-b"></select></div>
+</div>
+<p class="compare-status" id="compare-status" role="status" aria-live="polite">Loading live clan data…</p>
+<div class="compare-table-wrap"><table class="compare-table"><thead><tr><th scope="col">Statistic</th><th scope="col" id="heading-a">Crownbound</th><th scope="col" id="heading-b">Mojo's Dojo</th></tr></thead><tbody id="compare-body"></tbody></table></div>
+<p class="compare-note">Green highlights indicate a higher numeric value, not necessarily the better choice. Required trophies are an entry requirement, not a performance ranking. Statistics come from the live Clash Royale clan API.</p>
+<div class="compare-links"><a id="link-a" class="btn btn-primary" href="crownbound.html">View Crownbound</a><a id="link-b" class="btn btn-outline" href="mojos-dojo.html">View Mojo's Dojo</a></div>
+</section>
+</main>
+<footer class="site-footer"><div class="footer-brand">♛ THE ROYALE ORGANIZATION</div><p>COMPETE • UNITE • CONQUER</p><p><a class="text-link" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join our Discord</a></p><p>© 2026 The Royale Organization. All rights reserved.</p><p class="disclaimer">This site is unofficial. The Royale Organization is not affiliated with, endorsed, or sponsored by Supercell. Clash Royale is a trademark of Supercell.</p></footer>
+<script src="site.js?v=7"></script>
+<script>
+(function(){
+"use strict";
+var clans=[
+{id:"crownbound",name:"Crownbound",tag:"GRU222VR",page:"crownbound.html"},
+{id:"mojo",name:"Mojo's Dojo",tag:"J82QJ2QY",page:"mojos-dojo.html"},
+{id:"mk",name:"MK Best Win Con",tag:"JY298RRC",page:"mk-best-win-con.html"},
+{id:"lia",name:"pist.lia.chio",tag:"JYPLU0QV",page:"pist-lia-chio.html"},
+{id:"jordan",name:"Jordan First",tag:"G0VLV9VC",page:"jordan-first.html"}
+];
+var a=document.getElementById("clan-a"),b=document.getElementById("clan-b"),status=document.getElementById("compare-status"),body=document.getElementById("compare-body");
+var data={},errors={};
+clans.forEach(function(c){[a,b].forEach(function(sel){var opt=document.createElement("option");opt.value=c.id;opt.textContent=c.name;sel.appendChild(opt);});});
+a.value="crownbound";b.value="mojo";
+var rows=[["Members","members"],["Clan score","clanScore"],["War trophies","clanWarTrophies"],["Required trophies","requiredTrophies"],["Join type","type"]];
+function display(v){if(typeof v==="number")return v.toLocaleString("en-US");if(v==="open")return "Open";if(v==="inviteOnly")return "Invite only";if(v==="closed")return "Closed";return v==null?"—":String(v);}
+function render(){
+var ca=clans.find(function(c){return c.id===a.value;}),cb=clans.find(function(c){return c.id===b.value;});
+document.getElementById("heading-a").textContent=ca.name;document.getElementById("heading-b").textContent=cb.name;
+[["link-a",ca],["link-b",cb]].forEach(function(pair){var link=document.getElementById(pair[0]);link.href=pair[1].page;link.textContent="View "+pair[1].name;});
+body.replaceChildren();
+rows.forEach(function(row){
+var tr=document.createElement("tr"),label=document.createElement("td");label.textContent=row[0];tr.appendChild(label);
+var va=data[ca.id]&&data[ca.id][row[1]],vb=data[cb.id]&&data[cb.id][row[1]];
+[va,vb].forEach(function(value,i){var td=document.createElement("td");td.textContent=display(value);tr.appendChild(td);});
+if(row[1]!=="requiredTrophies"&&typeof va==="number"&&typeof vb==="number"&&va!==vb){tr.children[va>vb?1:2].classList.add("better");}
+body.appendChild(tr);
+});
+var missing=[ca,cb].filter(function(c){return !data[c.id];});
+status.textContent=missing.length?(missing.some(function(c){return errors[c.id];})?"Some selected clan data is unavailable. Please try again later.":"Loading live clan data…"):"Live statistics loaded for both selected clans.";
+}
+a.addEventListener("change",render);b.addEventListener("change",render);
+render();
+Promise.all(clans.map(function(c){return fetch("/api/clan?tag="+encodeURIComponent(c.tag),{cache:"no-store"}).then(function(r){if(!r.ok)throw Error("HTTP "+r.status);return r.json();}).then(function(json){data[c.id]=json;render();}).catch(function(){errors[c.id]=true;render();});})).then(render);
+})();
+</script>
+</body></html>
