@@ -19,6 +19,7 @@
       pages: [
         ["about", "About Us", "about.html"],
         ["clans", "Our Clans", "clans.html"],
+        ["clan-comparison", "Clan Comparison", "clan-comparison.html"],
         ["team", "Our Team", "team.html"],
         ["join", "Join the Organization", "join.html"],
         ["sponsors", "Sponsors & Advertising", "sponsors.html"]
@@ -190,7 +191,7 @@
         '<div class="footer-top">' +
           '<div class="footer-identity"><div class="footer-brand">♛ THE ROYALE ORGANIZATION</div><p>COMPETE • UNITE • CONQUER</p><p>Connecting Clash Royale clans, players, and creators.</p></div>' +
           '<div class="footer-columns">' +
-            '<div><h2>Organization</h2><a href="about.html">About Us</a><a href="clans.html">Our Clans</a><a href="team.html">Our Team</a><a href="join.html">Join TRO</a></div>' +
+            '<div><h2>Organization</h2><a href="about.html">About Us</a><a href="clans.html">Our Clans</a><a href="clan-comparison.html">Clan Comparison</a><a href="team.html">Our Team</a><a href="join.html">Join TRO</a></div>' +
             '<div><h2>Competition</h2><a href="tournaments.html">Tournaments</a><a href="leaderboard.html">Leaderboard</a><a href="coaching.html">Coaching</a><a href="deck-builder.html">Deck Builder</a><a href="tournament-rules.html">Tournament Rules</a></div>' +
             '<div><h2>Community</h2><a href="news.html">News</a><a href="streams.html">Creators</a><a href="creator-program.html">Creator Program</a><a href="faq.html">FAQ &amp; Help</a><a href="code-of-conduct.html">Code of Conduct</a><a href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Discord</a></div>' +
             '<div><h2>Business</h2><a href="sponsors.html">Sponsorships &amp; Advertising</a><a href="sponsor-apply.html">Sponsor Inquiry</a><a href="join.html">Get Involved</a></div>' +
