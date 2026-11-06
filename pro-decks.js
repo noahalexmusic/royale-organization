@@ -310,7 +310,12 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          if (creator === "Ryley" && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+          if (creator === "Jynxzi" && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
+            // Evo Giant Snowball, regular Bowler.
+            deck.evolutions = [28000017];
+            deck.heroes = [];
+            deck.suggestedHeroId = null;
+          } else if (creator === "Ryley" && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
             deck.heroes = [26000023];
             deck.suggestedHeroId = null;
             deck.evolutions = [26000049, 27000000];
@@ -357,7 +362,11 @@
 
         buildCardMap(list);
         decks.forEach(function (deck) {
-          if (deck.creator === "Ryley" && deck.ids && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+          if (deck.creator === "Jynxzi" && deck.ids && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
+            deck.evolutions = [28000017];
+            deck.heroes = [];
+            deck.suggestedHeroId = null;
+          } else if (deck.creator === "Ryley" && deck.ids && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
             deck.heroes = [26000023];
             deck.suggestedHeroId = null;
             deck.evolutions = [26000049, 27000000];
