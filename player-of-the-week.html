@@ -4,6 +4,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css?v=31">
 <style>
 .awards-wrap{max-width:1080px;margin:auto;padding:3rem 1.25rem 5rem}.awards-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem}.award-panel{background:#151b2b;border:1px solid #4c5264;border-radius:16px;padding:1.7rem}.award-panel h2,.award-panel h3{color:#f6d678}.award-panel p,.award-panel li{line-height:1.7}.award-panel ul{padding-left:1.25rem}.award-hero{border-color:#c6a54d;background:linear-gradient(135deg,#29240f,#141a2b)}.award-pending{font-size:1.4rem;font-weight:700;color:#fff}.award-weight{color:#f6d678;font-weight:800}.award-note{opacity:.85;font-size:.94rem}.award-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.4rem}.award-section{margin-top:2rem}.award-section h2{margin-bottom:1rem}@media(max-width:700px){.awards-grid{grid-template-columns:1fr}}
+ .nom-form{display:grid;gap:1rem}.nom-form label{display:grid;gap:.4rem;font-weight:700}.nom-form input,.nom-form select,.nom-form textarea{width:100%;padding:.8rem;border-radius:9px;border:1px solid #64748b;background:#101624;color:white;font:inherit}.nom-form textarea{min-height:130px}.nom-form button{cursor:pointer}.nom-form .trap{position:absolute;left:-9999px}.nom-status{min-height:1.5rem}
 </style></head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="brand"><img class="brand-crown brand-logo" src="logo-mark.svg" alt="" width="42" height="42"><span class="brand-name">THE ROYALE ORGANIZATION</span><span class="brand-tagline">COMPETE • UNITE • CONQUER</span></div><nav class="site-nav" aria-label="Main"></nav></header>
@@ -17,7 +18,33 @@
 <div class="award-panel"><h3><span class="award-weight">20%</span> Sportsmanship</h3><p>Respect for opponents and teammates, helpfulness, and responsible conduct.</p></div>
 <div class="award-panel"><h3><span class="award-weight">15%</span> Community Contribution</h3><p>Coaching, creating content, welcoming members, and strengthening the organization.</p></div>
 </div><p class="award-note">The percentages are evaluation guidelines, not an automated ranking. High trophy counts alone do not guarantee a win.</p></section>
-<section class="award-section" aria-labelledby="nominations-heading"><div class="award-panel"><h2 id="nominations-heading">Nominations</h2><p>Clan leader nominations will open once the submission and review process is ready. Until then, contact TRO leadership through Discord with questions about the award.</p><div class="award-actions"><a class="btn btn-primary" href="https://discord.gg/nFxd48maEg" target="_blank" rel="noopener noreferrer">Join TRO Discord</a></div></div></section>
+<section class="award-section" aria-labelledby="nominations-heading"><div class="award-panel"><h2 id="nominations-heading">Nominate a Member</h2><p>This form is intended for official TRO clan leaders only. Leadership will verify each nomination before considering it. Submitting a nomination does not guarantee eligibility or an award.</p>
+<form id="nomination-form" class="nom-form">
+<label>Your name (clan leader)<input name="leader" maxlength="80" required minlength="2" autocomplete="name"></label>
+<label>Your Discord username or contact information<input name="contact" maxlength="100" required minlength="3"></label>
+<label>Your official clan<select name="clan" required><option value="">Choose your clan</option><option>Crownbound</option><option>Mojo's Dojo</option><option>MK Best Win Con</option><option>pist.lia.chio</option><option>Jordan First</option></select></label>
+<label>Nominee's player name<input name="player" maxlength="80" minlength="2" required></label>
+<label>Nominee's Clash Royale player tag<input name="tag" placeholder="#200RLYQPPP" maxlength="20" required></label>
+<label>Why should this member win? (at least 30 characters)<textarea name="reason" maxlength="1500" minlength="30" required placeholder="Describe improvement, dedication, sportsmanship, and contributions."></textarea></label>
+<div class="trap" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<button class="btn btn-primary" type="submit" id="nom-submit">Submit nomination</button><p id="nom-status" class="nom-status" role="status" aria-live="polite"></p>
+</form><p class="award-note">Nominations are stored privately for leadership review. Contact details are used to verify the nominator. Please do not submit sensitive personal information.</p></div></section>
 <section class="award-section" aria-labelledby="hall-heading"><div class="award-panel"><h2 id="hall-heading">Hall of Fame</h2><p>Our first winner will be listed here after the award is officially announced. Past winners will remain recognized as the program grows.</p></div></section>
 </div></main><footer class="site-footer"><p>© 2026 The Royale Organization. All rights reserved.</p><p>This site is unofficial and is not affiliated with Supercell.</p></footer>
-<script src="site.js?v=35"></script></body></html>
+<script src="site.js?v=35"></script><script>
+(function(){
+const form=document.getElementById("nomination-form"),status=document.getElementById("nom-status"),button=document.getElementById("nom-submit");
+form.addEventListener("submit",async function(event){
+event.preventDefault();if(!form.reportValidity())return;
+button.disabled=true;status.textContent="Submitting nomination...";
+try{
+const data=Object.fromEntries(new FormData(form).entries());
+const response=await fetch("/api/player-week-nomination",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+const result=await response.json();
+status.textContent=result.message||"Unable to submit nomination.";
+if(response.ok&&result.success)form.reset();
+}catch(error){status.textContent="Unable to submit right now. Please try again later.";}
+finally{button.disabled=false;}
+});
+})();
+</script></body></html>
