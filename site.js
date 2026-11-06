@@ -29,6 +29,7 @@
       label: "Compete",
       pages: [
         ["leaderboard", "Player Leaderboard", "leaderboard.html"],
+        ["player-of-the-week", "Player of the Week", "player-of-the-week.html"],
         ["tournaments", "Tournaments", "tournaments.html"],
         ["tournament-rules", "Tournament Rules", "tournament-rules.html"],
         ["events", "Events Calendar", "events.html"],
