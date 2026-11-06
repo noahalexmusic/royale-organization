@@ -50,7 +50,7 @@
       cardType = "T";
     }
 
-    var evoImage = raw.evoImage ||
+    var evoImage = id === 26000003 ? "/clash-royale-evolution-giant-card.webp" : raw.evoImage ||
       raw.evolutionImage ||
       icons.evolutionMedium || "";
 
@@ -276,7 +276,7 @@
   function variants() {
     if (special === "EVO") {
       return cards.filter(function (card) {
-return Boolean(card.evoImage && card.evoImage.includes("/cardevolutions/"));
+return Boolean(card.evoImage && (card.evoImage.includes("/cardevolutions/") || card.id === 26000003));
       }).map(function (card) {
         return { card: card, variant: "EVO" };
       });
