@@ -312,8 +312,8 @@
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
           if (creator === "Jynxzi" && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
             // Evo Giant Snowball, regular Bowler.
-            deck.evolutions = [28000017];
-            deck.heroes = [];
+            deck.evolutions = [28000017, 26000007];
+            deck.heroes = [26000034];
             deck.suggestedHeroId = null;
           } else if (creator === "Ryley" && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
             deck.heroes = [26000023];
@@ -363,8 +363,8 @@
         buildCardMap(list);
         decks.forEach(function (deck) {
           if (deck.creator === "Jynxzi" && deck.ids && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
-            deck.evolutions = [28000017];
-            deck.heroes = [];
+            deck.evolutions = [28000017, 26000007];
+            deck.heroes = [26000034];
             deck.suggestedHeroId = null;
           } else if (deck.creator === "Ryley" && deck.ids && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
             deck.heroes = [26000023];
