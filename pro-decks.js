@@ -310,7 +310,12 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          if (creator === "Ian77" && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
+          if (creator === "Hunter" && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
+            // Confirmed by deck curator: Evo Giant and Hero Dark Prince.
+            deck.heroes = [26000027];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000003];
+          } else if (creator === "Ian77" && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
             // Curated special-card choices for Ian77: Hero Mini P.E.K.K.A, Evo Wizard.
             deck.heroes = [];
             deck.suggestedHeroId = 26000018;
@@ -348,7 +353,11 @@
 
         buildCardMap(list);
         decks.forEach(function (deck) {
-          if (deck.creator === "Ian77" && deck.ids && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
+          if (deck.creator === "Hunter" && deck.ids && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
+            deck.heroes = [26000027];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000003];
+          } else if (deck.creator === "Ian77" && deck.ids && deck.ids.indexOf(26000018) !== -1 && deck.ids.indexOf(26000017) !== -1) {
             deck.heroes = [];
             deck.suggestedHeroId = 26000018;
             deck.evolutions = [26000017, 26000003];
