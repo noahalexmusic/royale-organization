@@ -310,7 +310,11 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          if (creator === "Morten" && [26000013, 27000009, 28000015].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
+          if (creator === "JuicyJ" && [26000003, 26000018, 26000017].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
+            deck.evolutions = [26000003];
+            deck.heroes = [26000018, 26000017];
+            deck.suggestedHeroId = null;
+          } else if (creator === "Morten" && [26000013, 27000009, 28000015].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
             // Curated slots: Evo Bomber, Hero Tombstone, Hero Barbarian Barrel.
             deck.evolutions = [26000013];
             deck.heroes = [27000009, 28000015];
@@ -371,7 +375,11 @@
 
         buildCardMap(list);
         decks.forEach(function (deck) {
-          if (deck.creator === "Morten" && deck.ids && [26000013, 27000009, 28000015].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
+          if (deck.creator === "JuicyJ" && deck.ids && [26000003, 26000018, 26000017].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
+            deck.evolutions = [26000003];
+            deck.heroes = [26000018, 26000017];
+            deck.suggestedHeroId = null;
+          } else if (deck.creator === "Morten" && deck.ids && [26000013, 27000009, 28000015].every(function (id) { return deck.ids.indexOf(id) !== -1; })) {
             deck.evolutions = [26000013];
             deck.heroes = [27000009, 28000015];
             deck.suggestedHeroId = null;
