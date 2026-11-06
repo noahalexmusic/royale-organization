@@ -310,7 +310,11 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          if (creator === "Jynxzi" && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
+          if (creator === "B-rad" && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+            deck.heroes = [26000023];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000049, 27000000];
+          } else if (creator === "Jynxzi" && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
             // Curated slots: Evo Giant Snowball, Hero Bowler, Evo Witch.
             deck.evolutions = [28000017, 26000007];
             deck.heroes = [26000034];
@@ -362,7 +366,11 @@
 
         buildCardMap(list);
         decks.forEach(function (deck) {
-          if (deck.creator === "Jynxzi" && deck.ids && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
+          if (deck.creator === "B-rad" && deck.ids && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+            deck.heroes = [26000023];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000049, 27000000];
+          } else if (deck.creator === "Jynxzi" && deck.ids && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
             deck.evolutions = [28000017, 26000007];
             deck.heroes = [26000034];
             deck.suggestedHeroId = null;
