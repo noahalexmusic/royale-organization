@@ -311,7 +311,7 @@
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
           if (creator === "Jynxzi" && deck.ids.indexOf(28000017) !== -1 && deck.ids.indexOf(26000034) !== -1) {
-            // Evo Giant Snowball, regular Bowler.
+            // Curated slots: Evo Giant Snowball, Hero Bowler, Evo Witch.
             deck.evolutions = [28000017, 26000007];
             deck.heroes = [26000034];
             deck.suggestedHeroId = null;
