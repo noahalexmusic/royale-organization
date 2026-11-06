@@ -310,7 +310,11 @@
           deck.ids = top.ids;
           deck.evolutions = Array.isArray(top.evolutions) ? top.evolutions.map(Number) : [];
           deck.heroes = Array.isArray(top.heroes) ? top.heroes.map(Number) : [];
-          if (creator === "Hunter" && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
+          if (creator === "Ryley" && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+            deck.heroes = [26000023];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000049];
+          } else if (creator === "Hunter" && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
             // Confirmed by deck curator: Evo Giant and Hero Dark Prince.
             deck.heroes = [26000027];
             deck.suggestedHeroId = null;
@@ -353,7 +357,11 @@
 
         buildCardMap(list);
         decks.forEach(function (deck) {
-          if (deck.creator === "Hunter" && deck.ids && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
+          if (deck.creator === "Ryley" && deck.ids && deck.ids.indexOf(26000049) !== -1 && deck.ids.indexOf(26000023) !== -1) {
+            deck.heroes = [26000023];
+            deck.suggestedHeroId = null;
+            deck.evolutions = [26000049];
+          } else if (deck.creator === "Hunter" && deck.ids && deck.ids.indexOf(26000003) !== -1 && deck.ids.indexOf(26000027) !== -1) {
             deck.heroes = [26000027];
             deck.suggestedHeroId = null;
             deck.evolutions = [26000003, 26000022];
