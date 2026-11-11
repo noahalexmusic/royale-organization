@@ -6,7 +6,6 @@
     { tag: "GRU222VR", key: "crownbound" },
     { tag: "J82QJ2QY", key: "mojo" },
     { tag: "JY298RRC", key: "mk" },
-    { tag: "JYPLU0QV", key: "lia" },
     { tag: "G0VLV9VC", key: "jordan" }
   ];
 
