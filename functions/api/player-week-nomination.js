@@ -1,7 +1,7 @@
 // Clan leader Player of the Week nominations.
 // Submissions are private, pending leadership verification and review.
 // A submitted leader name is NOT proof of authorization.
-const CLANS = new Set(["Crownbound","Mojo's Dojo","MK Best Win Con","pist.lia.chio","Jordan First"]);
+const CLANS = new Set(["Crownbound","Mojo's Dojo","MK Best Win Con","Jordan First"]);
 const reply=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{"Content-Type":"application/json","Cache-Control":"no-store"}});
 const clean=(v,max)=>typeof v==="string"?v.trim().slice(0,max+1):"";
 export async function onRequestPost({request,env}){
