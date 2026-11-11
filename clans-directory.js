@@ -7,7 +7,8 @@
     mojo: "J82QJ2QY",
     mk: "JY298RRC",
     jordan: "G0VLV9VC",
-    darknova: "R9LVL0R8"
+    darknova: "R9LVL0R8",
+    whitelouts: "GJYQU02R"
   };
 
   var status = document.getElementById("clans-live-status");
