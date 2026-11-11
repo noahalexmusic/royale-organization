@@ -7,7 +7,8 @@
     { tag: "J82QJ2QY", key: "mojo" },
     { tag: "JY298RRC", key: "mk" },
     { tag: "G0VLV9VC", key: "jordan" },
-    { tag: "R9LVL0R8", key: "darknova" }
+    { tag: "R9LVL0R8", key: "darknova" },
+    { tag: "GJYQU02R", key: "whitelouts" }
   ];
 
   function fmt(value) {
