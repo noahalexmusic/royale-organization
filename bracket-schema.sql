@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS brackets (id TEXT PRIMARY KEY, data TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 1, updated_by TEXT, updated_at TEXT);\n
