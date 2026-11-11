@@ -80,6 +80,29 @@
       <div><span>Format</span><strong id="event-format">To be announced</strong></div>
     </div>
   </article>
+  <div class="card" style="margin-top:24px;padding:24px" id="local-tournament-time">
+    <span class="label">Worldwide tournament clock</span>
+    <h3>🕒 Your local tournament time</h3>
+    <p id="local-zone" class="note">Detecting your timezone…</p>
+    <p style="font-size:1.4rem;font-weight:700" id="local-start">Converting event time…</p>
+    <p class="note">Official start: Friday, November 13, 2026 at 6:00 AM Eastern Standard Time (UTC−5). Your local time is automatically converted from your device timezone.</p>
+    <label for="event-timezone">View another timezone</label>
+    <select id="event-timezone" style="display:block;max-width:100%;padding:12px;border-radius:10px;margin-top:8px;background:#171c2b;color:white;border:1px solid #626b80">
+      <option value="auto">My device timezone (automatic)</option>
+      <option value="America/New_York">Eastern — New York</option>
+      <option value="America/Chicago">Central — Chicago</option>
+      <option value="America/Denver">Mountain — Denver</option>
+      <option value="America/Los_Angeles">Pacific — Los Angeles</option>
+      <option value="Europe/London">United Kingdom — London</option>
+      <option value="Europe/Paris">Central Europe — Paris</option>
+      <option value="Asia/Dubai">Gulf — Dubai (GST)</option>
+      <option value="Asia/Kolkata">India — Kolkata</option>
+      <option value="Asia/Manila">Philippines — Manila</option>
+      <option value="Asia/Tokyo">Japan — Tokyo</option>
+      <option value="Australia/Sydney">Australia — Sydney</option>
+    </select>
+    <p class="note">Check-in time will be added once the organizer confirms it. The previously stated 3 PM GST check-in coincides with the 6 AM EST start.</p>
+  </div>
 </section>
 
 <section class="section section-dark">
@@ -187,5 +210,25 @@
 <script src="site.js?v=7"></script>
 <script src="tournament-data.js"></script>
 <script src="tournaments.js?v=2"></script>
+
+<script>
+(function(){
+  const start = new Date("2026-11-13T11:00:00Z");
+  const picker = document.getElementById("event-timezone");
+  const zoneLabel = document.getElementById("local-zone");
+  const startLabel = document.getElementById("local-start");
+  if (!picker || !startLabel) return;
+  const deviceZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  function render(){
+    const zone = picker.value === "auto" ? deviceZone : picker.value;
+    try {
+      startLabel.textContent = new Intl.DateTimeFormat(undefined, {timeZone:zone,weekday:"long",year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(start);
+      zoneLabel.textContent = "Showing time for: " + zone.replaceAll("_"," ");
+    } catch(e){ startLabel.textContent = "Friday, November 13, 2026 — 11:00 UTC"; zoneLabel.textContent = "UTC"; }
+  }
+  picker.addEventListener("change",render);
+  render();
+})();
+</script>
 </body>
 </html>
