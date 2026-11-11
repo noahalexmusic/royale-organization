@@ -6,7 +6,6 @@
     crownbound: "GRU222VR",
     mojo: "J82QJ2QY",
     mk: "JY298RRC",
-    lia: "JYPLU0QV",
     jordan: "G0VLV9VC"
   };
 
