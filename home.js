@@ -6,7 +6,8 @@
     { tag: "GRU222VR", key: "crownbound" },
     { tag: "J82QJ2QY", key: "mojo" },
     { tag: "JY298RRC", key: "mk" },
-    { tag: "G0VLV9VC", key: "jordan" }
+    { tag: "G0VLV9VC", key: "jordan" },
+    { tag: "R9LVL0R8", key: "darknova" }
   ];
 
   function fmt(value) {
