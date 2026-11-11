@@ -6,7 +6,8 @@
     crownbound: "GRU222VR",
     mojo: "J82QJ2QY",
     mk: "JY298RRC",
-    jordan: "G0VLV9VC"
+    jordan: "G0VLV9VC",
+    darknova: "R9LVL0R8"
   };
 
   var status = document.getElementById("clans-live-status");
