@@ -106,6 +106,51 @@
   </div>
 </section>
 
+<section class="section section-dark" id="world-wide-players">
+  <span class="label">2v2 World Wide • November 13, 2026</span>
+  <h2>Registered Players</h2>
+  <p class="lead">Meet the approved players representing their clans and countries in our first listed tournament. Registration does not confirm match participation; verified results will be published separately.</p>
+  <div id="world-wide-player-list" class="grid grid-2" aria-live="polite"><p>Loading approved registrations…</p></div>
+</section>
+<script>
+(async function () {
+  const list = document.getElementById("world-wide-player-list");
+  try {
+    const response = await fetch("/api/tournament-players", {cache:"no-store"});
+    if (!response.ok) throw new Error("Unavailable");
+    const data = await response.json();
+    const players = Array.isArray(data.players) ? data.players : [];
+    list.replaceChildren();
+    if (!players.length) { list.textContent = "Approved players will appear here after staff review."; return; }
+    players.forEach(function (player, index) {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.style.padding = "22px";
+      const title = document.createElement("h3");
+      title.textContent = player.player_name || "Player";
+      card.appendChild(title);
+      const details = [
+        ["Clash Royale tag", "#" + String(player.player_tag || "").replace(/^#/, "")],
+        ["Clan", player.clan],
+        ["Country represented", player.country],
+        ["TikTok", player.tiktok_username ? "@" + String(player.tiktok_username).replace(/^@/, "") : ""]
+      ];
+      details.forEach(function (pair) {
+        if (!pair[1]) return;
+        const p = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = pair[0] + ": ";
+        p.append(strong, document.createTextNode(pair[1]));
+        card.appendChild(p);
+      });
+      list.appendChild(card);
+    });
+  } catch(e) {
+    list.textContent = "The player list is temporarily unavailable.";
+  }
+})();
+</script>
+
 <section class="section" id="king-of-buns" style="scroll-margin-top:100px">
   <span class="label">TRO Sponsored Community Tournament</span>
   <h2>👑 King of Buns</h2>
