@@ -239,6 +239,42 @@ async function loadOfficialEvents(env, request) {
   return data.events;
 }
 
+/* Email notification after successful database registration. */
+async function notifyRegistration(env, event, player, registrationId) {
+  if (!env.RESEND_API_KEY) {
+    console.error("Registration email notification not configured: RESEND_API_KEY missing");
+    return;
+  }
+  const details = [
+    "New TRO tournament registration",
+    "Event: " + event.title,
+    "Registration ID: " + (registrationId ?? "Unavailable"),
+    "Player: " + player.playerName,
+    "Player tag: #" + player.playerTag,
+    "Discord: " + player.discordName,
+    "Clan: " + player.clan,
+    "Status: Pending approval"
+  ].join("\n");
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + env.RESEND_API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: "TRO Registrations <contact@theroyaleorganization.com>",
+        to: ["contact@theroyaleorganization.com"],
+        subject: "New registration: " + event.title,
+        text: details
+      })
+    });
+    if (!response.ok) console.error("Registration notification email failed", response.status);
+  } catch (error) {
+    console.error("Registration notification email error", error);
+  }
+}
+
 /*
  * REGISTRATION ENDPOINT
  */
@@ -495,6 +531,8 @@ export async function onRequestPost(context) {
     if (!result.success) {
       throw new Error("Database insert unsuccessful");
     }
+
+    await notifyRegistration(env, selectedEvent, { playerName, playerTag, discordName, clan }, result.meta?.last_row_id ?? null);
 
     return reply({
       success: true,
