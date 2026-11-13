@@ -11,6 +11,16 @@
       "url": "register.html"
     },
     {
+      "id": "2v2-world-wide-2026-11-13",
+      "date": "2026-11-13",
+      "title": "2v2 World Wide — Hosted by Osama",
+      "type": "tournament",
+      "time": "6:00 AM EST",
+      "description": "2v2 tournament hosted by Osama. Registration is open. Enter your player information; team assignments and eligibility will be confirmed by tournament staff.",
+      "registrationOpen": true,
+      "url": "register.html?event=2v2-world-wide-2026-11-13"
+    },
+    {
       "id": "king-of-buns-2026-11-16",
       "date": "2026-11-16",
       "title": "King of Buns — Hosted by Mr B",
