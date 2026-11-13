@@ -4,5 +4,5 @@ window.ROYALE_TOURNAMENT = {
   entry: "Contact tournament organizer for entry",
   prize: "TRO-sponsored prizes subject to approval",
   format: "2v2 • Double-elimination style",
-  registrationOpen: false
+  registrationOpen: true
 };
