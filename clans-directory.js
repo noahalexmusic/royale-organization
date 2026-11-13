@@ -8,7 +8,8 @@
     mk: "JY298RRC",
     jordan: "G0VLV9VC",
     darknova: "R9LVL0R8",
-    whitelotus: "GJYQU02R"
+    whitelotus: "GJYQU02R",
+    bongwater: "GRU2QRPU"
   };
 
   var status = document.getElementById("clans-live-status");
