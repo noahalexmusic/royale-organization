@@ -253,6 +253,7 @@ async function notifyRegistration(env, event, player, registrationId) {
     "Player tag: #" + player.playerTag,
     "Discord: " + player.discordName,
     "Clan: " + player.clan,
+    "Country: " + player.country,
     "Status: Pending approval"
   ].join("\n");
   try {
@@ -365,6 +366,7 @@ export async function onRequestPost(context) {
   );
   const discordName = clean(data.discordName, 50);
   const clan = clean(data.clan, 50);
+  const country = clean(data.country, 80);
 
   if (
     !eventId ||
@@ -404,6 +406,10 @@ export async function onRequestPost(context) {
       success: false,
       message: "Please enter a valid Discord username."
     }, 400);
+  }
+
+  if (!country || country.length > 80 || /[\u0000-\u001F\u007F]/.test(country)) {
+    return reply({ success: false, message: "Please select a valid country." }, 400);
   }
 
   if (!ALLOWED_CLANS.has(clan)) {
@@ -517,22 +523,24 @@ export async function onRequestPost(context) {
         player_tag,
         discord_username,
         clan,
+        country,
         status
       )
-      VALUES (?, ?, ?, ?, ?, 'pending')
+      VALUES (?, ?, ?, ?, ?, ?, 'pending')
     `).bind(
       eventId,
       playerName,
       playerTag,
       discordName,
-      clan
+      clan,
+      country
     ).run();
 
     if (!result.success) {
       throw new Error("Database insert unsuccessful");
     }
 
-    await notifyRegistration(env, selectedEvent, { playerName, playerTag, discordName, clan }, result.meta?.last_row_id ?? null);
+    await notifyRegistration(env, selectedEvent, { playerName, playerTag, discordName, clan, country }, result.meta?.last_row_id ?? null);
 
     return reply({
       success: true,
