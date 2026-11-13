@@ -524,16 +524,18 @@ export async function onRequestPost(context) {
         event_id,
         player_name,
         player_tag,
+        discord_username,
         tiktok_username,
         clan,
         country,
         status
       )
-      VALUES (?, ?, ?, ?, ?, ?, 'pending')
+      VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
     `).bind(
       eventId,
       playerName,
       playerTag,
+      tiktokName,
       tiktokName,
       clan,
       country
