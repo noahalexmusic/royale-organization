@@ -10,7 +10,8 @@
     darknova: "R9LVL0R8",
     whitelotus: "GJYQU02R",
     bongwater: "GRU2QRPU",
-    appleseed: "GV8YGR8R"
+    appleseed: "GV8YGR8R",
+    "noble-cobra": "G92CGY90"
   };
 
   var status = document.getElementById("clans-live-status");
