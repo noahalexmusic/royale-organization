@@ -25,6 +25,7 @@ const ALLOWED_CLANS = new Set([
   "pist.lia.chio",
   "Jordan First",
   "BONGWATER",
+  "appleseed",
   "DarkNova",
   "The White Lotus",
   "Other Clan",
