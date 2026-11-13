@@ -365,7 +365,7 @@ export async function onRequestPost(context) {
   const playerTag = normalizeTag(
     clean(data.playerTag, 15)
   );
-  const tiktokName = clean(data.tiktokName, 50);
+  const tiktokName = clean(data.tiktokName, 50).replace(/^@/, "");
   const clan = clean(data.clan, 50);
   const country = clean(data.country, 80);
 
