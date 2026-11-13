@@ -461,6 +461,9 @@
           }
         });
 
+        var requestedEvent = new URLSearchParams(window.location.search).get("event");
+        if (requestedEvent && available.some(function(e){ return e.id === requestedEvent; })) eventSelect.value = requestedEvent;
+
         if (available.length === 0) {
           eventSelect.disabled = true;
           setStatus(
