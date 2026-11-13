@@ -80,7 +80,8 @@
   if (tournament.registrationOpen) {
     set("event-status", "Registration open");
     if (registerButton) {
-      registerButton.textContent = "Register in Discord";
+      registerButton.textContent = "Register for 2v2 World Wide";
+      registerButton.href = "register.html?event=2v2-world-wide-2026-11-13";
       registerButton.removeAttribute("aria-disabled");
       registerButton.classList.remove("is-disabled");
     }
