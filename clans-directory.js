@@ -9,7 +9,8 @@
     jordan: "G0VLV9VC",
     darknova: "R9LVL0R8",
     whitelotus: "GJYQU02R",
-    bongwater: "GRU2QRPU"
+    bongwater: "GRU2QRPU",
+    appleseed: "GV8YGR8R"
   };
 
   var status = document.getElementById("clans-live-status");
