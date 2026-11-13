@@ -251,7 +251,7 @@ async function notifyRegistration(env, event, player, registrationId) {
     "Registration ID: " + (registrationId ?? "Unavailable"),
     "Player: " + player.playerName,
     "Player tag: #" + player.playerTag,
-    "Discord: " + player.discordName,
+    "TikTok: " + player.tiktokName,
     "Clan: " + player.clan,
     "Country: " + player.country,
     "Status: Pending approval"
@@ -364,7 +364,7 @@ export async function onRequestPost(context) {
   const playerTag = normalizeTag(
     clean(data.playerTag, 15)
   );
-  const discordName = clean(data.discordName, 50);
+  const tiktokName = clean(data.tiktokName, 50);
   const clan = clean(data.clan, 50);
   const country = clean(data.country, 80);
 
@@ -398,13 +398,13 @@ export async function onRequestPost(context) {
   }
 
   if (
-    discordName.length < 2 ||
-    discordName.length > 50 ||
-    !/^[a-zA-Z0-9._]+$/.test(discordName)
+    tiktokName.length < 2 ||
+    tiktokName.length > 50 ||
+    !/^[a-zA-Z0-9._]+$/.test(tiktokName)
   ) {
     return reply({
       success: false,
-      message: "Please enter a valid Discord username."
+      message: "Please enter a valid TikTok username."
     }, 400);
   }
 
@@ -521,7 +521,7 @@ export async function onRequestPost(context) {
         event_id,
         player_name,
         player_tag,
-        discord_username,
+        tiktok_username,
         clan,
         country,
         status
@@ -531,7 +531,7 @@ export async function onRequestPost(context) {
       eventId,
       playerName,
       playerTag,
-      discordName,
+      tiktokName,
       clan,
       country
     ).run();
@@ -540,7 +540,7 @@ export async function onRequestPost(context) {
       throw new Error("Database insert unsuccessful");
     }
 
-    await notifyRegistration(env, selectedEvent, { playerName, playerTag, discordName, clan, country }, result.meta?.last_row_id ?? null);
+    await notifyRegistration(env, selectedEvent, { playerName, playerTag, tiktokName, clan, country }, result.meta?.last_row_id ?? null);
 
     return reply({
       success: true,
