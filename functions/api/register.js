@@ -24,6 +24,7 @@ const ALLOWED_CLANS = new Set([
   "MK Best Win Con",
   "pist.lia.chio",
   "Jordan First",
+  "BONGWATER",
   "Other Clan",
   "No Clan"
 ]);
