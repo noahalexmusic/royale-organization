@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "The Royale Organization",
+  "short_name": "TRO",
+  "description": "The official home of The Royale Organization. Compete, connect, and conquer.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "lang": "en",
+  "categories": ["games", "sports", "entertainment"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
