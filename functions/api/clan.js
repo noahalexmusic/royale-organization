@@ -1,6 +1,5 @@
 // GET /api/clan?tag=GRU222VR -> trimmed clan data from the official Clash Royale API (via RoyaleAPI proxy)
 const BASE = "https://proxy.royaleapi.dev/v1";
-const ALLOWED = ["GRU222VR", "J82QJ2QY", "JY298RRC", "JYPLU0QV", "G0VLV9VC", "R9LVL0R8", "GJYQU02R", "GRU2QRPU", "GV8YGR8R", "G92CGY90"]; // official partner clans
 
 const json = (body, status = 200, ttl = 0) =>
   new Response(JSON.stringify(body), {
@@ -10,7 +9,20 @@ const json = (body, status = 200, ttl = 0) =>
 
 export async function onRequestGet({ request, env, waitUntil }) {
   const tag = (new URL(request.url).searchParams.get("tag") || "").replace("#", "").toUpperCase();
-  if (!ALLOWED.includes(tag)) return json({ error: "Unknown clan" }, 404);
+  if (!/^[0289PYLQGRJCUV]{3,20}$/.test(tag)) return json({error:"Unknown clan"},404);
+  if (env.TRO_CLAN_DB) {
+    try {
+      const row = await env.TRO_CLAN_DB.prepare("SELECT status FROM partnered_clans WHERE clan_tag=?").bind(tag).first();
+      if (!row || row.status !== "active") return json({error:"Unknown clan"},404);
+    } catch {
+      return json({error:"Clan directory temporarily unavailable"},503);
+    }
+  } else if (new URL(request.url).hostname !== "theroyaleorganization.com") {
+    const response = await fetch("https://theroyaleorganization.com/api/clan?tag="+encodeURIComponent(tag));
+    return response;
+  } else {
+    return json({error:"Clan directory not configured"},503);
+  }
 
   if (!env.CR_TOKEN) {
     const current = new URL(request.url);
