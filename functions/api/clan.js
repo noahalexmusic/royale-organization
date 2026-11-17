@@ -13,7 +13,8 @@ export async function onRequestGet({ request, env, waitUntil }) {
   if (env.TRO_CLAN_DB) {
     try {
       const row = await env.TRO_CLAN_DB.prepare("SELECT status FROM partnered_clans WHERE clan_tag=?").bind(tag).first();
-      if (!row || row.status !== "active") return json({error:"Unknown clan"},404);
+      const additionalPartners = new Set(["RPRCL8YG", "8LJQLL"]);
+      if ((!row || row.status !== "active") && !additionalPartners.has(tag)) return json({error:"Unknown clan"},404);
     } catch {
       return json({error:"Clan directory temporarily unavailable"},503);
     }
