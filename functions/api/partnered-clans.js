@@ -7,7 +7,7 @@ export async function onRequestGet({env}) {
  clans.push({id:"solar-power",clan_tag:"RPRCL8YG",name:"Solar Power",leader:"",description:"Solar Power is an official partnered clan of The Royale Organization.",theme_color:"#F59E0B",profile_url:"/solar-power.html"});
  }
  if(!clans.some(c=>c.clan_tag==="8LJQLL")){
- clans.push({id:"le-carre-fr",clan_tag:"8LJQLL",name:"LE CARRÉ.fr",leader:"",description:"LE CARRÉ.fr is a partnered Clash Royale clan in The Royale Organization.",theme_color:"#38BDF8",profile_url:"/le-carre-fr.html"});
+ clans.push({id:"le-carre-fr",clan_tag:"8LJQLL",name:"LE CARRÉ.fr",leader:"",description:"LE CARRÉ.fr is a partnered Clash Royale clan in The Royale Organization.",theme_color:"#2563EB",profile_url:"/le-carre-fr.html"});
  }
  return Response.json({clans},{headers});
  } catch {
