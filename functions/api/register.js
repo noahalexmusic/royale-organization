@@ -70,8 +70,15 @@ function validDate(value) {
   );
 }
 
-function todayUTC() {
-  return new Date().toISOString().slice(0, 10);
+function todayEastern(now = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(now);
+  const part = type => parts.find(p => p.type === type).value;
+  return part("year") + "-" + part("month") + "-" + part("day");
 }
 
 /*
@@ -464,7 +471,10 @@ export async function onRequestPost(context) {
     !selectedEvent ||
     selectedEvent.registrationOpen !== true ||
     !validDate(selectedEvent.date) ||
-    selectedEvent.date < todayUTC()
+    selectedEvent.date < todayEastern() ||
+    (selectedEvent.registrationClosesAt != null &&
+      (!Number.isFinite(Date.parse(selectedEvent.registrationClosesAt)) ||
+       Date.now() >= Date.parse(selectedEvent.registrationClosesAt)))
   ) {
     return reply({
       success: false,

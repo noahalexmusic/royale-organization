@@ -28,7 +28,8 @@
       "time": "9:30 PM EST",
       "description": "Normal Battle Clash Royale tournament hosted by Mr B and sponsored by The Royale Organization. First-place prize: Pass Royale. Registration instructions and tournament join details to follow; winner must contact TRO to arrange prize delivery after the in-game friend cooldown.",
       "registrationOpen": true,
-      "url": "king-of-buns-register.html"
+      "url": "king-of-buns-register.html",
+      "registrationClosesAt": "2026-11-16T20:30:00-05:00"
     }
   ]
 }

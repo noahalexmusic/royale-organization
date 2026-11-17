@@ -643,16 +643,18 @@
         placeholder.textContent = "Select an event";
         eventSelect.appendChild(placeholder);
 
-        var today = new Date();
-        var todayString =
-          today.getFullYear() + "-" +
-          String(today.getMonth() + 1).padStart(2, "0") + "-" +
-          String(today.getDate()).padStart(2, "0");
+        var parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit"
+        }).formatToParts(new Date());
+        var part = function(type) { return parts.find(function(p) { return p.type === type; }).value; };
+        var todayString = part("year") + "-" + part("month") + "-" + part("day");
 
         var available = data.events.filter(function (event) {
           return (
             event.date >= todayString &&
-            event.registrationOpen === true
+            event.registrationOpen === true &&
+            (event.registrationClosesAt == null ||
+              Date.now() < Date.parse(event.registrationClosesAt))
           );
         });
 
@@ -668,6 +670,7 @@
             event.title + " — " + event.date;
 
           if (option.value) {
+            if (event.registrationClosesAt != null) option.dataset.closesAt = event.registrationClosesAt;
             eventSelect.appendChild(option);
           }
         });
@@ -706,6 +709,7 @@
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    updateSubmitButton();
     if (!form.reportValidity() || submitButton.disabled) {
       return;
     }
@@ -796,6 +800,18 @@
   var isSubmitting = false;
 
   function updateSubmitButton() {
+    var expired = Array.from(eventSelect.options).filter(function(option) {
+      return option.dataset.closesAt && !(Date.now() < Date.parse(option.dataset.closesAt));
+    });
+    var selectedExpired = expired.some(function(option) { return option.selected; });
+    expired.forEach(function(option) { option.remove(); });
+    if (selectedExpired) {
+      eventSelect.value = "";
+      setStatus("Registration for this event has closed.");
+    }
+    if (expired.length && !Array.from(eventSelect.options).some(function(option) { return Boolean(option.value); })) {
+      eventSelect.disabled = true;
+    }
     var available =
       !isSubmitting &&
       !eventSelect.disabled &&
@@ -816,6 +832,7 @@
 
   submitButton.disabled = true;
   loadEvents();
+  window.setInterval(updateSubmitButton, 1000);
 
 })();
 </script>
