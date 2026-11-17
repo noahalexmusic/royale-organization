@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.backup
+.DS_Store
+
+.local-backups/
+.wrangler/
+.dev.vars
+.dev.vars.*
+*.sqlite
+*.sqlite-*
