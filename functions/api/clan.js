@@ -10,19 +10,21 @@ const json = (body, status = 200, ttl = 0) =>
 export async function onRequestGet({ request, env, waitUntil }) {
   const tag = (new URL(request.url).searchParams.get("tag") || "").replace("#", "").toUpperCase();
   if (!/^[0289PYLQGRJCUV]{3,20}$/.test(tag)) return json({error:"Unknown clan"},404);
-  if (env.TRO_CLAN_DB) {
-    try {
-      const row = await env.TRO_CLAN_DB.prepare("SELECT status FROM partnered_clans WHERE clan_tag=?").bind(tag).first();
-      const additionalPartners = new Set(["RPRCL8YG", "8LJQLL"]);
-      if ((!row || row.status !== "active") && !additionalPartners.has(tag)) return json({error:"Unknown clan"},404);
-    } catch {
-      return json({error:"Clan directory temporarily unavailable"},503);
+  // Newly onboarded partner clans may not yet have a D1 row.
+  const newlyPartnered = new Set(["RPRCL8YG", "8LJQLL"]);
+  if (!newlyPartnered.has(tag)) {
+    if (env.TRO_CLAN_DB) {
+      try {
+        const row = await env.TRO_CLAN_DB.prepare("SELECT status FROM partnered_clans WHERE clan_tag=?").bind(tag).first();
+        if (!row || row.status !== "active") return json({error:"Unknown clan"},404);
+      } catch {
+        return json({error:"Clan directory temporarily unavailable"},503);
+      }
+    } else if (new URL(request.url).hostname !== "theroyaleorganization.com") {
+      return fetch("https://theroyaleorganization.com/api/clan?tag="+encodeURIComponent(tag));
+    } else {
+      return json({error:"Clan directory not configured"},503);
     }
-  } else if (new URL(request.url).hostname !== "theroyaleorganization.com") {
-    const response = await fetch("https://theroyaleorganization.com/api/clan?tag="+encodeURIComponent(tag));
-    return response;
-  } else {
-    return json({error:"Clan directory not configured"},503);
   }
 
   if (!env.CR_TOKEN) {
