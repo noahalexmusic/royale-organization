@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "creators": [
+    {
+      "id": "noah",
+      "name": "Noah Alex CR",
+      "role": "Founder • Featured Creator",
+      "clan": "Crownbound",
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@noahalexcr",
+        "twitch": "https://www.twitch.tv/noahalexcr",
+        "youtube": "https://www.youtube.com/@noahalexcr",
+        "instagram": "https://www.instagram.com/noahalexcr/"
+      }
+    },
+    {
+      "id": "mojo",
+      "name": "Sensei Mojo",
+      "role": "Clan Leader • Creator",
+      "clan": "Mojo's Dojo",
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@mojosvibin"
+      }
+    },
+    {
+      "id": "tayla",
+      "name": "Tayla",
+      "role": "Clan Leader • Creator",
+      "clan": "MK Best Win Con",
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@soskdkkeeem"
+      }
+    },
+    {
+      "id": "osama",
+      "name": "Osama",
+      "role": "Streamer • Tournament Host",
+      "clan": null,
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@osamaf11f"
+      }
+    },
+    {
+      "id": "freddy",
+      "name": "Freddy Fazbear",
+      "role": "Streamer • Coach",
+      "clan": null,
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@freddy.fazzbear_",
+        "instagram": "https://www.instagram.com/therealdababy1.0/"
+      }
+    },
+    {
+      "id": "haili",
+      "name": "Haili",
+      "role": "Partner Streamer",
+      "clan": "BONGWATER",
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@hailixd"
+      }
+    },
+    {
+      "id": "crashout",
+      "name": "Crashout",
+      "role": "Partner Streamer",
+      "clan": null,
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@freefruitloops"
+      }
+    },
+    {
+      "id": "mrb",
+      "name": "Mr B",
+      "role": "Partner Streamer",
+      "clan": null,
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@mr.bcr2"
+      }
+    },
+    {
+      "id": "flint",
+      "name": "Flint1575",
+      "role": "Creator",
+      "clan": "The White Lotus",
+      "status": "active",
+      "links": {
+        "tiktok": "https://www.tiktok.com/@flint1575"
+      }
+    }
+  ]
+}

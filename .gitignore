@@ -11,3 +11,5 @@ node_modules/
 .dev.vars.*
 *.sqlite
 *.sqlite-*
+
+/creators.private-backup.json
