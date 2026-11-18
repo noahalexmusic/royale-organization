@@ -17,7 +17,7 @@
       "type": "tournament",
       "time": "6:00 AM EST",
       "description": "2v2 tournament hosted by Osama. First-place prize: one Pass Royale for each player on the winning team (two passes total). Registration is open. Enter your player information; team assignments and eligibility will be confirmed by tournament staff.",
-      "registrationOpen": true,
+      "registrationOpen": false,
       "url": "register.html?event=2v2-world-wide-2026-11-13"
     },
     {
@@ -27,7 +27,7 @@
       "type": "tournament",
       "time": "9:30 PM EST",
       "description": "Normal Battle Clash Royale tournament hosted by Mr B and sponsored by The Royale Organization. First-place prize: Pass Royale. Registration instructions and tournament join details to follow; winner must contact TRO to arrange prize delivery after the in-game friend cooldown.",
-      "registrationOpen": true,
+      "registrationOpen": false,
       "url": "king-of-buns-register.html",
       "registrationClosesAt": "2026-11-16T21:20:00-05:00"
     }
