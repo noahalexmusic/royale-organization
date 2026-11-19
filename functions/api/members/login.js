@@ -42,7 +42,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     await env.REGISTRATION_SECURITY.put(rateKey, "1", {
-      expirationTtl: 5
+      expirationTtl: 60
     });
 
     const accountKey = "member-login-account:" + await sha256(email);
@@ -52,7 +52,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     await env.REGISTRATION_SECURITY.put(accountKey, "1", {
-      expirationTtl: 5
+      expirationTtl: 60
     });
 
     const emailHash = await sha256(email);
