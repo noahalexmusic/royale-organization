@@ -51,7 +51,8 @@ const tokenKey="tro_member_token";
 function showSignedIn(member){
  form.hidden=true;registerLink.hidden=true;signedIn.hidden=false;
  welcome.textContent="Signed in as "+member.displayName+".";
- message.textContent="Login successful.";
+ message.textContent="Login successful. Returning to TRO...";
+ window.location.replace("index.html");
 }
 function showSignedOut(){
  form.hidden=false;registerLink.hidden=false;signedIn.hidden=true;
