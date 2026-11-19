@@ -83,6 +83,22 @@
     html += "</div></div>";
   });
 
+  var hasMemberSession = false;
+  try {
+    hasMemberSession = /^[a-f0-9]{64}$/.test(
+      sessionStorage.getItem("tro_member_token") || ""
+    );
+  } catch (error) {
+    hasMemberSession = false;
+  }
+
+  html += link(
+    hasMemberSession ? "member-dashboard" : "login",
+    hasMemberSession ? "My Account" : "Member Login",
+    hasMemberSession ? "member-dashboard.html" : "login.html",
+    "btn btn-sm nav-account"
+  );
+
   html += link("updates", "Get Updates", "updates.html", "btn btn-sm nav-updates");
   html += '<a class="btn btn-discord btn-sm nav-discord" href="https://discord.gg/WUJbJrkUtV" target="_blank" rel="noopener noreferrer">Join TRO Discord</a>';
 
