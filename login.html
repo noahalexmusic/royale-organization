@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Member Login | The Royale Organization</title>
+<meta name="theme-color" content="#090B12">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=31">
+<style>
+.account-wrap{min-height:100vh;display:grid;place-items:center;padding:32px 16px;background:#090B12;color:#fff;font-family:Barlow,Arial,sans-serif}
+.account-panel{width:100%;max-width:460px;padding:32px;border:1px solid #303747;border-radius:18px;background:#151923}
+.account-panel h1{margin:8px 0}.account-panel p{color:#b9c1d1}
+.account-panel label{display:block;margin:18px 0 7px;font-weight:600}
+.account-panel input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #485064;border-radius:9px;background:#0b0e16;color:white;font:inherit}
+.account-panel button{width:100%;margin-top:24px;padding:14px;border:0;border-radius:9px;background:#f4b942;color:#10131c;font:inherit;font-weight:700;cursor:pointer}
+.account-panel button:disabled{opacity:.6;cursor:wait}.account-panel a{color:#f4b942}#accountMessage{margin-top:18px}
+</style>
+</head>
+<body>
+<main class="account-wrap">
+<section class="account-panel">
+<a href="index.html">← Back to TRO</a>
+<h1>Member Login</h1>
+<p>Sign in to your verified TRO account.</p>
+<form id="loginForm">
+<label for="email">Email address</label>
+<input id="email" type="email" required autocomplete="email">
+<label for="password">Password</label>
+<input id="password" type="password" required minlength="12" autocomplete="current-password">
+<button id="submitButton" type="submit">Sign In</button>
+</form>
+<section id="signedIn" hidden>
+<p id="welcome"></p>
+<button id="logoutButton" type="button">Sign Out</button>
+</section>
+<p id="accountMessage" role="status" aria-live="polite"></p>
+<p id="registerLink">Don't have an account? <a href="create-account.html">Create one</a>.</p>
+</section>
+</main>
+<script>
+"use strict";
+const form=document.getElementById("loginForm");
+const message=document.getElementById("accountMessage");
+const button=document.getElementById("submitButton");
+const signedIn=document.getElementById("signedIn");
+const welcome=document.getElementById("welcome");
+const registerLink=document.getElementById("registerLink");
+const tokenKey="tro_member_token";
+function showSignedIn(member){
+ form.hidden=true;registerLink.hidden=true;signedIn.hidden=false;
+ welcome.textContent="Signed in as "+member.displayName+".";
+ message.textContent="Login successful.";
+}
+function showSignedOut(){
+ form.hidden=false;registerLink.hidden=false;signedIn.hidden=true;
+}
+async function checkSession(){
+ const token=sessionStorage.getItem(tokenKey);
+ if(!token)return;
+ try{
+  const response=await fetch("/api/members/session",{headers:{"Authorization":"Bearer "+token},cache:"no-store"});
+  if(!response.ok){sessionStorage.removeItem(tokenKey);return;}
+  const data=await response.json();
+  if(data.authenticated&&data.member)showSignedIn(data.member);
+ }catch{message.textContent="Could not check your session. Please try again.";}
+}
+form.addEventListener("submit",async(event)=>{
+ event.preventDefault();button.disabled=true;message.textContent="Signing in...";
+ try{
+  const response=await fetch("/api/members/login",{
+   method:"POST",headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value})
+  });
+  const result=await response.json();
+  if(!response.ok||!result.token||!result.member){message.textContent=result.message||"Unable to sign in.";return;}
+  sessionStorage.setItem(tokenKey,result.token);
+  document.getElementById("password").value="";
+  showSignedIn(result.member);
+ }catch{message.textContent="Connection failed. Please try again.";}
+ finally{button.disabled=false;}
+});
+document.getElementById("logoutButton").addEventListener("click",async()=>{
+ const token=sessionStorage.getItem(tokenKey);
+ sessionStorage.removeItem(tokenKey);showSignedOut();message.textContent="Signed out.";
+ if(token)try{await fetch("/api/members/logout",{method:"POST",headers:{"Authorization":"Bearer "+token}});}catch{}
+});
+checkSession();
+</script>
+</body>
+</html>
