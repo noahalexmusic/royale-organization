@@ -84,7 +84,7 @@
   });
 
   html += link("updates", "Get Updates", "updates.html", "btn btn-sm nav-updates");
-  html += '<a class="btn btn-discord btn-sm nav-discord" href="mailto:contact@theroyaleorganization.com?subject=TRO%20Inquiry" >Contact TRO (Discord in repair)</a>';
+  html += '<a class="btn btn-discord btn-sm nav-discord" href="https://discord.gg/WUJbJrkUtV" target="_blank" rel="noopener noreferrer">Join TRO Discord</a>';
 
   html += "</div>";
   nav.innerHTML = html;
