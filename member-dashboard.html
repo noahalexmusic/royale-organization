@@ -33,6 +33,20 @@ dl{display:grid;grid-template-columns:minmax(100px,160px) 1fr;gap:12px;overflow-
 <p class="muted">Your member ID is your account identifier. Competitive, creator, clan-leader, and staff roles require separate approval.</p>
 <button class="secondary" id="signOut" type="button">Sign Out</button>
 </section>
+<section class="panel" id="clashStats">
+<h2>My Clash Royale Stats</h2>
+<p id="statsStatus" class="muted" role="status">Loading player statistics...</p>
+<div id="statsContent" hidden>
+<dl>
+<dt>In-game name</dt><dd id="crName"></dd>
+<dt>Player tag</dt><dd id="crTag"></dd>
+<dt>Current trophies</dt><dd id="crTrophies"></dd>
+<dt>Best trophies</dt><dd id="crBest"></dd>
+<dt>Current ranked trophies</dt><dd id="crRanked"></dd>
+</dl>
+<button type="button" id="refreshStats" class="secondary">Refresh Stats</button>
+</div>
+</section>
 <h2 style="margin-top:32px">Explore TRO</h2>
 <div class="grid">
 <article class="card"><h2>Tournaments</h2><p class="muted">Explore official competitions and public brackets.</p><a href="tournaments.html">View tournaments</a></article>
@@ -40,7 +54,7 @@ dl{display:grid;grid-template-columns:minmax(100px,160px) 1fr;gap:12px;overflow-
 <article class="card"><h2>Deck Builder</h2><p class="muted">Build and explore Clash Royale decks.</p><a href="deck-builder.html">Open deck builder</a></article>
 <article class="card"><h2>Our Clans</h2><p class="muted">Discover TRO's partnered clans.</p><a href="clans.html">Explore clans</a></article>
 </div>
-<section class="panel"><h2>Coming next</h2><p class="muted">Personal tournament history, TRO points, saved decks, notification settings, and player-stat syncing are planned. They aren't active yet.</p></section>
+<section class="panel"><h2>Coming next</h2><p class="muted">Personal tournament history, TRO points, saved decks, notification settings, are planned. They aren't active yet.</p></section>
 </div>
 </main>
 <script>
@@ -69,8 +83,32 @@ async function loadDashboard(){
   document.getElementById("playerTag").textContent=member.playerTag||"Not added";
   document.getElementById("memberId").textContent=member.id||"—";
   status.textContent="";signedOut.hidden=true;content.hidden=false;
+  loadClashStats(member.playerTag);
  }catch{requireLogin("Connection failed. Please refresh to try again.");}
 }
+let currentPlayerTag=null;
+async function loadClashStats(tag){
+ currentPlayerTag=tag;
+ const statsStatus=document.getElementById("statsStatus");
+ const statsContent=document.getElementById("statsContent");
+ statsContent.hidden=true;
+ if(!tag){statsStatus.textContent="No Clash Royale player tag is saved to your account yet. Player-tag editing is coming soon.";return;}
+ statsStatus.textContent="Loading live player statistics...";
+ try{
+  const response=await fetch("/api/player?tag="+encodeURIComponent(tag),{cache:"no-store"});
+  const player=await response.json();
+  if(!response.ok){statsStatus.textContent=player.error||"Could not load player statistics.";return;}
+  const show=(id,value)=>document.getElementById(id).textContent=value===null||value===undefined?"Not available":String(value);
+  show("crName",player.name);
+  show("crTag",player.tag);
+  show("crTrophies",player.trophies);
+  show("crBest",player.bestTrophies);
+  show("crRanked",player.currentRankedTrophies);
+  statsStatus.textContent="Statistics from Clash Royale. Some fields may be unavailable.";
+  statsContent.hidden=false;
+ }catch{statsStatus.textContent="Could not reach Clash Royale statistics. Please try again.";}
+}
+document.getElementById("refreshStats").addEventListener("click",()=>loadClashStats(currentPlayerTag));
 document.getElementById("signOut").addEventListener("click",async()=>{
  const token=sessionStorage.getItem(tokenKey);
  sessionStorage.removeItem(tokenKey);
