@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Member Dashboard | The Royale Organization</title>
+<meta name="theme-color" content="#090B12"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=31">
+<style>
+body{margin:0;background:#090B12;color:#fff;font-family:Barlow,Arial,sans-serif}
+main{max-width:1040px;margin:auto;padding:32px 18px 70px}
+a{color:#f4b942}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-size:clamp(30px,5vw,48px);margin:24px 0 8px}h2{font-size:22px;margin:0 0 12px}
+.muted{color:#b9c1d1}.panel{background:#151923;border:1px solid #303747;border-radius:18px;padding:24px;margin-top:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{background:#151923;border:1px solid #303747;border-radius:16px;padding:22px}
+.pill{display:inline-block;border-radius:99px;background:#203b31;color:#9ee7bc;padding:6px 12px;font-weight:700;font-size:13px}
+button,.button{border:0;border-radius:9px;padding:12px 18px;background:#f4b942;color:#10131c;font:inherit;font-weight:700;cursor:pointer;text-decoration:none}
+button.secondary{background:#303747;color:white}
+dl{display:grid;grid-template-columns:minmax(100px,160px) 1fr;gap:12px;overflow-wrap:anywhere}dt{color:#b9c1d1}dd{margin:0}
+#content[hidden],#signedOut[hidden]{display:none}
+</style>
+</head>
+<body>
+<main>
+<header><a href="index.html">← The Royale Organization</a><span class="pill">TRO Member Portal</span></header>
+<p id="status" role="status" aria-live="polite">Checking your membership...</p>
+<section id="signedOut" class="panel" hidden><h1>Member sign-in required</h1><p class="muted">Sign in with your verified TRO account to view your dashboard.</p><a class="button" href="login.html">Member Login</a></section>
+<div id="content" hidden>
+<h1>Welcome back, <span id="displayName"></span>! 👑</h1>
+<p class="muted">Your personal home inside The Royale Organization.</p>
+<section class="panel"><h2>My TRO Profile <span class="pill">Email verified</span></h2>
+<dl><dt>Display name</dt><dd id="profileName"></dd><dt>Email</dt><dd id="profileEmail"></dd><dt>Player tag</dt><dd id="playerTag"></dd><dt>Membership</dt><dd>TRO Community Member · Free</dd><dt>Member ID</dt><dd id="memberId"></dd></dl>
+<p class="muted">Your member ID is your account identifier. Competitive, creator, clan-leader, and staff roles require separate approval.</p>
+<button class="secondary" id="signOut" type="button">Sign Out</button>
+</section>
+<h2 style="margin-top:32px">Explore TRO</h2>
+<div class="grid">
+<article class="card"><h2>Tournaments</h2><p class="muted">Explore official competitions and public brackets.</p><a href="tournaments.html">View tournaments</a></article>
+<article class="card"><h2>Player Leaderboard</h2><p class="muted">See the current public Clash Royale rankings.</p><a href="leaderboard.html">View rankings</a></article>
+<article class="card"><h2>Deck Builder</h2><p class="muted">Build and explore Clash Royale decks.</p><a href="deck-builder.html">Open deck builder</a></article>
+<article class="card"><h2>Our Clans</h2><p class="muted">Discover TRO's partnered clans.</p><a href="clans.html">Explore clans</a></article>
+</div>
+<section class="panel"><h2>Coming next</h2><p class="muted">Personal tournament history, TRO points, saved decks, notification settings, and player-stat syncing are planned. They aren't active yet.</p></section>
+</div>
+</main>
+<script>
+"use strict";
+const tokenKey="tro_member_token";
+const status=document.getElementById("status");
+const content=document.getElementById("content");
+const signedOut=document.getElementById("signedOut");
+function requireLogin(message){status.textContent=message;signedOut.hidden=false;content.hidden=true;}
+async function loadDashboard(){
+ const token=sessionStorage.getItem(tokenKey);
+ if(!token){requireLogin("Please sign in to view your dashboard.");return;}
+ try{
+  const response=await fetch("/api/members/session",{headers:{Authorization:"Bearer "+token},cache:"no-store"});
+  if(!response.ok){
+   if(response.status===401){sessionStorage.removeItem(tokenKey);requireLogin("Your session has expired. Please sign in again.");}
+   else requireLogin("Could not load your profile right now. Please try again.");
+   return;
+  }
+  const data=await response.json();
+  if(!data.authenticated||!data.member){requireLogin("Could not verify your session.");return;}
+  const member=data.member;
+  document.getElementById("displayName").textContent=member.displayName||"Member";
+  document.getElementById("profileName").textContent=member.displayName||"—";
+  document.getElementById("profileEmail").textContent=member.email||"—";
+  document.getElementById("playerTag").textContent=member.playerTag||"Not added";
+  document.getElementById("memberId").textContent=member.id||"—";
+  status.textContent="";signedOut.hidden=true;content.hidden=false;
+ }catch{requireLogin("Connection failed. Please refresh to try again.");}
+}
+document.getElementById("signOut").addEventListener("click",async()=>{
+ const token=sessionStorage.getItem(tokenKey);
+ sessionStorage.removeItem(tokenKey);
+ content.hidden=true;requireLogin("Signed out.");
+ if(token)try{await fetch("/api/members/logout",{method:"POST",headers:{Authorization:"Bearer "+token}});}catch{}
+});
+loadDashboard();
+</script>
+</body></html>
