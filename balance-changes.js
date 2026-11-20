@@ -256,6 +256,23 @@
       })
       .then(function (data) {
         if (!data || !Array.isArray(data.items) || !data.items.length) throw new Error("Empty feed");
+        var decemberFinal = data.items.find(function (item) {
+          return item.status === "FINAL" &&
+            /december|season[ -]?90/i.test(item.title) &&
+            !/2025|2024|2023/i.test(item.title);
+        });
+        var wip = document.getElementById("december-2026-wip");
+        var archive = document.getElementById("october-balance-archive");
+        if (archive) archive.hidden = true;
+        if (decemberFinal && wip) {
+          wip.hidden = true;
+          var finalPanel = document.getElementById("decemberFinalPanel");
+          if (finalPanel) {
+            finalPanel.hidden = false;
+            var finalLink = document.getElementById("decemberFinalLink");
+            if (finalLink) finalLink.href = decemberFinal.url;
+          }
+        }
         target.innerHTML = data.items.map(function (item) {
           var label = item.status === "WIP" ? "WORK IN PROGRESS — NOT LIVE" :
             item.status === "FINAL" ? "FINAL ANNOUNCEMENT" : "BALANCE ANNOUNCEMENT";
