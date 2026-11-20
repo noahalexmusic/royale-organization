@@ -245,6 +245,36 @@
       });
   }
 
+
+  function loadBalanceFeed() {
+    var target = document.getElementById("balanceFeed");
+    if (!target) return;
+    fetch("/api/balance-feed", { cache: "no-store" })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Feed unavailable");
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.items) || !data.items.length) throw new Error("Empty feed");
+        target.innerHTML = data.items.map(function (item) {
+          var label = item.status === "WIP" ? "WORK IN PROGRESS — NOT LIVE" :
+            item.status === "FINAL" ? "FINAL ANNOUNCEMENT" : "BALANCE ANNOUNCEMENT";
+          return '<article class="card">' +
+            '<span class="balance-state">' + safe(label) + '</span>' +
+            '<h3>' + safe(item.title) + '</h3>' +
+            '<a class="text-link" href="' + safe(item.url) +
+            '" target="_blank" rel="noopener noreferrer">Read the balance changes and card stats</a>' +
+            '</article>';
+        }).join("");
+      })
+      .catch(function () {
+        target.innerHTML = '<p>Automatic announcement updates are temporarily unavailable. ' +
+          '<a class="text-link" href="https://royaleapi.com/blog/tags/balance?lang=en" ' +
+          'target="_blank" rel="noopener noreferrer">View recent balance announcements</a>.</p>';
+      });
+  }
+  loadBalanceFeed();
+
   setupFilters();
   renderChanges();
   loadCardArt();
