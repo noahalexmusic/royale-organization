@@ -1,5 +1,5 @@
 const SOURCE = "https://royaleapi.com/blog/tags/balance?lang=en";
-function clean(s){return String(s||"").replace(/<[^>]*>/g," ").replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/\s+/g," ").trim();}
+function clean(s){return String(s||"").replace(/<[^>]*>/g," ").replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/\\s+/g," ").trim();}
 export async function onRequestGet(){
  try{
   const res=await fetch(SOURCE,{headers:{"Accept":"text/html","User-Agent":"Mozilla/5.0 (compatible; TROBalanceMonitor/1.0)"}});
