@@ -1,7 +1,7 @@
 const ALLOWED = new Set([
   "contact@theroyaleorganization.com",
   "rgstudiosoffical@gmail.com",
-  "charlottepasternak8@gmail.com"
+  "chartro0616@gmail.com"
 ]);
 
 function decode64(s) {
