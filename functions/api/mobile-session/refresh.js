@@ -9,7 +9,7 @@ import {
 
 const LONG_TERM_ADMINS = new Set([
   "contact@theroyaleorganization.com",
-  "charlottepasternak8@gmail.com"
+  "chartro0616@gmail.com"
 ]);
 
 export async function onRequestPost({ request, env }) {
